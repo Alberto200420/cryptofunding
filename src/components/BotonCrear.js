@@ -1,9 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { Switch } from '@headlessui/react'
+import axios from 'axios'
+import { useMoralis, useWeb3Contract } from "react-moralis"
 
 export default function BotonCrearContrato() {
   let [isOpen, setIsOpen] = useState(false)
+  const {chainId: chainIdHex } = useMoralis()
+  const chainId = chainIdHex
 
   function closeModal() {
     setIsOpen(false)
@@ -25,24 +29,104 @@ export default function BotonCrearContrato() {
     paginaWeb: "",
     instagram: "",
     twitter: "",
+    linkedin: "",
+    fotoPersonal: "",
+    logo: "",
     email: "",
     trayectory: "",
     oficinas: ""
   })
 
   const { terminos_Y_condiciones, cantidad_Objetivo_USD, rendimiento } = formData
-  const { paginaWeb, instagram, twitter, email, trayectory, oficinas } = enabled
+  const { paginaWeb, instagram, twitter, linkedin, fotoPersonal, logo, email, trayectory, oficinas } = enabled
 
 
   const enCambio = e => setEnabled({ ...enabled, [e.target.name]: e.target.value })
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
-  const onSubmit =(e)=> {
+  const onSubmit = e => {
     e.preventDefault();
-    console.log(terminos_Y_condiciones, cantidad_Objetivo_USD, rendimiento)
-    if(enabled !== 'undefined') {
-      console.log(instagram, paginaWeb, twitter, email, trayectory, oficinas)
+    firmar()
+    // e.target.reset()
+  }
+
+  const firmar = async () => {
+    // funcion para crear contrato
+
+    if(enabled) {
+      const data = {
+        creatorAddress: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
+        contractAddress: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
+        slug: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
+        rendimiento: rendimiento,
+        termsAconditions: terminos_Y_condiciones,
+        targetCuantity: cantidad_Objetivo_USD,
+        email: email,
+        linkInstagram: instagram,
+        webPage: paginaWeb,
+        linkTwitter: twitter,
+        linkedin: linkedin,
+        ofice: oficinas,
+        personalFile: fotoPersonal,
+        logo: logo, 
+        trayectory: trayectory
+      }
+      sendPublic(data)
+    } else {
+      const data = {
+        creatorAddress: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
+        contractAddress: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
+        slug: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
+        rendimiento: rendimiento,
+        termsAconditions: terminos_Y_condiciones,
+        targetCuantity: cantidad_Objetivo_USD,
+      }
+      sendPrivate(data)
     }
+  }
+
+  const sendPublic = (data) => {
+      if(chainId === '0x5') {
+        console.log('desplegaste el contrato en Goerli publico')
+        const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/public`
+        enviarData(data, goerliUrl)
+      } else if(chainId === '0x89') {
+        console.log('desplegaste el contrato en Poligon')
+        console.log(data)
+        // const poligonUrl = `${process.env.REACT_APP_API_URL}`
+        // enviarData(data, poligonUrl)
+      }
+  }
+
+  const sendPrivate = (data) => {
+      if(chainId === '0x5') {
+        console.log('desplegaste el contrato en Goerli pirvado')
+        const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/private`
+        enviarData(data, goerliUrl)
+      } else if(chainId === '0x89') {
+        console.log('desplegaste el contrato en Poligon')
+        console.log(data)
+        // const poligonUrl = `${process.env.REACT_APP_API_URL}`
+        // enviarData(data, poligonUrl)
+      }
+  }
+
+
+  const enviarData = (datos, url) => {
+    const info = JSON.stringify(datos)
+    axios.post(url, info, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
+    .then(res => {
+      console.log(res)
+      // funcion para abrir un modal y mostrarle su contract address
+    })
+    .catch(function (error) {
+      console.log(error)
+      alert("ERROR please try again")
+    })
   }
   // --------------------------------------------------------   Funciones
 
@@ -95,7 +179,7 @@ export default function BotonCrearContrato() {
                       name="rendimiento" onChange={e=>onChange(e)} placeholder='E.G: 25' maxLength='2' required/><br/>
 
                       <div className="inline-flex py-4">
-                        <label className='text-xl px-6' htmlFor="lname"><h5>Anonimous</h5></label>
+                        <label className='text-xl px-2' htmlFor="lname"><h5>Private</h5></label>
                         <Switch checked={enabled} onChange={setEnabled}
                             className={`${enabled ? 'bg-teal-900' : 'bg-teal-700'}
                             inline-flex h-[28px] w-[64px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
@@ -107,12 +191,17 @@ export default function BotonCrearContrato() {
                         {
                           enabled ? 
                           <div>
-                            <input type='url' className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center' placeholder='Instagram' name='instagram' onChange={e=>enCambio(e)} /><br/><br/>
-                            <input type='url' className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center' placeholder='Pagina web' name='paginaWeb' onChange={e=>enCambio(e)} /><br/><br/>
-                            <input type='url' className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center' placeholder='Twitter' name='twitter' onChange={e=>enCambio(e)} /><br/><br/>
-                            <input type='email' className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center' placeholder='Email' name='email' onChange={e=>enCambio(e)} /><br/><br/>
-                            <textarea type="text" className='border-2 border-gray-300 rounded-lg w-3/4 resize-none outline-none h-52 text-center'  placeholder='Cuentanos tu trayectoria' name="trayectory" onChange={e=>enCambio(e)} /><br/><br/>
-                            <input  className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center' placeholder='Oficinas' name='oficinas' onChange={e=>enCambio(e)} /><br/><br/>
+                            <input type='url' placeholder='Instagram' name='instagram' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Pagina web' name='paginaWeb' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Twitter' name='twitter' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Linkedin' name='linkedin' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='email' placeholder='Email' name='email' onChange={e=>enCambio(e)} required className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <textarea type="text" placeholder='Cuentanos tu trayectoria' name="trayectory" onChange={e=>enCambio(e)} required className='border-2 border-gray-300 rounded-lg w-3/4 resize-none outline-none h-52 text-center'/><br/><br/>
+                            <input type='url'  placeholder='Oficinas' name='oficinas' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <label className='text-xl' htmlFor="lname"><h5>Personal photo</h5></label>
+                            <input type='file' name='fotoPersonal' onChange={e=>enCambio(e)} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
+                            <label className='text-xl' htmlFor="lname"><h5>Brand logo</h5></label>
+                            <input type='file' name='logo' onChange={e=>enCambio(e)} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
                           </div> : <div></div>
                         }
                        
