@@ -2,7 +2,9 @@ import '../styles/index.css'
 import InformacionButton from './info'
 import { useEffect } from "react"
 import { useMoralis } from "react-moralis"
-// import logo from '../assets/img/tmis.png'  <img src={logo} width={60} height={70} className='inline-flex pr-4'/> 
+import { ScaleIcon } from '@heroicons/react/20/solid'
+import { Link } from 'react-router-dom'
+import poligon from '../assets/img/poligon.png'
 
 function Navbar() {
 
@@ -40,8 +42,11 @@ function Navbar() {
             <div className=" px-4 py-5 sm:px-6">
             <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
                 <div className="ml-4 mt-2">
-                <p className=' inline-flex text-white pr-4'>{chainId}</p>
-                <h3 className=" inline-flex pr-4 text-lg font-medium leading-6 text-white"><a href='/'>T-mis</a></h3>
+                {
+                chainId === '0x5' ? <p className='inline-flex text-white pr-2'><Link to='/'>TESTNET</Link></p> 
+                : chainId ==='0x89' ? <Link to='/'><img src={poligon} width={50} height={60} alt='Polygon network' className='inline-flex pr-2'/></Link> 
+                : <Link to='/'><ScaleIcon width={45} height={50} className='inline-flex pr-2 text-white'/></Link>
+                }
                 <InformacionButton/>
                 </div>
 

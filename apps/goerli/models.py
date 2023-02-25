@@ -1,7 +1,7 @@
 from django.db import models
 
 def public_thumbnail_directory(instace, filename):
-    return 'goerli/{0}/{1}'.format(instace.correoElectronico, filename)
+    return 'publicGoerli/{0}/{1}'.format(instace.correoElectronico, filename)
 
 # Create your models here.
 class GoerliPublic(models.Model):

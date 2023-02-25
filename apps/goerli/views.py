@@ -1,6 +1,5 @@
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework.response import Response
 from rest_framework import status, permissions
@@ -22,6 +21,7 @@ class SearchListPublicContractsView(APIView):
 
                 subitem = {}
                 subitem['id']=informacion.id
+                subitem['roundTipe']='public'
                 subitem['creatorAddress']=informacion.addressDelCreador
                 subitem['contractAddress']=informacion.contractAddress
                 subitem['slug']=informacion.slug
@@ -35,8 +35,8 @@ class SearchListPublicContractsView(APIView):
                 subitem['linkTwitter']=informacion.linkTwitter
                 subitem['linkedin']=informacion.linkedin
                 subitem['ofice']=informacion.oficinas
-                subitem['personalFile']=informacion.imagenPersonal
-                subitem['logo']=informacion.logo
+                subitem['personalFile']=str(informacion.imagenPersonal)
+                subitem['logo']=str(informacion.logo)
                 subitem['trayectory']=informacion.trayectoria
                 item['data'].append(subitem)
                 result.append(item)
@@ -50,16 +50,8 @@ class SearchListPublicContractsView(APIView):
             resultado = search_by_contract_address(parametro)
 
             return Response({'contrato': resultado}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'No contract found'}, status=status.HTTP_404_NOT_FOUND)
-
-class SearchListPrivateContractsView(APIView):
-    parser_classes = (permissions.AllowAny,)
-
-    def get(self, request, format=None):
-        parametro = request.query_params.get('contract')
-                        # si da problemas ponle slug=
-        if GoerliPrivate.objects.filter(contractAddress=parametro).exists():
+        
+        elif GoerliPrivate.objects.filter(contractAddress=parametro).exists():
             contrato = GoerliPrivate.objects.all()
             result = []
             for informacion in contrato:
@@ -69,6 +61,7 @@ class SearchListPrivateContractsView(APIView):
 
                 subitem = {}
                 subitem['id']=informacion.id
+                subitem['roundTipe']='private'
                 subitem['creatorAddress']=informacion.addressDelCreador
                 subitem['contractAddress']=informacion.contractAddress
                 subitem['slug']=informacion.slug
@@ -92,7 +85,6 @@ class SearchListPrivateContractsView(APIView):
             return Response({'error': 'No contract found'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(('POST', ))
-@csrf_exempt
 def save_data_public(request):
     if request.method == 'POST':
         data = request.body.decode()
@@ -138,7 +130,6 @@ def save_data_public(request):
         return Response({'error': 'data no saved'}, status=status.HTTP_201_CREATED)
     
 @api_view(('POST', ))
-@csrf_exempt
 def save_data_private(request):
     if request.method == 'POST':
         data = request.body.decode()

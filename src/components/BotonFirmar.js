@@ -169,8 +169,9 @@ export default function BotonFirmar() {
                 <Dialog.Panel className="w-1/2 transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
                   <div className='mt-4'>
                     <form onSubmit={e=>invertir(e)}>
-                      <h1 className='text-2xl font-medium '>Amount you will invest: {[cantidad_a_invertir, moneda]}</h1>
-                      <h1 className='py-2 text-2xl font-medium'>Contract address: {'0xacC1fC992912Cc4ce60ee667a2E5f1Af80D47BEF'}</h1>
+                      <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {cantidad_a_invertir}</h1>
+                      <h1 className='pt-2 text-2xl font-medium text-gray-900'> token: {moneda}</h1>
+                      <h1 className='py-2 text-sm font-medium text-gray-900 md:text-2xl'>Contract address: {'0xacC1fC992912Cc4ce60ee667a2E5f1Af80D47BEF'}</h1>
                       <button type="submit" className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"> 
                       Invest 
                       </button>

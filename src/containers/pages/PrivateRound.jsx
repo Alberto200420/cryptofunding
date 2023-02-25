@@ -1,21 +1,20 @@
 import InfoSmartContract from "components/InfoContract"
 import Navbar from "components/Navbar"
 import Layout from "hocs/layouts/Layout"
-import logoFormal from 'assets/img/formal.png'
-import logoJp from 'assets/img/jp.png'
+import { UserGroupIcon } from "@heroicons/react/24/solid"
 import BotonFirmar from "components/BotonFirmar"
 
-function AnonimusPage() {
+function PrivatePage() {
     return(
         <Layout>
             <Navbar/>
             <div className="pt-28">
                 <div className="text-center">
                     <div className="inline-flex rounded-sm px-8">
-                        <img className="rounded-md w-24" alt="jp" src={ logoFormal }/>
+                        <UserGroupIcon width={150} height={130} className='inline-flex text-black'/>
                     </div>
-                    <div className="inline-flex rounded-sm px-8 bg-black">
-                        <img className="rounded-md w-24" alt="jp" src={ logoJp }/>
+                    <div className="rounded-sm px-8">
+                        <p className="text-sm font-medium text-git-color">Private investment round</p>
                     </div>
                     <BotonFirmar/>
                 </div>
@@ -25,4 +24,4 @@ function AnonimusPage() {
     )
 }
 
-export default AnonimusPage
+export default PrivatePage

@@ -55,9 +55,9 @@ export default function BotonCrearContrato() {
 
     if(enabled) {
       const data = {
-        creatorAddress: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
-        contractAddress: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
-        slug: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
+        creatorAddress: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
+        contractAddress: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
+        slug: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
         rendimiento: rendimiento,
         termsAconditions: terminos_Y_condiciones,
         targetCuantity: cantidad_Objetivo_USD,
@@ -74,9 +74,9 @@ export default function BotonCrearContrato() {
       sendPublic(data)
     } else {
       const data = {
-        creatorAddress: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
-        contractAddress: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
-        slug: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
+        creatorAddress: '0x478F9936f33f8cc7743e4AA857F5AbCd48fE5069',
+        contractAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+        slug: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
         rendimiento: rendimiento,
         termsAconditions: terminos_Y_condiciones,
         targetCuantity: cantidad_Objetivo_USD,
