@@ -4,8 +4,12 @@ import Layout from "hocs/layouts/Layout"
 import logoFormal from 'assets/img/formal.png'
 import logoJp from 'assets/img/jp.png'
 import BotonFirmar from "components/BotonFirmar"
+import { useLocation } from "react-router-dom"
 
 function PublicPage() {
+    const location = useLocation()
+    const datos = location.state
+    console.log(datos)
     return(
         <Layout>
             <Navbar/>

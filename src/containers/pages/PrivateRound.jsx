@@ -1,10 +1,14 @@
-import InfoSmartContract from "components/InfoContract"
+import InfoPrivateContract from "components/infoPrivateContract"
 import Navbar from "components/Navbar"
 import Layout from "hocs/layouts/Layout"
 import { UserGroupIcon } from "@heroicons/react/24/solid"
 import BotonFirmar from "components/BotonFirmar"
+import { useLocation } from "react-router-dom"
 
 function PrivatePage() {
+    const location = useLocation()
+    const datos = location.state
+    console.log(datos)
     return(
         <Layout>
             <Navbar/>
@@ -18,7 +22,7 @@ function PrivatePage() {
                     </div>
                     <BotonFirmar/>
                 </div>
-                <InfoSmartContract/>
+                <InfoPrivateContract/>
             </div>
         </Layout>
     )

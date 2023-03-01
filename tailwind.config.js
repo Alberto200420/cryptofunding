@@ -7,6 +7,8 @@ module.exports = {
     extend: {
       colors: {
         'git-color': '#0d1117',
+        'naranga': '#FF4500',
+        'verde': '#00CC00',
       }
     },
   },

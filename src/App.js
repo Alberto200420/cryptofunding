@@ -22,9 +22,9 @@ function App() {
           {/* Consejos para invertir */}
           <Route path="/TipsForInvesting" element={<TipsForInvesting/>} />
           {/* Pagina Publica */}
-          <Route path="/x0123" element={<PublicPage/>} />
+          <Route path="/public" element={<PublicPage/>} />
           { /* Pagina Privada */}
-          <Route path="/x456" element={<PrivatePage/>} />
+          <Route path="/private" element={<PrivatePage/>} />
           {/* Error Display */}
           <Route path="*" element={<Error404 />} />
         </Routes>
