@@ -1,6 +1,6 @@
-var MyContract = artifacts.require("MyContract");
+var TMIS = artifacts.require("TMIS");
 
 module.exports = function(deployer) {
   // deployment steps
-  deployer.deploy(MyContract);
+  deployer.deploy(TMIS);
 };

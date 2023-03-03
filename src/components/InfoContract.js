@@ -5,6 +5,7 @@ import { BsTwitter, BsLinkedin } from 'react-icons/bs'
 import { RxInstagramLogo } from 'react-icons/rx'
 import { HiOutlineMail } from 'react-icons/hi'
 import { MdWeb } from 'react-icons/md'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -36,12 +37,14 @@ export default function InfoSmartContract() {
           <h1 className='text-gray-500 inline-flex' >Address of the creator:
           <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
           href={`https://goerli.etherscan.io/address/${datos[0].creatorAddress}`}
-          rel='noreferrer' target='_blank'>{datos[0].creatorAddress}</a>
+          rel='noreferrer' target='_blank'>
+            {datos[0].creatorAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
           </h1><br/>
           <h1 className='text-gray-500 inline-flex'>Contract address:
           <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
           href={`https://goerli.etherscan.io/address/${datos[0].contractAddress}`}
-          rel='noreferrer' target='_blank'>{datos[0].contractAddress}</a>
+          rel='noreferrer' target='_blank'>
+            {datos[0].contractAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
           </h1><br/>
         </>
       )
@@ -70,7 +73,9 @@ export default function InfoSmartContract() {
         <h1 className='text-gray-500 inline-flex'>Creation date:<p className='text-black ml-2'>{datos[0].creationDate}</p></h1><br/>
         <h1 className='text-gray-500 inline-flex'>Performance:<p className='text-black ml-2'>{datos[0].rendiiento}%</p></h1><br/>
         <h1 className='text-gray-500 inline-flex'>Target cuantity:<p className='text-black ml-2'>{datos[0].targetCuantity}</p></h1><br/>
-        {datos[0].ofice ? <h1 className='text-gray-500 inline-flex'>Ofice:<a href={datos[0].ofice} rel='noreferrer' target='_blank' className='text-black ml-2'>Link ofice</a></h1> : <div></div> }
+        {datos[0].ofice ? <h1 className='text-gray-500 inline-flex'>Ofice:<a href={datos[0].ofice} rel='noreferrer' 
+        target='_blank' className='text-black ml-2'>Link ofice <ArrowTopRightOnSquareIcon width={15} height={15} 
+        className='inline-flex mb-1'/></a></h1> : <div></div> }
       </div>
 
       <Tab.Group>

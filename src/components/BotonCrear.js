@@ -2,7 +2,10 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { Switch } from '@headlessui/react'
 import axios from 'axios'
-import { useMoralis, useWeb3Contract } from "react-moralis"
+import { useMoralis } from "react-moralis"
+import { TMIS_ADDRESS, ABI_TMIS_GO } from 'abi/TMIS_GO_TEST'
+import { ethers } from 'ethers'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid'
 
 export default function BotonCrearContrato() {
   let [isOpen, setIsOpen] = useState(false)
@@ -24,7 +27,6 @@ export default function BotonCrearContrato() {
     rendimiento: 0
   })
 
-  // const [enabled, setEnabled] = useState(null)
   const [enabled, setEnabled] = useState({
     paginaWeb: "",
     instagram: "",
@@ -44,6 +46,193 @@ export default function BotonCrearContrato() {
   const enCambio = e => setEnabled({ ...enabled, [e.target.name]: e.target.value })
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
+  //------------------------------------------------ FUNCTIONS GOELRI
+  const [DyOchoDinero, setDyOchoDinero] = useState(0)
+  const [SIXdinero, setSIXdinero] = useState(0)
+  const [cargandoData, setCargandoData] = useState(false)
+  const [contractData, setContractData] = useState({
+    hash: '',
+    address_del_creador: '',
+    address_del_contrato: '',
+    network: ''
+  });
+
+  function ModalContractInfo() {
+    let [isOpen, setIsOpen] = useState(true)
+  
+    function closeInfoModal() {
+      setIsOpen(false)
+    }
+
+    return (
+      <>
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={closeInfoModal}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-50" />
+            </Transition.Child>
+  
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    {
+                      contractData.network === 'goerli' ?
+                      <div>
+                        <Dialog.Title
+                          as="h3"
+                          className="text-lg font-medium leading-6 text-gray-900 text-center"
+                        >
+                          Contract created in Goerli
+                        </Dialog.Title>
+
+                        <div className="mt-2">
+                          <h1 className="text-sm text-gray-500">
+                            Contract address: <br/>
+                            <a href={`https://goerli.etherscan.io/address/${contractData.address_del_contrato}`} 
+                            rel='noreferrer' target='_blank' 
+                            className='text-black no-underline hover:underline hover:text-sky-500'>
+                            {contractData.address_del_contrato} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/>
+                            </a>
+                          </h1>
+                          <h1 className="text-sm text-gray-500 pt-2">
+                            Creator of the contract: <p className='text-black'>{contractData.address_del_creador}</p>
+                          </h1>
+                          <h1 className="text-sm text-gray-500 py-2">
+                            Transaction hash: <br/>
+                            <a href={`https://goerli.etherscan.io/tx/${contractData.hash}`} 
+                            rel='noreferrer' target='_blank' 
+                            className='text-black no-underline hover:underline hover:text-sky-500'>
+                            {contractData.hash} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a></h1>
+                          <h1 className="text-sm text-gray-500">
+                            Network deployed: <p className='text-black'>{contractData.network}</p>
+                          </h1>
+                        </div>
+                        <div className="mt-4">
+                          <button
+                            type="button"
+                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                            onClick={closeInfoModal}
+                          >
+                            Got it, thanks!
+                          </button>
+                        </div>
+                      </div>
+
+                      :
+
+                      contractData.network === 'poligon' ?
+                      <div>
+                        <Dialog.Title
+                          as="h3"
+                          className="text-lg font-medium leading-6 text-gray-900 text-center"
+                        >
+                          Contract created
+                        </Dialog.Title>
+                        <div className="mt-2">
+                          <h1 className="text-sm text-gray-500">
+                            Contract address: <br/><a href={`https://polygonscan.com/address/${contractData.address_del_contrato}`} 
+                            rel='noreferrer' target='_blank' 
+                            className='text-black no-underline hover:underline hover:text-sky-500'>
+                              {contractData.address_del_contrato} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/>
+                              </a>
+                          </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Creator of the contract: <p className='text-black'>{contractData.address_del_creador}</p>
+                          </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Transaction hash: <a href={`https://polygonscan.com/tx/${contractData.hash}`} 
+                            rel='noreferrer' target='_blank' 
+                            className='text-black no-underline hover:underline hover:text-sky-500'>
+                              {contractData.hash} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
+                          </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Network deployed: <p className='text-black'>{contractData.network}</p>
+                          </h1>
+                        </div>
+                        <div className="mt-4">
+                          <button
+                            type="button"
+                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                            onClick={closeInfoModal}
+                          >
+                            Got it, thanks!
+                          </button>
+                        </div>
+                      </div>
+                      : 
+                      <div>
+                        <Dialog.Title
+                          as="h3"
+                          className="text-lg font-medium leading-6 text-gray-900 text-center"
+                        >
+                          Mining
+                        </Dialog.Title>
+                        <div className="mt-2">
+                          <h1 className="text-sm text-gray-500">
+                            Contract address: <br/>
+                              <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-4 py-1">
+                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                                </div>
+                              </div>
+                          </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Creator of the contract: <br/>
+                              <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-4 py-1">
+                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                                </div>
+                              </div>
+                          </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Transaction hash: <br/>
+                              <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-4 py-1">
+                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                                </div>
+                              </div>
+                          </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Network deployed: <br/>
+                              <div class="animate-pulse flex space-x-4">
+                                <div class="flex-1 space-y-4 py-1">
+                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                                </div>
+                              </div>
+                          </h1>
+                        </div>
+                      </div>
+                    }
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
+      </>
+    )
+  }
+
+  
+  //------------------------------------------------ FUNCTIONS GOELRI
+
   const onSubmit = e => {
     e.preventDefault();
     firmar()
@@ -52,12 +241,34 @@ export default function BotonCrearContrato() {
 
   const firmar = async () => {
     // funcion para crear contrato
+    setDyOchoDinero(cantidad_Objetivo_USD + "000000000000000000")
+    setSIXdinero(cantidad_Objetivo_USD + "000000")
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const address = await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner()
+    if(chainId === '0x5') {
+      const contract = new ethers.Contract(TMIS_ADDRESS, ABI_TMIS_GO, signer);
+      // Call the contract function and get the transaction hash
+      closeModal()
+      const tx = await contract.crearContrato(terminos_Y_condiciones, DyOchoDinero, SIXdinero, rendimiento);
+      setCargandoData(true)
+      await tx.wait();
+      // Get the contract function result
+      const contractAddress = await contract.buscarCONTRATO(address[0]);
+      console.log(`Contrato creado: ${contractAddress}`)
+      setContractData({ hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'goerli' });
+      sendData(address[0], contractAddress)
+    } else if(chainId === '0x89') {
+      console.log('desplegaste el contrato en Poligon')
+    }
+  }
 
+  const sendData = (creatorAddress, contractAddress) => {
     if(enabled) {
       const data = {
-        creatorAddress: '0x886b84670450517895Ee2ba9879765fabf0BA5CC',
-        contractAddress: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
-        slug: '0x47c27eF66a765726A1307D39B62bDbf7854062eB',
+        creatorAddress: creatorAddress,
+        contractAddress: contractAddress,
+        slug: contractAddress,
         rendimiento: rendimiento,
         termsAconditions: terminos_Y_condiciones,
         targetCuantity: cantidad_Objetivo_USD,
@@ -74,9 +285,9 @@ export default function BotonCrearContrato() {
       sendPublic(data)
     } else {
       const data = {
-        creatorAddress: '0x478F9936f33f8cc7743e4AA857F5AbCd48fE5069',
-        contractAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-        slug: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+        creatorAddress: creatorAddress,
+        contractAddress: contractAddress,
+        slug: contractAddress,
         rendimiento: rendimiento,
         termsAconditions: terminos_Y_condiciones,
         targetCuantity: cantidad_Objetivo_USD,
@@ -138,7 +349,6 @@ export default function BotonCrearContrato() {
           Create project
         </button>
       </div>
-        
       
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -151,7 +361,7 @@ export default function BotonCrearContrato() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-50" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -165,7 +375,7 @@ export default function BotonCrearContrato() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-1/2 transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
                   <div className='mt-4'>
 
                   <form onSubmit={e=>onSubmit(e)}>
@@ -222,6 +432,7 @@ export default function BotonCrearContrato() {
           </div>
         </Dialog>
       </Transition>
+      {cargandoData === true ? <ModalContractInfo/> : <div></div> }
     </div>
   )
 }
