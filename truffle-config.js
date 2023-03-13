@@ -18,6 +18,10 @@ module.exports = {
     // timeout: 100000
   },
 
+  // api_keys: {
+  //   etherscan: ETHERSCAN_API_KEY,  VERIFICAR CONTRATOS
+  // },
+
   // Configure your compilers
   compilers: {
     solc: {

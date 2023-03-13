@@ -1,16 +1,29 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import BUSD from '../assets/img/BUSD.png'
 import USDT from '../assets/img/USDT.png'
 import USDC from '../assets/img/USDC.png'
 import DAI from '../assets/img/DAI.png'
 import { ethers } from 'ethers'
 import { MaxUint256, PERMIT2_ADDRESS, SignatureTransfer } from '@uniswap/permit2-sdk'
-import { Permit2Abi_Goeri } from "../abi/Permit2_ABI_goerli"
-import { Busd_Test_ABI, Usdt_Test_ABI, USDC_Test_ABI } from "../abi/TokensTest"
+import { Permit2Abi } from "../abi/Permit2_ABI"
+import { TOKEN_TEST } from "../abi/TokensTest"
+import { ABI_TMIS_DESARROLLADOR_GO } from "../abi/TMIS_GO_TEST"
+import ModalLoading from "./ModalMinando"
+import ModalSuccess from './ModalSuccess'
+import { useMoralis } from "react-moralis"
 
-export default function BotonFirmar() {
+export default function BotonFirmar({ address, network }) {
   let [isOpen, setIsOpen] = useState(false)
+  const [cargandoData, setCargandoData] = useState(false)
+  const [dataCargada, setDataCarga] = useState(false)
+  const [ abiTokens, setAbiTokens ] = useState()
+  const [ abiCreador, setAbiCreador ] = useState()
+  const [ usdt, setUsdt ] = useState('')
+  const [ usdc, setUsdc ] = useState('')
+  const [ busd, setBusd ] = useState('')
+  const [ dai, setDai ] = useState('')
+  const { isWeb3Enabled, account } = useMoralis()
 
   function closeModal() {
     setIsOpen(false)
@@ -20,7 +33,84 @@ export default function BotonFirmar() {
     setIsOpen(true)
   }
 
+  useEffect(() =>{
+    if(network === 'Goerli') {
+      setUsdt('0x5e2283Ac73C40aCfcb892852dDBDe532D98E0E22')
+      setUsdc('0x079D3631b5F8Caa65cC0D98DF09C1F1db9278104')
+      setBusd('0x7eCf2d0344724bbd03d87d5Fbb64f3eC4379597D')
+      setDai('0xd0A342DaED6679795Db8ea5cA7c3F66fC49f5C29')
+      setAbiTokens(TOKEN_TEST)
+      setAbiCreador(ABI_TMIS_DESARROLLADOR_GO)
+      console.log('useEffect de BotonFirmar envio los datos')
+    } else if (network === 'Poligon') {
+      // PON TOKENS AQUI EN setState
+      console.log('Estas en poligon')
+    }
+  },[])
+
+  useEffect(() => {
+    if(isWeb3Enabled) {
+      ControlFunciones()
+      console.log('Se llamaron a las funciones de boton firmar')
+    }
+  },[account])
+
   // --------------------------------------------------------   Funciones
+  const [ yaRetiro, setYaRetiro ] = useState(false)
+  const [ Yaloquido, setYaloquido] = useState(false)
+  const [ SeRealizo, setSeRealizo] = useState(true)
+
+  const ControlFunciones = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner()
+    const contrato = new ethers.Contract(address, abiCreador, signer)
+    try {
+      const YaSacoElDinero = await contrato.YaSacoElDinero()
+      setYaRetiro(YaSacoElDinero)
+      if(YaSacoElDinero === true) {
+        const yaLiquido = await contrato.yaLiquido()
+        const seRealizoElProyecto = await contrato.seRealizoElProyecto()
+        setYaloquido(yaLiquido)
+        setSeRealizo(seRealizoElProyecto)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const withdrawWithProfits = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner()
+    const contrato = new ethers.Contract(address, abiCreador, signer)
+    try {
+      const withdrawForinvestors = contrato.withdrawForinvestors()
+      setCargandoData(true)
+      await withdrawForinvestors.wait();
+      setCargandoData(false)
+      setDataCarga(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const withdrawNOTProfits = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner()
+    const contrato = new ethers.Contract(address, abiCreador, signer)
+    try {
+      setCargandoData(true)
+      const withdrawInvestorsNotWin = contrato.withdrawInvestorsNotWin()
+      await withdrawInvestorsNotWin.wait();
+      setCargandoData(false)
+      setDataCarga(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const [formData, setFormData] = useState({ cantidad_a_invertir: 0 })
   const [Moneda, setMoneda] = useState({ moneda: null })
 
@@ -33,58 +123,48 @@ export default function BotonFirmar() {
   const investWhit =(e)=> {
     e.preventDefault();
     if(moneda === "USDT") {
-      VerificarUsdt("0x812c9D3345e29d3029DDE235d01E99d02dAf08F7")
+      VerificarUsdcUsdt(usdt)
     } else if (moneda === "USDC") {
-      VerificarUsdc("0x237c89df66aB0cF2925367Cf169512D7a6F2A1De")
+      VerificarUsdcUsdt(usdc)
     } else if (moneda === "BUSD") {
-      VerificarBusdDai("0xa098213f826cDf0acFe2619b502971e537B1F363")
+      VerificarBusdDai(busd)
     } else if (moneda === "DAI") {
-      VerificarBusdDai("0x942e0179dBf64CA9B14Da9f2b500672cDADF2E0b")
+      VerificarBusdDai(dai)
     }
   }
 
-  const VerificarUsdc = async (tokenAddress) => {
+  const VerificarUsdcUsdt = async (tokenAddress) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const address = await provider.send("eth_requestAccounts", []);
+    const addressSigner = await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
-    const erc20 = new ethers.Contract(tokenAddress, USDC_Test_ABI, signer)
-    var outPut = await erc20.allowance(address[0], PERMIT2_ADDRESS)
+    const erc20 = new ethers.Contract(tokenAddress, abiTokens, signer)
+    var outPut = await erc20.allowance(addressSigner[0], PERMIT2_ADDRESS)
     const amount = cantidad_a_invertir + "000000"
     if(outPut.toString() === "0") {
-      await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
+      setCargandoData(true)
+      const tx = await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
+      await tx.wait();
+      setCargandoData(false)
     }
-    Firmar(tokenAddress, address, signer, amount) 
-  }
-
-  const VerificarUsdt = async (tokenAddress) => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const address = await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner()
-    const erc20 = new ethers.Contract(tokenAddress, Usdt_Test_ABI, signer)
-    var outPut = await erc20.allowance(address[0], PERMIT2_ADDRESS)
-    const amount = cantidad_a_invertir + "000000"
-    if(outPut.toString() === "0") {
-      await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
-    }
-    Firmar(tokenAddress, address, signer, amount)
+    Firmar(tokenAddress, addressSigner, signer, amount) 
   }
 
   const VerificarBusdDai = async (tokenAddress) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const address = await provider.send("eth_requestAccounts", []);
+    const addressSigner = await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
-    const erc20 = new ethers.Contract(tokenAddress, Busd_Test_ABI, signer)
-    var outPut = await erc20.allowance(address[0], PERMIT2_ADDRESS)
+    const erc20 = new ethers.Contract(tokenAddress, abiTokens, signer)
+    var outPut = await erc20.allowance(addressSigner[0], PERMIT2_ADDRESS)
     const amount = cantidad_a_invertir + "000000000000000000"
     if(outPut.toString() === "0") {
       await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
     }
-    Firmar(tokenAddress, address, signer, amount)
+    Firmar(tokenAddress, addressSigner, signer, amount)
   }
 
-  const Firmar = async (token, address, signer, amount) => {
-    const permit2 = new ethers.Contract(PERMIT2_ADDRESS, Permit2Abi_Goeri, signer)
-    const nonces = await permit2.nonceBitmap(address[0], 0)
+  const Firmar = async (token, addressSigner, signer, amount) => {
+    const permit2 = new ethers.Contract(PERMIT2_ADDRESS, Permit2Abi, signer)
+    const nonces = await permit2.nonceBitmap(addressSigner[0], 0)
     const nonce = nonces.toNumber()
     const deadline = Math.trunc((Date.now() + 900 * 1000) / 1000)
     const PermitTransferFrom = {
@@ -92,35 +172,43 @@ export default function BotonFirmar() {
           token: token,                                       // token we are permitting to be transferred
           amount: amount                                      // amount we are permitting to be transferred
       },
-      spender: "0xacC1fC992912Cc4ce60ee667a2E5f1Af80D47BEF",  // Address al que le queremos enviar los tokens
+      spender: address,                                       // Address al que le queremos enviar los tokens
       nonce: nonce,
       deadline: deadline                                      // signature deadline
     };
     const { domain, types, values } = SignatureTransfer.getPermitData(PermitTransferFrom, PERMIT2_ADDRESS, 5)
-    let signature = await signer._signTypedData(domain, types, values)
     openModal()
+    let signature = await signer._signTypedData(domain, types, values)
     console.log(`Token: ${token}`)
     console.log(`Cantidad: ${amount}`)
     console.log(`Nonce: ${nonce}`)
     console.log(`Deadline: ${deadline}`)
     console.log(`Firma: ${signature}`)
+    invertir(token, amount, nonce, deadline, signature, signer)
   }
 
-  const invertir =(e)=> {
-    e.preventDefault();
-    console.log("Aquí va la funcion invest")
+  const invertir = async (token, amount, nonce, deadline, signature, signer) => {
+    const contract = new ethers.Contract(address, abiCreador, signer)
+    closeModal()
+    setCargandoData(true)
+    const tx = await contract.Invest(token, amount, nonce, deadline, signature)
+    await tx.wait();
+    setCargandoData(false)
+    setDataCarga(true)
   }
   // --------------------------------------------------------   Funciones
 
-  // const Dai = async () => {
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum)
-  //   const signer = provider.getSigner()
-  //   const erc20 = new ethers.Contract("0x237c89df66aB0cF2925367Cf169512D7a6F2A1De", USDC_Test_ABI, signer)
-  //   await erc20.mint('0x6dC7883728eE8a630c99f4a969B85f0a50647575', "10000000")
-  // }        <button onClick={Dai}>Fondear Busd</button>
-
   return (
     <div className='pt-6'>
+        {yaRetiro === true && Yaloquido === true && SeRealizo === true ? 
+        <button className='boton-connect' onClick={withdrawWithProfits}>Withdraw with profits</button>
+        :
+        yaRetiro === true && Yaloquido === true && SeRealizo === false ?
+        <button className='boton-connect' onClick={withdrawNOTProfits}>Withdraw with not profits</button>
+        :
+        yaRetiro === true && Yaloquido === false ?
+        <p>El desarrollador ya retiro el dienro nadie puede invertir</p> 
+        :
         <form onSubmit={e=>investWhit(e)} method="POST"> {/*  PUSE method si hay problemas quitalo */}
             <label className='text-center inline-flex pr-1'>
                 <input type="radio" name='moneda' className='absolute opacity-0 w-0 h-0' value='BUSD' onChange={e=>conCual(e)} required/>
@@ -146,6 +234,7 @@ export default function BotonFirmar() {
             <p className="text-sm font-medium text-gray-400">Before to start investing you must read <a href='/TipsForInvesting' target="_blank" className='text-git-color'>Tips before investing</a></p>
             <button type="submit"className="boton-crear "> invest with </button>
         </form>
+        }
       
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -166,16 +255,11 @@ export default function BotonFirmar() {
               <Transition.Child
                 as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-1/2 transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
                   <div className='mt-4'>
-                    <form onSubmit={e=>invertir(e)}>
-                      <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {cantidad_a_invertir}</h1>
-                      <h1 className='pt-2 text-2xl font-medium text-gray-900'> token: {moneda}</h1>
-                      <h1 className='py-2 text-sm font-medium text-gray-900 md:text-2xl'>Contract address: {'0xacC1fC992912Cc4ce60ee667a2E5f1Af80D47BEF'}</h1>
-                      <button type="submit" className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"> 
-                      Invest 
-                      </button>
-                    </form>
+                    <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {cantidad_a_invertir}</h1>
+                    <h1 className='pt-2 text-2xl font-medium text-gray-900'> token: {moneda}</h1>
+                    <h1 className='py-2 text-sm font-medium text-gray-900 md:text-2xl'>Contract address: {address}</h1>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -183,6 +267,9 @@ export default function BotonFirmar() {
           </div>
         </Dialog>
       </Transition>
+
+      {cargandoData === true ? <ModalLoading/> : <div></div> }
+      {dataCargada === true ? <ModalSuccess mensaje={`you have invested successfully ${cantidad_a_invertir - 2} ${moneda} to ${address} Network commission: 2 ${moneda}`}/> : <div></div> }
     </div>
   )
 }

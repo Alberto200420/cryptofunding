@@ -47,8 +47,6 @@ export default function BotonCrearContrato() {
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
   //------------------------------------------------ FUNCTIONS GOELRI
-  const [DyOchoDinero, setDyOchoDinero] = useState(0)
-  const [SIXdinero, setSIXdinero] = useState(0)
   const [cargandoData, setCargandoData] = useState(false)
   const [contractData, setContractData] = useState({
     hash: '',
@@ -187,33 +185,33 @@ export default function BotonCrearContrato() {
                         <div className="mt-2">
                           <h1 className="text-sm text-gray-500">
                             Contract address: <br/>
-                              <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-4 py-1">
-                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                              <div className="animate-pulse flex space-x-4">
+                                <div className="flex-1 space-y-4 py-1">
+                                  <div className="h-3 bg-slate-700 rounded col-span-2"></div>
                                 </div>
                               </div>
                           </h1>
                           <h1 className="text-sm text-gray-500">
                             Creator of the contract: <br/>
-                              <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-4 py-1">
-                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                              <div className="animate-pulse flex space-x-4">
+                                <div className="flex-1 space-y-4 py-1">
+                                  <div className="h-3 bg-slate-700 rounded col-span-2"></div>
                                 </div>
                               </div>
                           </h1>
                           <h1 className="text-sm text-gray-500">
                             Transaction hash: <br/>
-                              <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-4 py-1">
-                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                              <div className="animate-pulse flex space-x-4">
+                                <div className="flex-1 space-y-4 py-1">
+                                  <div className="h-3 bg-slate-700 rounded col-span-2"></div>
                                 </div>
                               </div>
                           </h1>
                           <h1 className="text-sm text-gray-500">
                             Network deployed: <br/>
-                              <div class="animate-pulse flex space-x-4">
-                                <div class="flex-1 space-y-4 py-1">
-                                  <div class="h-3 bg-slate-700 rounded col-span-2"></div>
+                              <div className="animate-pulse flex space-x-4">
+                                <div className="flex-1 space-y-4 py-1">
+                                  <div className="h-3 bg-slate-700 rounded col-span-2"></div>
                                 </div>
                               </div>
                           </h1>
@@ -241,8 +239,8 @@ export default function BotonCrearContrato() {
 
   const firmar = async () => {
     // funcion para crear contrato
-    setDyOchoDinero(cantidad_Objetivo_USD + "000000000000000000")
-    setSIXdinero(cantidad_Objetivo_USD + "000000")
+    const DyOchoDinero = cantidad_Objetivo_USD + "000000000000000000"
+    const SIXdinero = cantidad_Objetivo_USD + "000000"
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const address = await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()

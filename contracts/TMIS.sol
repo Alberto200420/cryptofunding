@@ -35,7 +35,7 @@ contract TMIS {
     }
 
     function crearContrato(string memory terminosYcondiciones, uint256 DyOchoDinero, uint256 SIXdinero, uint256 rendimiento) public {
-        require(SePuedeCrear == true, "YA NADIE PUEDE CREAR CONTRATOS");
+        assert(SePuedeCrear == true);
         address DireccionContratoDelDesarrollador = address(new ContratoDelDesarrollador(msg.sender, terminosYcondiciones, DyOchoDinero, SIXdinero, rendimiento, creador));
         BuscarContratoDelDesarrollador[msg.sender] = DireccionContratoDelDesarrollador;
     }
@@ -84,8 +84,8 @@ contract ContratoDelDesarrollador {
     uint256 private T_masTres_M;
     uint8 private returnWhith = 0;
     bool private yaSacoElDinero = false; 
-    bool private yaLiquido = false; 
-    bool private seRealizoElProyecto = true;
+    bool public yaLiquido = false; 
+    bool public seRealizoElProyecto = true;
 
     modifier onlyOwner(address _direccion) {
         require(_direccion == addressDelDesarrollador, "No tienes permiso para generar esta function");

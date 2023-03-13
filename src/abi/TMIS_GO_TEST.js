@@ -407,6 +407,19 @@ export const ABI_TMIS_DESARROLLADOR_GO = [
     },
     {
         "inputs": [],
+        "name": "seRealizoElProyecto",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "sixContractBalance",
         "outputs": [
             {
@@ -503,10 +516,23 @@ export const ABI_TMIS_DESARROLLADOR_GO = [
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "yaLiquido",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     }
 ]
 
-export const TMIS_ADDRESS = '0x0981384e13C0E0eE25d4816F7b10588097f6039e'
+export const TMIS_ADDRESS = '0x5176761A18a9Ae6eCa289365E67cB83a6E8aFaF0'
 
 export const ABI_TMIS_GO =[
     {

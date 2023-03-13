@@ -7,6 +7,7 @@ import TipsForInvesting from "containers/pages/TipsForInvesting";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Matnejar la rutas 
 import { MoralisProvider } from "react-moralis";
 import PrivatePage from "containers/pages/PrivateRound";
+import Dashboard from "containers/pages/Dashboard";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
           <Route path="/public" element={<PublicPage/>} />
           { /* Pagina Privada */}
           <Route path="/private" element={<PrivatePage/>} />
+          {/* Dashboard */}
+          <Route path="/creator" element={<Dashboard/>} />
           {/* Error Display */}
           <Route path="*" element={<Error404 />} />
         </Routes>
