@@ -17,12 +17,15 @@ export default function BotonFirmar({ address, network }) {
   let [isOpen, setIsOpen] = useState(false)
   const [cargandoData, setCargandoData] = useState(false)
   const [dataCargada, setDataCarga] = useState(false)
-  const [ abiTokens, setAbiTokens ] = useState()
   const [ abiCreador, setAbiCreador ] = useState()
   const [ usdt, setUsdt ] = useState('')
   const [ usdc, setUsdc ] = useState('')
   const [ busd, setBusd ] = useState('')
   const [ dai, setDai ] = useState('')
+  const [ AbiUSDT, setAbiUSDT ] = useState()
+  const [ AbiUSDC, setAbiUSDC ] = useState()
+  const [ AbiBUSD, setAbiBUSD ] = useState()
+  const [ AbiDAI, setAbiDAI ] = useState()
   const { isWeb3Enabled, account } = useMoralis()
 
   function closeModal() {
@@ -39,7 +42,10 @@ export default function BotonFirmar({ address, network }) {
       setUsdc('0x079D3631b5F8Caa65cC0D98DF09C1F1db9278104')
       setBusd('0x7eCf2d0344724bbd03d87d5Fbb64f3eC4379597D')
       setDai('0xd0A342DaED6679795Db8ea5cA7c3F66fC49f5C29')
-      setAbiTokens(TOKEN_TEST)
+      setAbiUSDT(TOKEN_TEST)
+      setAbiUSDC(TOKEN_TEST)
+      setAbiBUSD(TOKEN_TEST)
+      setAbiDAI(TOKEN_TEST)
       setAbiCreador(ABI_TMIS_DESARROLLADOR_GO)
       console.log('useEffect de BotonFirmar envio los datos')
     } else if (network === 'Poligon') {
@@ -123,23 +129,26 @@ export default function BotonFirmar({ address, network }) {
   const investWhit =(e)=> {
     e.preventDefault();
     if(moneda === "USDT") {
-      VerificarUsdcUsdt(usdt)
+      const amount = cantidad_a_invertir + "000000"
+      VerificarToken(usdt, AbiUSDT, amount)
     } else if (moneda === "USDC") {
-      VerificarUsdcUsdt(usdc)
+      const amount = cantidad_a_invertir + "000000"
+      VerificarToken(usdc, AbiUSDC, amount)
     } else if (moneda === "BUSD") {
-      VerificarBusdDai(busd)
+      const amount = cantidad_a_invertir + "000000000000000000"
+      VerificarToken(busd, AbiBUSD, amount)
     } else if (moneda === "DAI") {
-      VerificarBusdDai(dai)
+      const amount = cantidad_a_invertir + "000000000000000000"
+      VerificarToken(dai, AbiDAI, amount)
     }
   }
 
-  const VerificarUsdcUsdt = async (tokenAddress) => {
+  const VerificarToken = async (tokenAddress, abiToken, amount) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const addressSigner = await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
-    const erc20 = new ethers.Contract(tokenAddress, abiTokens, signer)
+    const erc20 = new ethers.Contract(tokenAddress, abiToken, signer)
     var outPut = await erc20.allowance(addressSigner[0], PERMIT2_ADDRESS)
-    const amount = cantidad_a_invertir + "000000"
     if(outPut.toString() === "0") {
       setCargandoData(true)
       const tx = await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
@@ -147,19 +156,6 @@ export default function BotonFirmar({ address, network }) {
       setCargandoData(false)
     }
     Firmar(tokenAddress, addressSigner, signer, amount) 
-  }
-
-  const VerificarBusdDai = async (tokenAddress) => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const addressSigner = await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner()
-    const erc20 = new ethers.Contract(tokenAddress, abiTokens, signer)
-    var outPut = await erc20.allowance(addressSigner[0], PERMIT2_ADDRESS)
-    const amount = cantidad_a_invertir + "000000000000000000"
-    if(outPut.toString() === "0") {
-      await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
-    }
-    Firmar(tokenAddress, addressSigner, signer, amount)
   }
 
   const Firmar = async (token, addressSigner, signer, amount) => {
@@ -179,11 +175,6 @@ export default function BotonFirmar({ address, network }) {
     const { domain, types, values } = SignatureTransfer.getPermitData(PermitTransferFrom, PERMIT2_ADDRESS, 5)
     openModal()
     let signature = await signer._signTypedData(domain, types, values)
-    console.log(`Token: ${token}`)
-    console.log(`Cantidad: ${amount}`)
-    console.log(`Nonce: ${nonce}`)
-    console.log(`Deadline: ${deadline}`)
-    console.log(`Firma: ${signature}`)
     invertir(token, amount, nonce, deadline, signature, signer)
   }
 

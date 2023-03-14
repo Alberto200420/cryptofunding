@@ -4,6 +4,7 @@ import json
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .models import * 
+from .serializers import *
 
 class SearchListPublicContractsView(APIView):
     parser_classes = (permissions.AllowAny,)
@@ -155,3 +156,19 @@ def save_data_private(request):
         return Response({'data': 'data saved succes'}, status=status.HTTP_201_CREATED)
     else:
         return Response({'error': 'data no saved'}, status=status.HTTP_201_CREATED)
+    
+
+class SearchListprivateContractsView(APIView):
+    parser_classes = (permissions.AllowAny,)
+
+    def get(self, request, format=None):
+        parametro = request.query_params.get('contract')
+        if GoerliPublic.objects.filter(contractAddress=parametro).exists():
+            
+            post = GoerliPublic.objects.get(contractAddress=parametro)
+            serializer = PostSerializer(post)
+            resultado = serializer.data
+
+            return Response({'contrato': resultado }, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No contract found'}, status=status.HTTP_201_CREATED)

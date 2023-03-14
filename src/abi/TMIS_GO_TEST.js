@@ -532,7 +532,7 @@ export const ABI_TMIS_DESARROLLADOR_GO = [
     }
 ]
 
-export const TMIS_ADDRESS = '0x5176761A18a9Ae6eCa289365E67cB83a6E8aFaF0'
+export const TMIS_ADDRESS = '0x0c689BB706F46f572B2334c3db35Cc55Be4a39D6'
 
 export const ABI_TMIS_GO =[
     {

@@ -10,7 +10,7 @@ function Home() {
                 <Header/>
             </div>
             <div className="mt-12">
-                <p className=" text-gray-400 text-center">&copy; 2023 T-mis Dapp. All rights reserved.</p>
+                <p className=" text-gray-400 text-center pb-3">&copy; 2023 T-mis Dapp. All rights reserved<a href={`mailto:albertog1meza@gmail.com`} rel='noreferrer' target='_blank' className='pl-10'>contact</a></p>
             </div>
         </Layout>
     )
