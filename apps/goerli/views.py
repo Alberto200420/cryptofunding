@@ -31,42 +31,25 @@ class SearchListPublicContractsView(APIView):
 @api_view(('POST', ))
 def save_data_public(request):
     if request.method == 'POST':
-        data = request.body.decode()
-        info_dic = json.loads(data)
-        # estas comillas son como viene la data del front-end
-        addressDelCreador = info_dic.get('creatorAddress')
-        contractAddress = info_dic.get('contractAddress')
-        slug = info_dic.get('slug')
-        rendimiento = info_dic.get('rendimiento')
-        terminosYcondiciones = info_dic.get('termsAconditions')
-        cantidadObjetivo = info_dic.get('targetCuantity')
-        correoElectronico = info_dic.get('email')
-        linkInstagram = info_dic.get('linkInstagram')
-        paginaWeb = info_dic.get('webPage')
-        linkTwitter = info_dic.get('linkTwitter')
-        linkedin = info_dic.get('linkedin')
-        oficinas = info_dic.get('ofice')
-        imagenPersonal = info_dic.get('personalFile')
-        logo = info_dic.get('logo')
-        trayectoria = info_dic.get('trayectory')
 
         goerli_public = GoerliPublic(
-            addressDelCreador = addressDelCreador,
-            contractAddress = contractAddress,
-            slug = slug,
-            rendimiento = rendimiento,
-            terminosYcondiciones = terminosYcondiciones,
-            cantidadObjetivo = cantidadObjetivo,
-            correoElectronico = correoElectronico,
-            linkInstagram = linkInstagram,
-            paginaWeb = paginaWeb,
-            linkTwitter = linkTwitter,
-            linkedin = linkedin,
-            oficinas = oficinas,
-            imagenPersonal = imagenPersonal,
-            logo = logo,
-            trayectoria = trayectoria,
+            addressDelCreador = request.POST.get('creatorAddress'),
+            contractAddress = request.POST.get('contractAddress'),
+            slug = request.POST.get('slug'),
+            rendimiento = request.POST.get('rendimiento'),
+            terminosYcondiciones = request.POST.get('termsAconditions'),
+            cantidadObjetivo  = request.POST.get('targetCuantity'),
+            correoElectronico = request.POST.get('email'),
+            linkInstagram = request.POST.get('linkInstagram'),
+            paginaWeb = request.POST.get('webPage'),
+            linkTwitter = request.POST.get('linkTwitter'),
+            linkedin = request.POST.get('linkedin'),
+            oficinas = request.POST.get('ofice'),
+            imagenPersonal = request.FILES.get('personalFile'),
+            logo = request.FILES.get('logo'),
+            trayectoria = request.POST.get('trayectory'),
         )
+
         goerli_public.save()
 
         return Response({'data': 'data saved succes'}, status=status.HTTP_201_CREATED)
@@ -76,24 +59,16 @@ def save_data_public(request):
 @api_view(('POST', ))
 def save_data_private(request):
     if request.method == 'POST':
-        data = request.body.decode()
-        info_dic = json.loads(data)
-        # estas comillas son como viene la data del front-end
-        addressDelCreador = info_dic.get('creatorAddress')
-        contractAddress = info_dic.get('contractAddress')
-        slug = info_dic.get('slug')
-        rendimiento = info_dic.get('rendimiento')
-        terminosYcondiciones = info_dic.get('termsAconditions')
-        cantidadObjetivo = info_dic.get('targetCuantity')
 
         goerli_private = GoerliPrivate(
-            addressDelCreador = addressDelCreador,
-            contractAddress = contractAddress,
-            slug = slug,
-            rendimiento = rendimiento,
-            terminosYcondiciones = terminosYcondiciones,
-            cantidadObjetivo = cantidadObjetivo,
+            addressDelCreador = request.POST.get('creatorAddress'),
+            contractAddress = request.POST.get('contractAddress'),
+            slug = request.POST.get('slug'),
+            rendimiento = request.POST.get('rendimiento'),
+            terminosYcondiciones = request.POST.get('termsAconditions'),
+            cantidadObjetivo  = request.POST.get('targetCuantity'),
         )
+
         goerli_private.save()
 
         return Response({'data': 'data saved succes'}, status=status.HTTP_201_CREATED)

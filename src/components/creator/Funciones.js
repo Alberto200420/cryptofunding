@@ -392,7 +392,7 @@ export default function FuncionesDesarrollador() {
               </Dialog>
             </Transition>
             {/* BOTONES PARA INTERACTUAR */}
-            {DataContract === false ? <button className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" onClick={GetSigner}>Obtener</button>: <></> }
+            {DataContract === false ? <button className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" onClick={GetSigner}>Get contract information</button>: <></> }
           
           </div>
         </div>

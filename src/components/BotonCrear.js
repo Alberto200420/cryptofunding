@@ -32,8 +32,8 @@ export default function BotonCrearContrato() {
     instagram: "",
     twitter: "",
     linkedin: "",
-    fotoPersonal: "",
-    logo: "",
+    fotoPersonal: null,
+    logo: null,
     email: "",
     trayectory: "",
     oficinas: ""
@@ -44,6 +44,7 @@ export default function BotonCrearContrato() {
 
 
   const enCambio = e => setEnabled({ ...enabled, [e.target.name]: e.target.value })
+  const handleFileChange = (event) => setEnabled({ ...enabled, [event.target.name]: event.target.files[0], })
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
   //------------------------------------------------ FUNCTIONS GOELRI
@@ -245,17 +246,21 @@ export default function BotonCrearContrato() {
     const address = await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
     if(chainId === '0x5') {
-      const contract = new ethers.Contract(TMIS_ADDRESS, ABI_TMIS_GO, signer);
-      // Call the contract function and get the transaction hash
-      closeModal()
-      const tx = await contract.crearContrato(terminos_Y_condiciones, DyOchoDinero, SIXdinero, rendimiento);
-      setCargandoData(true)
-      await tx.wait();
-      // Get the contract function result
-      const contractAddress = await contract.buscarCONTRATO(address[0]);
-      console.log(`Contrato creado: ${contractAddress}`)
-      setContractData({ hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'goerli' });
-      sendData(address[0], contractAddress)
+      try {
+        const contract = new ethers.Contract(TMIS_ADDRESS, ABI_TMIS_GO, signer);
+        // Call the contract function and get the transaction hash
+        closeModal()
+        const tx = await contract.crearContrato(terminos_Y_condiciones, DyOchoDinero, SIXdinero, rendimiento);
+        setCargandoData(true)
+        await tx.wait();
+        // Get the contract function result
+        const contractAddress = await contract.buscarCONTRATO(address[0]);
+        console.log(`Contrato creado: ${contractAddress}`)
+        setContractData({ hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'goerli' });
+        sendData(address[0], contractAddress)
+      } catch (error) {
+        console.log(error)
+      }
     } else if(chainId === '0x89') {
       console.log('desplegaste el contrato en Poligon')
     }
@@ -263,40 +268,40 @@ export default function BotonCrearContrato() {
 
   const sendData = (creatorAddress, contractAddress) => {
     if(enabled) {
-      const data = {
-        creatorAddress: creatorAddress,
-        contractAddress: contractAddress,
-        slug: contractAddress,
-        rendimiento: rendimiento,
-        termsAconditions: terminos_Y_condiciones,
-        targetCuantity: cantidad_Objetivo_USD,
-        email: email,
-        linkInstagram: instagram,
-        webPage: paginaWeb,
-        linkTwitter: twitter,
-        linkedin: linkedin,
-        ofice: oficinas,
-        personalFile: fotoPersonal,
-        logo: logo, 
-        trayectory: trayectory
-      }
-      sendPublic(data)
+      const formularioDATA = new FormData();
+
+      formularioDATA.append('creatorAddress', creatorAddress);
+      formularioDATA.append('contractAddress', contractAddress);
+      formularioDATA.append('slug', contractAddress)
+      formularioDATA.append('rendimiento', rendimiento)
+      formularioDATA.append('termsAconditions', terminos_Y_condiciones)
+      formularioDATA.append('targetCuantity', cantidad_Objetivo_USD)
+      formularioDATA.append('email', email)
+      formularioDATA.append('linkInstagram', instagram)
+      formularioDATA.append('webPage', paginaWeb)
+      formularioDATA.append('linkTwitter', twitter)
+      formularioDATA.append('linkedin', linkedin)
+      formularioDATA.append('ofice', oficinas)
+      formularioDATA.append('personalFile', fotoPersonal)
+      formularioDATA.append('logo', logo)
+      formularioDATA.append('trayectory', trayectory)
+      sendPublic(formularioDATA)
     } else {
-      const data = {
-        creatorAddress: creatorAddress,
-        contractAddress: contractAddress,
-        slug: contractAddress,
-        rendimiento: rendimiento,
-        termsAconditions: terminos_Y_condiciones,
-        targetCuantity: cantidad_Objetivo_USD,
-      }
-      sendPrivate(data)
+      const formularioDATA = new FormData();
+
+      formularioDATA.append('creatorAddress', creatorAddress);
+      formularioDATA.append('contractAddress', contractAddress);
+      formularioDATA.append('slug', contractAddress)
+      formularioDATA.append('rendimiento', rendimiento)
+      formularioDATA.append('termsAconditions', terminos_Y_condiciones)
+      formularioDATA.append('targetCuantity', cantidad_Objetivo_USD)
+
+      sendPrivate(formularioDATA)
     }
   }
 
   const sendPublic = (data) => {
       if(chainId === '0x5') {
-        console.log('desplegaste el contrato en Goerli publico')
         const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/public`
         enviarData(data, goerliUrl)
       } else if(chainId === '0x89') {
@@ -322,10 +327,9 @@ export default function BotonCrearContrato() {
 
 
   const enviarData = (datos, url) => {
-    const info = JSON.stringify(datos)
-    axios.post(url, info, {
+    axios.post(url, datos, {
       headers: {
-        'content-type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data'
       }
     })
     .then(res => {
@@ -407,9 +411,9 @@ export default function BotonCrearContrato() {
                             <textarea type="text" placeholder='Cuentanos tu trayectoria' name="trayectory" onChange={e=>enCambio(e)} required className='border-2 border-gray-300 rounded-lg w-3/4 resize-none outline-none h-52 text-center'/><br/><br/>
                             <input type='url'  placeholder='Oficinas' name='oficinas' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
                             <label className='text-xl' htmlFor="lname"><h5>Personal photo</h5></label>
-                            <input type='file' name='fotoPersonal' onChange={e=>enCambio(e)} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
+                            <input type='file' name='fotoPersonal' onChange={handleFileChange} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
                             <label className='text-xl' htmlFor="lname"><h5>Brand logo</h5></label>
-                            <input type='file' name='logo' onChange={e=>enCambio(e)} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
+                            <input type='file' name='logo' onChange={handleFileChange} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
                           </div> : <div></div>
                         }
                        

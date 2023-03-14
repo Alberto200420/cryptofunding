@@ -1,8 +1,8 @@
 import InfoSmartContract from "components/InfoContract"
 import Navbar from "components/Navbar"
 import Layout from "hocs/layouts/Layout"
-import logoFormal from 'assets/img/formal.png'
-import logoJp from 'assets/img/jp.png'
+// import logoFormal from 'assets/img/formal.png'
+// import logoJp from 'assets/img/jp.png'
 import BotonFirmar from "components/BotonFirmar"
 import { useLocation, Navigate } from "react-router-dom"
 
@@ -19,10 +19,10 @@ function PublicPage() {
             <div className="pt-28">
                 <div className="text-center">
                     <div className="inline-flex rounded-sm px-8">
-                        <img className="rounded-md w-24" alt="jp" src={ logoFormal }/>
+                        <img className="rounded-md w-24" alt="jp" src={ datos[0].personalFile }/>
                     </div>
                     <div className="inline-flex rounded-sm px-8 bg-black">
-                        <img className="rounded-md w-24" alt="jp" src={ logoJp }/>
+                        <img className="rounded-md w-24" alt="jp" src={ datos[0].logo }/>
                     </div>
                     <BotonFirmar address={datos[0].contractAddress} network={datos[0].network}/>
                 </div>

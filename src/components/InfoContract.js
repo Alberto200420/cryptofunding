@@ -109,9 +109,16 @@ export default function InfoSmartContract() {
         </>
       )
     } else if(DataContract === false) {
+        const llamar = () => {
+          if (typeof window.ethereum !== "undefined") {
+            GetSigner()
+          } else {
+            alert('Please install metamask to see the information of the contract')
+          }
+        }
       return(
         <>
-          <h1 className='text-gray-500 inline-flex'>Reload the page to load the contract information</h1>
+          <button className='rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2' onClick={llamar}>Get contract information</button>
         </>
       )
     }
@@ -203,7 +210,6 @@ export default function InfoSmartContract() {
   useEffect(() => {
       if(isWeb3Enabled) {
         GetSigner()
-        console.log('useEffect de InfoConctract llamo a las view functions')
       }
   },[account])
 
@@ -212,7 +218,6 @@ export default function InfoSmartContract() {
       setAbiCreador(ABI_TMIS_DESARROLLADOR_GO)
       setAbiTMIS(ABI_TMIS_GO)
       setTMISAddress(TMIS_ADDRESS)
-      console.log('useEffect de InfoConctract envio la abi')
     } else if (datos[0].network === 'Poligon') {
       // PON TOKENS AQUI EN setState
       console.log('Estas en poligon')

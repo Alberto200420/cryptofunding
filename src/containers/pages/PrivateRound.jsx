@@ -23,7 +23,7 @@ function PrivatePage() {
                     <div className="rounded-sm px-8">
                         <p className="text-sm font-medium text-git-color">Private investment round</p>
                     </div>
-                    <BotonFirmar/>
+                    <BotonFirmar address={datos[0].contractAddress} network={datos[0].network}/>
                 </div>
                 <InfoPrivateContract/>
             </div>
