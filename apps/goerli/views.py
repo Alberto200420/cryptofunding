@@ -11,75 +11,18 @@ class SearchListPublicContractsView(APIView):
 
     def get(self, request, format=None):
         parametro = request.query_params.get('contract')
-                        # si da problemas ponle slug=
+
         if GoerliPublic.objects.filter(contractAddress=parametro).exists():
-            contrato = GoerliPublic.objects.all()
-            result = []
-            for informacion in contrato:
-                item = {}
-                item['ResultContractAddress']=informacion.contractAddress
-                item['data'] = []
-
-                subitem = {}
-                subitem['id']=informacion.id
-                subitem['roundTipe']='public'
-                subitem['creatorAddress']=informacion.addressDelCreador
-                subitem['contractAddress']=informacion.contractAddress
-                subitem['slug']=informacion.slug
-                subitem['termsAconditions']=informacion.terminosYcondiciones
-                subitem['creationDate']=informacion.fechaDeCreacion
-                subitem['rendiiento']=informacion.rendimiento
-                subitem['targetCuantity']=informacion.cantidadObjetivo
-                subitem['email']=informacion.correoElectronico
-                subitem['linkInstagram']=informacion.linkInstagram
-                subitem['webPage']=informacion.paginaWeb
-                subitem['linkTwitter']=informacion.linkTwitter
-                subitem['linkedin']=informacion.linkedin
-                subitem['ofice']=informacion.oficinas
-                subitem['personalFile']=str(informacion.imagenPersonal)
-                subitem['logo']=str(informacion.logo)
-                subitem['trayectory']=informacion.trayectoria
-                item['data'].append(subitem)
-                result.append(item)
-
-            def search_by_contract_address(contract_address):
-                for ronda in result:
-                    if ronda['ResultContractAddress'] == contract_address:
-                        return ronda['data'][0]
-                return None
-            
-            resultado = search_by_contract_address(parametro)
+            contrato = GoerliPublic.objects.get(contractAddress=parametro)
+            serializer = PublicSerializer(contrato)
+            resultado = serializer.data
 
             return Response({'contrato': resultado}, status=status.HTTP_200_OK)
         
         elif GoerliPrivate.objects.filter(contractAddress=parametro).exists():
-            contrato = GoerliPrivate.objects.all()
-            result = []
-            for informacion in contrato:
-                item = {}
-                item['ResultContractAddress']=informacion.contractAddress
-                item['data'] = []
-
-                subitem = {}
-                subitem['id']=informacion.id
-                subitem['roundTipe']='private'
-                subitem['creatorAddress']=informacion.addressDelCreador
-                subitem['contractAddress']=informacion.contractAddress
-                subitem['slug']=informacion.slug
-                subitem['termsAconditions']=informacion.terminosYcondiciones
-                subitem['creationDate']=informacion.fechaDeCreacion
-                subitem['targetCuantity']=informacion.cantidadObjetivo
-                subitem['rendiiento']=informacion.rendimiento
-                item['data'].append(subitem)
-                result.append(item)
-
-            def search_by_contract_address(contract_address):
-                for ronda in result:
-                    if ronda['ResultContractAddress'] == contract_address:
-                        return ronda['data'][0]
-                return None
-            
-            resultado = search_by_contract_address(parametro)
+            contrato = GoerliPrivate.objects.get(contractAddress=parametro)
+            serializer = PrivateSerializer(contrato)
+            resultado = serializer.data
 
             return Response({'contrato': resultado}, status=status.HTTP_200_OK)
         else:
@@ -156,19 +99,3 @@ def save_data_private(request):
         return Response({'data': 'data saved succes'}, status=status.HTTP_201_CREATED)
     else:
         return Response({'error': 'data no saved'}, status=status.HTTP_201_CREATED)
-    
-
-class SearchListprivateContractsView(APIView):
-    parser_classes = (permissions.AllowAny,)
-
-    def get(self, request, format=None):
-        parametro = request.query_params.get('contract')
-        if GoerliPublic.objects.filter(contractAddress=parametro).exists():
-            
-            post = GoerliPublic.objects.get(contractAddress=parametro)
-            serializer = PostSerializer(post)
-            resultado = serializer.data
-
-            return Response({'contrato': resultado }, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'No contract found'}, status=status.HTTP_201_CREATED)

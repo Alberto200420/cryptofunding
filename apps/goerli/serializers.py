@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from .models import *
 
-class PostSerializer(serializers.ModelSerializer):
+class PublicSerializer(serializers.ModelSerializer):
     class Meta: 
         model=GoerliPublic
         fields=[
             'id',
+            'roundTipe',
             'addressDelCreador',
             'contractAddress',
             'slug',
@@ -23,5 +24,19 @@ class PostSerializer(serializers.ModelSerializer):
             'logo',
             'trayectoria'
         ]
-        id
-# roundTipe
+
+
+class PrivateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=GoerliPrivate
+        fileds=[
+            'id',
+            'roundTipe',
+            'addressDelCreador',
+            'contractAddress',
+            'slug',
+            'terminosYcondiciones',
+            'fechaDeCreacion',
+            'cantidadObjetivo',
+            'rendimiento'
+        ]

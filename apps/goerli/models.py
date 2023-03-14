@@ -5,6 +5,7 @@ def public_thumbnail_directory(instace, filename):
 
 # Create your models here.
 class GoerliPublic(models.Model):
+    roundTipe =             models.CharField(max_length= 6, default='public')
     addressDelCreador =     models.CharField(max_length = 52)
     contractAddress =       models.CharField(max_length = 52, unique=True)
     slug =                  models.SlugField(max_length = 52, unique=True)
@@ -27,6 +28,7 @@ class GoerliPublic(models.Model):
         return self.addressDelCreador
 
 class GoerliPrivate(models.Model):
+    roundTipe =             models.CharField(max_length= 7, default='private')
     addressDelCreador =     models.CharField(max_length = 52)
     contractAddress =       models.CharField(max_length = 52, unique=True)
     slug =                  models.SlugField(max_length = 52, unique=True)

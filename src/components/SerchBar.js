@@ -165,7 +165,7 @@ export default function SearchBar() {
     axios(config)
     .then(function (response) {
       const infoContract = response.data.contrato
-      let creador = infoContract.creatorAddress
+      let creador = infoContract.addressDelCreador
       let contrato = infoContract.contractAddress
       let status = infoContract.roundTipe
       let network = 'Goerli'
@@ -175,33 +175,33 @@ export default function SearchBar() {
           id: infoContract.id,
           network: network,
           roundTipe: infoContract.roundTipe,
-          creatorAddress: infoContract.creatorAddress,
+          creatorAddress: infoContract.addressDelCreador,
           contractAddress: infoContract.contractAddress,
-          termsAconditions: infoContract.termsAconditions,
-          creationDate: infoContract.creationDate,
-          targetCuantity: infoContract.targetCuantity,
-          rendiiento: infoContract.rendiiento
+          termsAconditions: infoContract.terminosYcondiciones,
+          creationDate: infoContract.fechaDeCreacion,
+          targetCuantity: infoContract.cantidadObjetivo,
+          rendiiento: infoContract.rendimiento
         }])
       } else if(infoContract.roundTipe === 'public') {
         setPublicData([{
           id: infoContract.id,
           network: network,
           roundTipe: infoContract.roundTipe,
-          creatorAddress: infoContract.creatorAddress,
+          creatorAddress: infoContract.addressDelCreador,
           contractAddress: infoContract.contractAddress,
-          termsAconditions: infoContract.termsAconditions,
-          creationDate: infoContract.creationDate,
-          rendiiento: infoContract.rendiiento,
-          targetCuantity: infoContract.targetCuantity,
-          email: infoContract.email,
+          termsAconditions: infoContract.terminosYcondiciones,
+          creationDate: infoContract.fechaDeCreacion,
+          rendiiento: infoContract.rendimiento,
+          targetCuantity: infoContract.cantidadObjetivo,
+          email: infoContract.correoElectronico,
           linkInstagram: infoContract.linkInstagram,
-          webPage: infoContract.webPage,
+          webPage: infoContract.paginaWeb,
           linkTwitter: infoContract.linkTwitter,
           linkedin: infoContract.linkedin,
-          ofice: infoContract.ofice,
-          personalFile: infoContract.personalFile,
+          ofice: infoContract.oficinas,
+          personalFile: infoContract.imagenPersonal,
           logo: infoContract.logo,
-          trayectory: infoContract.trayectory
+          trayectory: infoContract.trayectoria
         }])
       }
     })
