@@ -6,19 +6,19 @@ const solutions = [
   {
     name: 'How it works?',
     description: 'Conoce como funciona T-mis',
-    href: '/howItWorks',
+    href: '/how-it-works',
     icon: IconOne,
   },
   {
     name: '¿Para quien es T-mis?',
     description: 'Informacion sobre quien deberia usar la plataforma',
-    href: '/howIsTmisFor',
+    href: '/how-is-tmis-for',
     icon: IconTwo,
   },
   {
     name: 'Consejos antes de invertir',
     description: 'Infromacion que debes tomar en cuenta antes de invertir',
-    href: '/TipsForInvesting',
+    href: '/tips-for-investing',
     icon: IconThree,
   },
 ]

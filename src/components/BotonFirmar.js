@@ -17,6 +17,7 @@ export default function BotonFirmar({ address, network }) {
   let [isOpen, setIsOpen] = useState(false)
   const [cargandoData, setCargandoData] = useState(false)
   const [dataCargada, setDataCarga] = useState(false)
+  const [ redParaFirma, setRedParaFirma ] = useState()
   const [ abiCreador, setAbiCreador ] = useState()
   const [ usdt, setUsdt ] = useState('')
   const [ usdc, setUsdc ] = useState('')
@@ -47,10 +48,19 @@ export default function BotonFirmar({ address, network }) {
       setAbiBUSD(TOKEN_TEST)
       setAbiDAI(TOKEN_TEST)
       setAbiCreador(ABI_TMIS_DESARROLLADOR_GO)
+      setRedParaFirma(5)
       console.log('useEffect de BotonFirmar envio los datos')
-    } else if (network === 'Poligon') {
-      // PON TOKENS AQUI EN setState
-      console.log('Estas en poligon')
+    } else if (network === 'Polygon') {
+      setUsdt('')
+      setUsdc('')
+      setBusd('')
+      setDai('')
+      setAbiUSDT('TOKEN_TEST')
+      setAbiUSDC('TOKEN_TEST')
+      setAbiBUSD('TOKEN_TEST')
+      setAbiDAI('TOKEN_TEST')
+      setAbiCreador('ABI_TMIS_DESARROLLADOR_GO')
+      setRedParaFirma(89)
     }
   },[])
 
@@ -60,6 +70,14 @@ export default function BotonFirmar({ address, network }) {
       console.log('Se llamaron a las funciones de boton firmar')
     }
   },[account])
+
+  useEffect(() => {
+    if (dataCargada === true) {
+      setTimeout(function() {
+        setDataCarga(false)
+      }, 10000);
+    }
+  },[])
 
   // --------------------------------------------------------   Funciones
   const [ yaRetiro, setYaRetiro ] = useState(false)
@@ -172,7 +190,7 @@ export default function BotonFirmar({ address, network }) {
       nonce: nonce,
       deadline: deadline                                      // signature deadline
     };
-    const { domain, types, values } = SignatureTransfer.getPermitData(PermitTransferFrom, PERMIT2_ADDRESS, 5)
+    const { domain, types, values } = SignatureTransfer.getPermitData(PermitTransferFrom, PERMIT2_ADDRESS, redParaFirma)
     openModal()
     let signature = await signer._signTypedData(domain, types, values)
     invertir(token, amount, nonce, deadline, signature, signer)
@@ -222,7 +240,7 @@ export default function BotonFirmar({ address, network }) {
             </label><br/>
             <input type="text" className='border-2 border-gray-500 rounded-lg outline-none text-center w-52 py-1.5 ' 
             name="cantidad_a_invertir" onChange={e=>onChange(e)} placeholder='Amount' required/>
-            <p className="text-sm font-medium text-gray-400">Before to start investing you must read <a href='/TipsForInvesting' target="_blank" className='text-git-color'>Tips before investing</a></p>
+            <p className="text-sm font-medium text-gray-400">Before to start investing you must read <a href='/tips-for-investing' target="_blank" className='text-git-color'>Tips before investing</a></p>
             <button type="submit"className="boton-crear "> invest with </button>
         </form>
         }
@@ -248,7 +266,8 @@ export default function BotonFirmar({ address, network }) {
               >
                 <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
                   <div className='mt-4'>
-                    <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {cantidad_a_invertir}</h1>
+                    <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {cantidad_a_invertir - 2}</h1>
+                    <h1 className='text-2xl font-medium text-gray-900'>Network commission: {2} {moneda}</h1>
                     <h1 className='pt-2 text-2xl font-medium text-gray-900'> token: {moneda}</h1>
                     <h1 className='py-2 text-sm font-medium text-gray-900 md:text-2xl'>Contract address: {address}</h1>
                   </div>

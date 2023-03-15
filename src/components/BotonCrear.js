@@ -53,7 +53,8 @@ export default function BotonCrearContrato() {
     hash: '',
     address_del_creador: '',
     address_del_contrato: '',
-    network: ''
+    network: '',
+    gasUsado: ''
   });
 
   function ModalContractInfo() {
@@ -92,7 +93,7 @@ export default function BotonCrearContrato() {
                 >
                   <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                     {
-                      contractData.network === 'goerli' ?
+                      contractData.network === 'Goerli' ?
                       <div>
                         <Dialog.Title
                           as="h3"
@@ -122,6 +123,9 @@ export default function BotonCrearContrato() {
                           <h1 className="text-sm text-gray-500">
                             Network deployed: <p className='text-black'>{contractData.network}</p>
                           </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Gas fee: <p className='text-black'>{contractData.gasUsado}</p>
+                          </h1>
                         </div>
                         <div className="mt-4">
                           <button
@@ -136,7 +140,7 @@ export default function BotonCrearContrato() {
 
                       :
 
-                      contractData.network === 'poligon' ?
+                      contractData.network === 'Polygon' ?
                       <div>
                         <Dialog.Title
                           as="h3"
@@ -163,6 +167,9 @@ export default function BotonCrearContrato() {
                           </h1>
                           <h1 className="text-sm text-gray-500">
                             Network deployed: <p className='text-black'>{contractData.network}</p>
+                          </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Gas fee: <p className='text-black'>{contractData.gasUsado}</p>
                           </h1>
                         </div>
                         <div className="mt-4">
@@ -216,6 +223,14 @@ export default function BotonCrearContrato() {
                                 </div>
                               </div>
                           </h1>
+                          <h1 className="text-sm text-gray-500">
+                            Gas fee: <br/>
+                              <div className="animate-pulse flex space-x-4">
+                                <div className="flex-1 space-y-4 py-1">
+                                  <div className="h-3 bg-slate-700 rounded col-span-2"></div>
+                                </div>
+                              </div>
+                          </h1>
                         </div>
                       </div>
                     }
@@ -254,15 +269,38 @@ export default function BotonCrearContrato() {
         setCargandoData(true)
         await tx.wait();
         // Get the contract function result
+        const receipt = await provider.getTransactionReceipt(tx.hash);
+        const gasUsado = receipt.gasUsed.toString()
+        // OBTENIENDO GAS USADO
         const contractAddress = await contract.buscarCONTRATO(address[0]);
-        console.log(`Contrato creado: ${contractAddress}`)
-        setContractData({ hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'goerli' });
+        // OBTENIENDO CONTRATO
+        setContractData({
+          hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'Goerli', gasUsado: gasUsado
+        });
         sendData(address[0], contractAddress)
       } catch (error) {
         console.log(error)
       }
     } else if(chainId === '0x89') {
-      console.log('desplegaste el contrato en Poligon')
+      try {
+        const contract = new ethers.Contract('TMIS_ADDRESS', 'ABI_TMIS_GO', signer); // ADDRESS && ABI Polygon
+        closeModal()
+        const tx = await contract.crearContrato(terminos_Y_condiciones, DyOchoDinero, SIXdinero, rendimiento);
+        setCargandoData(true)
+        await tx.wait(2);
+        // Get the contract function result
+        const receipt = await provider.getTransactionReceipt(tx.hash);
+        const gasUsado = receipt.gasUsed.toString()
+        // OBTENIENDO GAS USADO
+        const contractAddress = await contract.buscarCONTRATO(address[0]);
+        // OBTENIENDO CONTRATO 
+        setContractData({
+          hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'Polygon', gasUsado: gasUsado
+        });
+        sendData(address[0], contractAddress)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -302,13 +340,13 @@ export default function BotonCrearContrato() {
 
   const sendPublic = (data) => {
       if(chainId === '0x5') {
+        console.log('desplegaste el contrato en Goerli publico')
         const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/public`
         enviarData(data, goerliUrl)
       } else if(chainId === '0x89') {
-        console.log('desplegaste el contrato en Poligon')
-        console.log(data)
-        // const poligonUrl = `${process.env.REACT_APP_API_URL}`
-        // enviarData(data, poligonUrl)
+        console.log('desplegaste el contrato en Polygon publico')
+        const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/public`
+        enviarData(data, poligonUrl)
       }
   }
 
@@ -318,10 +356,9 @@ export default function BotonCrearContrato() {
         const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/private`
         enviarData(data, goerliUrl)
       } else if(chainId === '0x89') {
-        console.log('desplegaste el contrato en Poligon')
-        console.log(data)
-        // const poligonUrl = `${process.env.REACT_APP_API_URL}`
-        // enviarData(data, poligonUrl)
+        console.log('desplegaste el contrato en Polygon pirvado')
+        const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/private`
+        enviarData(data, poligonUrl)
       }
   }
 
@@ -418,7 +455,7 @@ export default function BotonCrearContrato() {
                         }
                        
 
-                      <label className="text-sm ml-3 font-medium text-gray-400">Before to start the investment round you must read <a href='/howItWorks' target="_blank" className='text-git-color'>how T-mis work</a></label>
+                      <label className="text-sm ml-3 font-medium text-gray-400">Before to start the investment round you must read <a href='/how-it-works' target="_blank" className='text-git-color'>how T-mis work</a></label>
                       
                       <button
                       type="submit"

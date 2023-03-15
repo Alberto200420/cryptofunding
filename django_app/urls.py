@@ -7,6 +7,7 @@ from django.conf import settings
 
 urlpatterns = [  # si algo cusa problemas pon api/goerli/
     path('goerli/', include('apps.goerli.urls')),
+    path('polygon/', include('apps.poligon.urls')), 
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

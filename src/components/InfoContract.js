@@ -67,7 +67,7 @@ export default function InfoSmartContract() {
           </h1><br/>
         </>
       )
-    } else if (datos[0].network === 'Poligon') {
+    } else if (datos[0].network === 'Polygon') {
       <>
         <h1 className='text-gray-500 inline-flex' >Address of the creator:
         <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
@@ -90,7 +90,7 @@ export default function InfoSmartContract() {
       return(
         <>
           <h1 className='text-gray-500 inline-flex'>The creator has already withdrawn the money:<p className='text-black ml-2'>{yaRetiro === true ? 'True': 'False'}</p></h1><br/>
-          <h1 className='text-gray-500 inline-flex'>Contract balance:<p className='text-black ml-2'>${balance} USD</p></h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Contract balance:<p className='text-black ml-2'>${balance.toLocaleString()} USD</p></h1><br/>
           <h1 className='text-gray-500 inline-flex'>Your investment with USDC or USDT:<p className='text-black ml-2'>{SIXinvertido}</p></h1><br/>
           <h1 className='text-gray-500 inline-flex'>Your investment with BUSD or DAI:<p className='text-black ml-2'>{DyochoInvertido}</p></h1><br/>
           { DyochoInvertido !== 0 ? <h1 className='text-gray-500 inline-flex'>Amount you will earn with BUSD or DAI:<p className='text-black ml-2'> {CuantoGanaraDyOcho}</p></h1> : <></> }
@@ -218,9 +218,10 @@ export default function InfoSmartContract() {
       setAbiCreador(ABI_TMIS_DESARROLLADOR_GO)
       setAbiTMIS(ABI_TMIS_GO)
       setTMISAddress(TMIS_ADDRESS)
-    } else if (datos[0].network === 'Poligon') {
-      // PON TOKENS AQUI EN setState
-      console.log('Estas en poligon')
+    } else if (datos[0].network === 'Polygon') {
+      setAbiCreador('ABI_TMIS_DESARROLLADOR_GO')
+      setAbiTMIS('ABI_TMIS_GO')
+      setTMISAddress('TMIS_ADDRESS')
     }
   },[datos])
 
@@ -291,25 +292,3 @@ export default function InfoSmartContract() {
     </div>
   )
 }
-// const timeoutId = window.setTimeout(() => {
-    //    funcion()
-    // }, 6000);
-    // // Se retorna una función que se ejecuta cuando el componente se desmonta
-    // return () => {
-    //   window.clearTimeout(timeoutId); // Limpiamos el timeout para evitar problemas
-    // };
-    // setMyArray([{ id: 0, yaRetiro: YaSacoElDinero, balance: balance, DyochoInvertido: DyochoInvertido, SIXinvertido: SIXinvertido }])
-      // setMyArray({
-      //   YaSacoElDinero: YaSacoElDinero,
-      //   balanceDELcontrato: balanceDELcontrato,
-      //   DyochoInvertido: DyochoInvertido,
-      //   SIXinvertido: SIXinvertido
-      // })
-      // const newData = {
-      //   id: 1,
-      //   YaSacoElDinero: YaSacoElDinero,
-      //   balanceDELcontrato: balanceDELcontrato,
-      //   DyochoInvertido: DyochoInvertido,
-      //   SIXinvertido: SIXinvertido
-      // }
-      // setMyArray(prevState => [...prevState, newData]);

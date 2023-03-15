@@ -34,6 +34,7 @@ DJANGO_APPS = [
 
 PROJECT_APPS = [ 
     'apps.goerli',
+    'apps.poligon'
 ]
 
 THIRD_PARTY_APPS = [

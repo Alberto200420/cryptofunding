@@ -17,11 +17,11 @@ function App() {
           {/* Home Display */}
           <Route path="/" element={<Home />} />
           {/* ¿Como funciona? */}
-          <Route path="/howItWorks" element={<ComoFunciona />} />
+          <Route path="/how-it-works" element={<ComoFunciona />} />
           {/* ¿Para quien es T-mis? */}
-          <Route path="/howIsTmisFor" element={<HowItIsFor/>} />
+          <Route path="/how-is-tmis-for" element={<HowItIsFor/>} />
           {/* Consejos para invertir */}
-          <Route path="/TipsForInvesting" element={<TipsForInvesting/>} />
+          <Route path="/tips-for-investing" element={<TipsForInvesting/>} />
           {/* Pagina Publica */}
           <Route path="/public" element={<PublicPage/>} />
           { /* Pagina Privada */}

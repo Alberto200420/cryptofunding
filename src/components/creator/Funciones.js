@@ -19,6 +19,7 @@ export default function FuncionesDesarrollador() {
   const location = useLocation()
   const datos = location.state;
   const [ abiCreador, setAbiCreador ] = useState()
+  const [ redParaFirma, setRedParaFirma ] = useState()
   const [cargandoData, setCargandoData] = useState(false)
   const [dataCargada, setDataCarga] = useState(false)
   const [mensaje, setMensaje] = useState()
@@ -51,8 +52,7 @@ export default function FuncionesDesarrollador() {
   const { moneda } = Moneda
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
-  const conCual = e => setMoneda({ ...Moneda, [e.target.name]: e.target.value }) //formData
-  // const [ cargado, setCargado ] = useState(false)
+  const conCual = e => setMoneda({ ...Moneda, [e.target.name]: e.target.value })
 
   // -------------------------------- WEB3 Functions
   const GetSigner = async () => {
@@ -96,8 +96,9 @@ export default function FuncionesDesarrollador() {
     const signer = provider.getSigner()
     const contrato = new ethers.Contract(datos[0].contractAddress, abiCreador, signer)
     try {
-      setCargandoData(true)
+      // setCargandoData(true)
       const withdrawForOwner = await contrato.withdrawForOwner()
+      setCargandoData(true)
       await withdrawForOwner.wait();
       setCargandoData(false)
       setMensaje('Amount succesfully withdrawn')
@@ -127,8 +128,9 @@ export default function FuncionesDesarrollador() {
     const erc20 = new ethers.Contract(tokenAddress, abiToken, signer)
     var outPut = await erc20.allowance(addressSigner[0], PERMIT2_ADDRESS)
     if(outPut.toString() === "0") {
-      setCargandoData(true)
+      // setCargandoData(true)
       const tx = await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
+      setCargandoData(true)
       await tx.wait();
       setCargandoData(false)
     }
@@ -149,7 +151,7 @@ export default function FuncionesDesarrollador() {
       nonce: nonce,
       deadline: deadline                                      // signature deadline
     };
-    const { domain, types, values } = SignatureTransfer.getPermitData(PermitTransferFrom, PERMIT2_ADDRESS, 5)
+    const { domain, types, values } = SignatureTransfer.getPermitData(PermitTransferFrom, PERMIT2_ADDRESS, redParaFirma)
     let signature = await signer._signTypedData(domain, types, values)
     setTOKEN(token)
     setNONCE(nonce)
@@ -164,10 +166,11 @@ export default function FuncionesDesarrollador() {
     const signer = provider.getSigner()
     const contract = new ethers.Contract(datos[0].contractAddress, abiCreador, signer)
     closeModal()
-    setCargandoData(true)
+    // setCargandoData(true)
     try {
       if(moneda === 'USDT' || moneda === 'USDC') {
         const tx = await contract.devolverCantidadSix(TOKEN, cantidad_a_invertir, NONCE, DEADLINE, SIGNATURE)
+        setCargandoData(true)
         await tx.wait();
         setCargandoData(false)
         setMensaje('Amount with interest returned correctly')
@@ -191,10 +194,11 @@ export default function FuncionesDesarrollador() {
     const signer = provider.getSigner()
     const contract = new ethers.Contract(datos[0].contractAddress, abiCreador, signer)
     closeModal()
-    setCargandoData(true)
+    // setCargandoData(true)
     try {
       if(moneda === 'USDT' || moneda === 'USDC') {
         const tx = await contract.DevolverPorContratiempoSix(TOKEN, cantidad_a_invertir, NONCE, DEADLINE, SIGNATURE)
+        setCargandoData(true)
         await tx.wait();
         setCargandoData(false)
         setMensaje('Amount without interest returned correctly')
@@ -257,7 +261,7 @@ export default function FuncionesDesarrollador() {
             <h1 className='text-gray-500'>Balance in BUSD or DAI: <p className="text-black inline-flex">{BalanceDyOcho}</p></h1>
           </div>
           }
-          <h1 className='text-gray-500'>Contract Balance: <p className="text-black inline-flex">{balance}</p></h1>
+          <h1 className='text-gray-500'>Contract Balance: <p className="text-black inline-flex">{balance.toLocaleString()}</p></h1>
         </div>
       )
     } else if (datos[0].network === 'Poligon') {
@@ -300,16 +304,27 @@ export default function FuncionesDesarrollador() {
       setAbiUSDC(TOKEN_TEST)
       setAbiBUSD(TOKEN_TEST)
       setAbiDAI(TOKEN_TEST)
+      setRedParaFirma(5)
       console.log('useEffect de Funciones desarrollador envio los datos')
-    } else if (datos[0].network === 'Poligon') {
-      // PON TOKENS AQUI EN setState
-      console.log('Estas en poligon')
+    } else if (datos[0].network === 'Polygon') {
+      setUsdt('')
+      setUsdc('')
+      setBusd('')
+      setDai('')
+      setAbiUSDT('TOKEN_TEST')
+      setAbiUSDC('TOKEN_TEST')
+      setAbiBUSD('TOKEN_TEST')
+      setAbiDAI('TOKEN_TEST')
+      setAbiCreador('ABI_TMIS_DESARROLLADOR_GO')
+      setRedParaFirma(89)
     }
   },[datos])
 
   useEffect(() => {
     if(dataCargada === true) {
-      setDataCarga(false)
+      setTimeout(function() {
+        setDataCarga(false)
+      }, 10000);
     }
   },[dataCargada])
 

@@ -206,6 +206,61 @@ export default function SearchBar() {
       }
     })
     .catch(function (error) {
+      PolygonSearch()
+    });
+  }
+
+  const PolygonSearch = (contract) => {
+    var config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_API_URL}/polygon/search?contract=${contract}`,
+      headers: { }
+    };
+    axios(config)
+    .then(function (response) {
+      const infoContract = response.data.contrato
+      let creador = infoContract.addressDelCreador
+      let contrato = infoContract.contractAddress
+      let status = infoContract.roundTipe
+      let network = 'Polygon'
+      setModalData({ creador, contrato, status, network })
+      if (infoContract.roundTipe === 'private') {
+        setPrivateData([{
+          id: infoContract.id,
+          network: network,
+          roundTipe: infoContract.roundTipe,
+          creatorAddress: infoContract.addressDelCreador,
+          contractAddress: infoContract.contractAddress,
+          termsAconditions: infoContract.terminosYcondiciones,
+          creationDate: infoContract.fechaDeCreacion,
+          targetCuantity: infoContract.cantidadObjetivo,
+          rendiiento: infoContract.rendimiento
+        }])
+      } else if(infoContract.roundTipe === 'public') {
+        setPublicData([{
+          id: infoContract.id,
+          network: network,
+          roundTipe: infoContract.roundTipe,
+          creatorAddress: infoContract.addressDelCreador,
+          contractAddress: infoContract.contractAddress,
+          termsAconditions: infoContract.terminosYcondiciones,
+          creationDate: infoContract.fechaDeCreacion,
+          rendiiento: infoContract.rendimiento,
+          targetCuantity: infoContract.cantidadObjetivo,
+          email: infoContract.correoElectronico,
+          linkInstagram: infoContract.linkInstagram,
+          webPage: infoContract.paginaWeb,
+          linkTwitter: infoContract.linkTwitter,
+          linkedin: infoContract.linkedin,
+          ofice: infoContract.oficinas,
+          personalFile: infoContract.imagenPersonal,
+          logo: infoContract.logo,
+          trayectory: infoContract.trayectoria
+        }])
+      }
+    })
+    .catch(function (error) {
       alert('Error 404 not contract found')
       console.log(error)
     });

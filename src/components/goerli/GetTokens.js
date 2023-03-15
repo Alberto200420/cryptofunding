@@ -2,7 +2,7 @@ import BUSD from '../../assets/img/BUSD.png'
 import USDT from '../../assets/img/USDT.png'
 import USDC from '../../assets/img/USDC.png'
 import DAI from '../../assets/img/DAI.png'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TOKEN_TEST } from "../../abi/TokensTest"
 import { ethers } from 'ethers'
 import ModalLoading from "../ModalMinando"
@@ -44,6 +44,14 @@ export default function GetTokens() {
     setCargandoData(false)
     setDataCarga(true)
   }
+
+  useEffect(() => {
+    if (dataCargada === true) {
+      setTimeout(function() {
+        setDataCarga(false)
+      }, 10000);
+    }
+  },[])
 
   return(
     <div className='pt-2'>
