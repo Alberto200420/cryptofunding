@@ -1,6 +1,6 @@
 import { ABI_TMIS_DESARROLLADOR_GO } from "../../abi/TMIS_GO_TEST"
 import { TOKEN_TEST } from "../../abi/TokensTest"
-// importar las ABI de las monedas estables
+import { TOKEN_USDC, TOKEN_USDT, TOKEN_BUSD, TOKEN_DAI } from "../../abi/Polygon_ABI"
 import { MaxUint256, PERMIT2_ADDRESS, SignatureTransfer } from '@uniswap/permit2-sdk'
 import { Permit2Abi } from "../../abi/Permit2_ABI"
 import { ethers } from 'ethers'
@@ -264,7 +264,7 @@ export default function FuncionesDesarrollador() {
           <h1 className='text-gray-500'>Contract Balance: <p className="text-black inline-flex">{balance.toLocaleString()}</p></h1>
         </div>
       )
-    } else if (datos[0].network === 'Poligon') {
+    } else if (datos[0].network === 'Polygon') {
       <div className="relative">
         <h1 className='text-gray-500'>Address of the creator:
         <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500'
@@ -307,16 +307,16 @@ export default function FuncionesDesarrollador() {
       setRedParaFirma(5)
       console.log('useEffect de Funciones desarrollador envio los datos')
     } else if (datos[0].network === 'Polygon') {
-      setUsdt('')
-      setUsdc('')
-      setBusd('')
-      setDai('')
-      setAbiUSDT('TOKEN_TEST')
-      setAbiUSDC('TOKEN_TEST')
-      setAbiBUSD('TOKEN_TEST')
-      setAbiDAI('TOKEN_TEST')
+      setUsdt('0xC3b67986aa9AD876AEDfadA84559B6960307AfC6')
+      setUsdc('0x216aEA7BCf9cCf5D1F8F1c771d899578aF3d4423')
+      setBusd('0x57828c6598ea6E450cAeba80E5bd21edAe8af41a')
+      setDai('0x0aD71C1bD614479e97B99D757753b3cc060A8D7b')
+      setAbiUSDT(TOKEN_USDT)
+      setAbiUSDC(TOKEN_USDC)
+      setAbiBUSD(TOKEN_BUSD)
+      setAbiDAI(TOKEN_DAI)
       setAbiCreador('ABI_TMIS_DESARROLLADOR_GO')
-      setRedParaFirma(89)
+      setRedParaFirma(80001) // 137 mainet
     }
   },[datos])
 

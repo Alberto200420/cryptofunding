@@ -10,6 +10,7 @@ import GetTokens from './goerli/GetTokens'
 import { useMoralis } from "react-moralis"
 import { ethers } from 'ethers'
 import { ABI_TMIS_DESARROLLADOR_GO, ABI_TMIS_GO, TMIS_ADDRESS } from "../abi/TMIS_GO_TEST"
+import { ABI_TMIS_DESARROLLADOR_POLYGON, ABI_TMIS_POLYGON, ADDRESS_TMIS_POLYGON } from 'abi/Polygon_ABI'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -219,9 +220,9 @@ export default function InfoSmartContract() {
       setAbiTMIS(ABI_TMIS_GO)
       setTMISAddress(TMIS_ADDRESS)
     } else if (datos[0].network === 'Polygon') {
-      setAbiCreador('ABI_TMIS_DESARROLLADOR_GO')
-      setAbiTMIS('ABI_TMIS_GO')
-      setTMISAddress('TMIS_ADDRESS')
+      setAbiCreador(ABI_TMIS_DESARROLLADOR_POLYGON)
+      setAbiTMIS(ABI_TMIS_POLYGON)
+      setTMISAddress(ADDRESS_TMIS_POLYGON)
     }
   },[datos])
 

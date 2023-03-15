@@ -6,6 +6,7 @@ import { useMoralis } from "react-moralis"
 import { TMIS_ADDRESS, ABI_TMIS_GO } from 'abi/TMIS_GO_TEST'
 import { ethers } from 'ethers'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid'
+import ModalSuccess from './ModalSuccess'
 
 export default function BotonCrearContrato() {
   let [isOpen, setIsOpen] = useState(false)
@@ -281,7 +282,7 @@ export default function BotonCrearContrato() {
       } catch (error) {
         console.log(error)
       }
-    } else if(chainId === '0x89') {
+    } else if(chainId === '0x13881') {
       try {
         const contract = new ethers.Contract('TMIS_ADDRESS', 'ABI_TMIS_GO', signer); // ADDRESS && ABI Polygon
         closeModal()
@@ -343,7 +344,7 @@ export default function BotonCrearContrato() {
         console.log('desplegaste el contrato en Goerli publico')
         const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/public`
         enviarData(data, goerliUrl)
-      } else if(chainId === '0x89') {
+      } else if(chainId === '0x13881') {
         console.log('desplegaste el contrato en Polygon publico')
         const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/public`
         enviarData(data, poligonUrl)
@@ -355,13 +356,14 @@ export default function BotonCrearContrato() {
         console.log('desplegaste el contrato en Goerli pirvado')
         const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/private`
         enviarData(data, goerliUrl)
-      } else if(chainId === '0x89') {
+      } else if(chainId === '0x13881') {
         console.log('desplegaste el contrato en Polygon pirvado')
         const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/private`
         enviarData(data, poligonUrl)
       }
   }
 
+  const [dataCargada, setDataCarga] = useState(false)
 
   const enviarData = (datos, url) => {
     axios.post(url, datos, {
@@ -370,12 +372,11 @@ export default function BotonCrearContrato() {
       }
     })
     .then(res => {
-      console.log(res)
-      // funcion para abrir un modal y mostrarle su contract address
+      setDataCarga(true)
     })
     .catch(function (error) {
       console.log(error)
-      alert("ERROR please try again")
+      alert("ERROR contract not saved in the database. Do not panic, your contract was created in the blockchain butwe did not keep it, please contact us")
     })
   }
   // --------------------------------------------------------   Funciones
@@ -472,6 +473,7 @@ export default function BotonCrearContrato() {
         </Dialog>
       </Transition>
       {cargandoData === true ? <ModalContractInfo/> : <div></div> }
+      {dataCargada === true ? <ModalSuccess mensaje={'Contract successfully saved in the database'}/> : <div></div> }
     </div>
   )
 }

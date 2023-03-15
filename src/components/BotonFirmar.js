@@ -8,7 +8,9 @@ import { ethers } from 'ethers'
 import { MaxUint256, PERMIT2_ADDRESS, SignatureTransfer } from '@uniswap/permit2-sdk'
 import { Permit2Abi } from "../abi/Permit2_ABI"
 import { TOKEN_TEST } from "../abi/TokensTest"
+import { TOKEN_USDC, TOKEN_USDT, TOKEN_BUSD, TOKEN_DAI } from 'abi/Polygon_ABI'
 import { ABI_TMIS_DESARROLLADOR_GO } from "../abi/TMIS_GO_TEST"
+import { ABI_TMIS_DESARROLLADOR_POLYGON } from 'abi/Polygon_ABI'
 import ModalLoading from "./ModalMinando"
 import ModalSuccess from './ModalSuccess'
 import { useMoralis } from "react-moralis"
@@ -51,23 +53,22 @@ export default function BotonFirmar({ address, network }) {
       setRedParaFirma(5)
       console.log('useEffect de BotonFirmar envio los datos')
     } else if (network === 'Polygon') {
-      setUsdt('')
-      setUsdc('')
-      setBusd('')
-      setDai('')
-      setAbiUSDT('TOKEN_TEST')
-      setAbiUSDC('TOKEN_TEST')
-      setAbiBUSD('TOKEN_TEST')
-      setAbiDAI('TOKEN_TEST')
-      setAbiCreador('ABI_TMIS_DESARROLLADOR_GO')
-      setRedParaFirma(89)
+      setUsdt('0xC3b67986aa9AD876AEDfadA84559B6960307AfC6')
+      setUsdc('0x216aEA7BCf9cCf5D1F8F1c771d899578aF3d4423')
+      setBusd('0x57828c6598ea6E450cAeba80E5bd21edAe8af41a')
+      setDai('0x0aD71C1bD614479e97B99D757753b3cc060A8D7b')
+      setAbiUSDT(TOKEN_USDT)
+      setAbiUSDC(TOKEN_USDC)
+      setAbiBUSD(TOKEN_BUSD)
+      setAbiDAI(TOKEN_DAI)
+      setAbiCreador(ABI_TMIS_DESARROLLADOR_POLYGON)
+      setRedParaFirma(80001) // 137 mainet
     }
   },[])
 
   useEffect(() => {
     if(isWeb3Enabled) {
       ControlFunciones()
-      console.log('Se llamaron a las funciones de boton firmar')
     }
   },[account])
 
@@ -125,8 +126,8 @@ export default function BotonFirmar({ address, network }) {
     const signer = provider.getSigner()
     const contrato = new ethers.Contract(address, abiCreador, signer)
     try {
-      setCargandoData(true)
       const withdrawInvestorsNotWin = contrato.withdrawInvestorsNotWin()
+      setCargandoData(true)
       await withdrawInvestorsNotWin.wait();
       setCargandoData(false)
       setDataCarga(true)
@@ -168,8 +169,8 @@ export default function BotonFirmar({ address, network }) {
     const erc20 = new ethers.Contract(tokenAddress, abiToken, signer)
     var outPut = await erc20.allowance(addressSigner[0], PERMIT2_ADDRESS)
     if(outPut.toString() === "0") {
-      setCargandoData(true)
       const tx = await erc20.approve(PERMIT2_ADDRESS, MaxUint256)
+      setCargandoData(true)
       await tx.wait();
       setCargandoData(false)
     }
@@ -180,7 +181,7 @@ export default function BotonFirmar({ address, network }) {
     const permit2 = new ethers.Contract(PERMIT2_ADDRESS, Permit2Abi, signer)
     const nonces = await permit2.nonceBitmap(addressSigner[0], 0)
     const nonce = nonces.toNumber()
-    const deadline = Math.trunc((Date.now() + 900 * 1000) / 1000)
+    const deadline = Math.trunc((Date.now() + 900 * 1000) / 1000) // 23 min
     const PermitTransferFrom = {
       permitted: {
           token: token,                                       // token we are permitting to be transferred
@@ -199,8 +200,8 @@ export default function BotonFirmar({ address, network }) {
   const invertir = async (token, amount, nonce, deadline, signature, signer) => {
     const contract = new ethers.Contract(address, abiCreador, signer)
     closeModal()
-    setCargandoData(true)
     const tx = await contract.Invest(token, amount, nonce, deadline, signature)
+    setCargandoData(true)
     await tx.wait();
     setCargandoData(false)
     setDataCarga(true)
@@ -268,6 +269,7 @@ export default function BotonFirmar({ address, network }) {
                   <div className='mt-4'>
                     <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {cantidad_a_invertir - 2}</h1>
                     <h1 className='text-2xl font-medium text-gray-900'>Network commission: {2} {moneda}</h1>
+                    <h1 className='text-2xl font-medium text-gray-900'>You have 23 minutes to use this signature</h1>
                     <h1 className='pt-2 text-2xl font-medium text-gray-900'> token: {moneda}</h1>
                     <h1 className='py-2 text-sm font-medium text-gray-900 md:text-2xl'>Contract address: {address}</h1>
                   </div>

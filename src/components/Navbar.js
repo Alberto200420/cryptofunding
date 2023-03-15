@@ -21,7 +21,7 @@ function Navbar() {
 
     // Conseguir la red donde esta conectada  
     const chainId = chainIdHex
-    // console.log(`ChainId is ${chainId}`) parseInt(chainIdHex)
+    // console.log(`ChainId is ${chainId}`)
     
     useEffect(() => { if (!isWeb3Enabled && typeof window !== "undefined" && window.localStorage.getItem("connected")) {
             enableWeb3()
@@ -44,7 +44,7 @@ function Navbar() {
                 <div className="ml-4 mt-2">
                 {
                 chainId === '0x5' ? <p className='inline-flex text-white pr-2'><Link to='/'>TESTNET</Link></p> 
-                : chainId ==='0x89' ? <Link to='/'><img src={poligon} width={50} height={60} alt='Polygon network' className='inline-flex pr-2'/></Link> 
+                : chainId ==='0x13881' ? <Link to='/'><img src={poligon} width={50} height={60} alt='Polygon network' className='inline-flex pr-2'/></Link> 
                 : <Link to='/'><ScaleIcon width={45} height={50} className='inline-flex pr-2 text-white'/></Link>
                 }
                 <InformacionButton/>
