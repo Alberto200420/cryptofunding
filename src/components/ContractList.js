@@ -58,12 +58,18 @@ export default function ContractList() {
                 <div className="mt-6 flex items-center">
                   <div className="flex-shrink-0">
                       <img className="h-10 w-10 rounded-full" src={post.imagenPersonal} alt="" />
-                      <img className="h-10 w-10 rounded-full pt-4" src={post.logo} alt="" />
                   </div>
                   <div className="ml-3">
                     <p className="text-sm font-medium text-gray-900">
                       {(post.trayectoria).slice(0 , 150)}...
                     </p>
+                  </div>
+                </div>
+                <div className="mt-6 flex items-center">
+                  <div className="flex-shrink-0">
+                      <img className="h-10 w-10 rounded-full pt-4" src={post.logo} alt="" />
+                  </div>
+                  <div className="ml-3">
                     <div className="flex space-x-1 text-sm text-gray-500 space-y-3">
                       <time dateTime={post.fechaDeCreacion}>{post.fechaDeCreacion}</time>
                     </div>
