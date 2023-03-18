@@ -51,7 +51,6 @@ export default function BotonFirmar({ address, network }) {
       setAbiDAI(TOKEN_TEST)
       setAbiCreador(ABI_TMIS_DESARROLLADOR_GO)
       setRedParaFirma(5)
-      console.log('useEffect de BotonFirmar envio los datos')
     } else if (network === 'Polygon') {
       setUsdt('0xC3b67986aa9AD876AEDfadA84559B6960307AfC6')
       setUsdc('0x216aEA7BCf9cCf5D1F8F1c771d899578aF3d4423')
@@ -110,7 +109,7 @@ export default function BotonFirmar({ address, network }) {
     const signer = provider.getSigner()
     const contrato = new ethers.Contract(address, abiCreador, signer)
     try {
-      const withdrawForinvestors = contrato.withdrawForinvestors()
+      const withdrawForinvestors = await contrato.withdrawForinvestors()
       setCargandoData(true)
       await withdrawForinvestors.wait();
       setCargandoData(false)
@@ -126,9 +125,9 @@ export default function BotonFirmar({ address, network }) {
     const signer = provider.getSigner()
     const contrato = new ethers.Contract(address, abiCreador, signer)
     try {
-      const withdrawInvestorsNotWin = contrato.withdrawInvestorsNotWin()
+      const withdrawNotWin = await contrato.withdrawInvestorsNotWin()
       setCargandoData(true)
-      await withdrawInvestorsNotWin.wait();
+      await withdrawNotWin.wait();
       setCargandoData(false)
       setDataCarga(true)
     } catch (error) {
@@ -148,17 +147,41 @@ export default function BotonFirmar({ address, network }) {
   const investWhit =(e)=> {
     e.preventDefault();
     if(moneda === "USDT") {
-      const amount = cantidad_a_invertir + "000000"
-      VerificarToken(usdt, AbiUSDT, amount)
+      if (cantidad_a_invertir === -0 || cantidad_a_invertir < 0) {
+        const positivo = Math.abs(cantidad_a_invertir);
+        const amount = positivo + "000000"
+        VerificarToken(usdt, AbiUSDT, amount)
+      } else {
+        const amount = cantidad_a_invertir + "000000"
+        VerificarToken(usdt, AbiUSDT, amount)
+      }
     } else if (moneda === "USDC") {
-      const amount = cantidad_a_invertir + "000000"
-      VerificarToken(usdc, AbiUSDC, amount)
+      if (cantidad_a_invertir === -0 || cantidad_a_invertir < 0) {
+        const positivo = Math.abs(cantidad_a_invertir);
+        const amount = positivo + "000000"
+        VerificarToken(usdc, AbiUSDC, amount)
+      } else {
+        const amount = cantidad_a_invertir + "000000"
+        VerificarToken(usdc, AbiUSDC, amount)
+      }
     } else if (moneda === "BUSD") {
-      const amount = cantidad_a_invertir + "000000000000000000"
-      VerificarToken(busd, AbiBUSD, amount)
+      if (cantidad_a_invertir === -0 || cantidad_a_invertir < 0) {
+        const positivo = Math.abs(cantidad_a_invertir);
+        const amount = positivo + "000000000000000000"
+        VerificarToken(busd, AbiBUSD, amount)
+      } else {
+        const amount = cantidad_a_invertir + "000000000000000000"
+        VerificarToken(busd, AbiBUSD, amount)
+      }
     } else if (moneda === "DAI") {
-      const amount = cantidad_a_invertir + "000000000000000000"
-      VerificarToken(dai, AbiDAI, amount)
+      if (cantidad_a_invertir === -0 || cantidad_a_invertir < 0) {
+        const positivo = Math.abs(cantidad_a_invertir);
+        const amount = positivo + "000000000000000000"
+        VerificarToken(dai, AbiDAI, amount)
+      } else {
+        const amount = cantidad_a_invertir + "000000000000000000"
+        VerificarToken(dai, AbiDAI, amount)
+      }
     }
   }
 
@@ -267,7 +290,7 @@ export default function BotonFirmar({ address, network }) {
               >
                 <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
                   <div className='mt-4'>
-                    <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {cantidad_a_invertir - 2}</h1>
+                    <h1 className='text-2xl font-medium text-gray-900'>Amount you will invest: {(cantidad_a_invertir - 2).toLocaleString()}</h1>
                     <h1 className='text-2xl font-medium text-gray-900'>Network commission: {2} {moneda}</h1>
                     <h1 className='text-2xl font-medium text-gray-900'>You have 23 minutes to use this signature</h1>
                     <h1 className='pt-2 text-2xl font-medium text-gray-900'> token: {moneda}</h1>
@@ -281,7 +304,7 @@ export default function BotonFirmar({ address, network }) {
       </Transition>
 
       {cargandoData === true ? <ModalLoading/> : <div></div> }
-      {dataCargada === true ? <ModalSuccess mensaje={`you have invested successfully ${cantidad_a_invertir - 2} ${moneda} to ${address} Network commission: 2 ${moneda}`}/> : <div></div> }
+      {dataCargada === true ? <ModalSuccess mensaje={`you have invested successfully ${(cantidad_a_invertir - 2).toLocaleString()} ${moneda} to ${address} Network commission: 2 ${moneda}`}/> : <div></div> }
     </div>
   )
 }

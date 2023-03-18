@@ -1,6 +1,5 @@
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-import json
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .models import * 
@@ -27,6 +26,40 @@ class SearchListPublicContractsView(APIView):
             return Response({'contrato': resultado}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'No contract found'}, status=status.HTTP_404_NOT_FOUND)
+
+class ContratosAgrupados(APIView):
+    parser_classes = (permissions.AllowAny, )
+
+    def get(self, request, format=None):
+            if PolygonPublic.objects.all().exists():
+                # Obtener el parámetro de página de la solicitud de consulta.
+                # Si no se proporciona ningún parámetro, establecer el valor en 1.
+                page = int(request.query_params.get('page', 1))
+                # Establecer el tamaño de la página (número de registros por página).
+                page_size = 3
+                # Calcular el índice de inicio y el índice de finalización
+                # de los registros que se devolverán en la respuesta.
+                start_index = (page - 1) * page_size
+                end_index = start_index + page_size
+
+                # Obtener los registros de la base de datos utilizando slicing.
+                contracts = PolygonPublic.objects.all()[start_index:end_index]
+                # Serializar los registros obtenidos.
+                serializer = PublicPaginator(contracts, many=True)
+                # Crear un diccionario que incluya la información de los registros
+                # y la información de paginación.
+                result = {
+                    'contracts': serializer.data,
+                    'page': page,
+                    # 'page_size': page_size,
+                    # 'has_next': f'http://127.0.0.1:8000/polygon/public-contracts/?page={page+1}',
+                    # 'has_previous': f'http://127.0.0.1:8000/polygon/public-contracts/?page={page - 1}'
+                }
+                # Devolver la respuesta con el diccionario creado.
+                return Response(result, status=status.HTTP_200_OK)
+            else:
+                return Response({'error':'No contracts found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(('POST', ))
 def save_data_public(request):

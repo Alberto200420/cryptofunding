@@ -29,7 +29,7 @@ class PublicSerializer(serializers.ModelSerializer):
 class PrivateSerializer(serializers.ModelSerializer):
     class Meta:
         model=GoerliPrivate
-        fileds=[
+        fields=[
             'id',
             'roundTipe',
             'addressDelCreador',

@@ -20,9 +20,11 @@ export default function InfoPrivateContract() {
   const [ LoCreo, setLoCreo ] = useState(false)
   const [ yaRetiro, setYaRetiro ] = useState(false)
   const [ balance, setBlance ] = useState(0)
+  const [ balanceSIX, setbalanceSIX ] = useState(0)
+  const [ balanceDyOcho, setbalanceDyOcho ] = useState(0)
   const [ DyochoInvertido, setDyochoInvertido ] = useState(0)
-  const [ CuantoGanaraSIX ,setCuantoGanaraSIX ] = useState('0')
-  const [ CuantoGanaraDyOcho ,setCuantoGanaraDyOcho ] = useState('0')
+  const [ CuantoGanaraSIX ,setCuantoGanaraSIX ] = useState(0)
+  const [ CuantoGanaraDyOcho ,setCuantoGanaraDyOcho ] = useState(0)
   const [ YaSacoDyOcho, setYaSacoDyOcho ] = useState(false)
   const [ YaSacoSIX, setYaSacoSIX ] = useState(false)
   const [ YALIQUIDO, setYaLiquido ] = useState(false)
@@ -59,20 +61,22 @@ export default function InfoPrivateContract() {
         </>
       )
     } else if (datos[0].network === 'Polygon') {
-      <>
-        <h1 className='text-gray-500 inline-flex' >Address of the creator:
-        <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
-        href={`https://polygonscan.com/address/${datos[0].creatorAddress}`}
-        rel='noreferrer' target='_blank'
-        >{datos[0].creatorAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
-        </h1><br/>
-        <h1 className='text-gray-500 inline-flex'>Contract address:
-        <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
-        href={`https://polygonscan.com/address/${datos[0].contractAddress}`}
-        rel='noreferrer' target='_blank'
-        >{datos[0].contractAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
-        </h1><br/>
-      </>
+      return(
+        <>
+          <h1 className='text-gray-500 inline-flex' >Address of the creator:
+          <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
+          href={`https://polygonscan.com/address/${datos[0].creatorAddress}`}
+          rel='noreferrer' target='_blank'
+          >{datos[0].creatorAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
+          </h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Contract address:
+          <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
+          href={`https://polygonscan.com/address/${datos[0].contractAddress}`}
+          rel='noreferrer' target='_blank'
+          >{datos[0].contractAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
+          </h1><br/>
+        </>
+      )
     }
   }
 
@@ -82,10 +86,22 @@ export default function InfoPrivateContract() {
         <>
           <h1 className='text-gray-500 inline-flex'>The creator has already withdrawn the money:<p className='text-black ml-2'>{yaRetiro === true ? 'True': 'False'}</p></h1><br/>
           <h1 className='text-gray-500 inline-flex'>Contract balance:<p className='text-black ml-2'>${balance.toLocaleString()} USD</p></h1><br/>
-          <h1 className='text-gray-500 inline-flex'>Your investment with USDC or USDT:<p className='text-black ml-2'>{SIXinvertido}</p></h1><br/>
-          <h1 className='text-gray-500 inline-flex'>Your investment with BUSD or DAI:<p className='text-black ml-2'>{DyochoInvertido}</p></h1><br/>
-          { DyochoInvertido !== 0 ? <h1 className='text-gray-500 inline-flex'>Amount you will earn with BUSD or DAI:<p className='text-black ml-2'> {CuantoGanaraDyOcho}</p></h1> : <></> }
-          { SIXinvertido !== 0 ? <h1 className='text-gray-500 inline-flex'>Amount you will earn with USDC or USDT:<p className='text-black ml-2'> {CuantoGanaraSIX}</p></h1> : <></> }
+          <h1 className='text-gray-500 inline-flex'>Balance width USDC-USDT:<p className='text-black ml-2'
+          >${balanceSIX === (datos[0].targetCuantity / 2) ? 
+          <>{balanceSIX.toLocaleString()} the limit was reached to invest with USD-USDT</> 
+          : 
+          <>{balanceSIX.toLocaleString()}</>} </p>
+          </h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Balance width BUSD-DAI:<p className='text-black ml-2'
+          >${balanceDyOcho === (datos[0].targetCuantity / 2) ? 
+          <>{balanceDyOcho.toLocaleString()} the limit was reached to invest with BUSD-DAI</> 
+          : 
+          <>{balanceDyOcho.toLocaleString()}</>} </p>
+          </h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Your investment with USDC or USDT:<p className='text-black ml-2'>$ {SIXinvertido.toLocaleString()}</p></h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Your investment with BUSD or DAI:<p className='text-black ml-2'>$ {DyochoInvertido.toLocaleString()}</p></h1><br/>
+          { DyochoInvertido !== 0 ? <h1 className='text-gray-500 inline-flex'>Amount you will earn with BUSD or DAI:<p className='text-black ml-2'>$ {CuantoGanaraDyOcho.toLocaleString()}</p></h1> : <></> }
+          { SIXinvertido !== 0 ? <h1 className='text-gray-500'>Amount you will earn with USDC or USDT:<p className='text-black ml-2 inline-flex'>$ {CuantoGanaraSIX.toLocaleString()}</p></h1> : <></> }
           { YaSacoDyOcho === true || YaSacoSIX === true ? 
           <h1 className='text-gray-500'>You have already withdrawn your investment:<p className='text-black ml-2 inline-flex'> True</p></h1> 
           : 
@@ -122,37 +138,23 @@ export default function InfoPrivateContract() {
     IsCreator(signer)
     const contrato = new ethers.Contract(datos[0].contractAddress, abiCreador, signer)
     try {
-      const sixContractBalance = await contrato.sixContractBalance()
-      const DyOchoContractBalance = await contrato.DyOchoContractBalance()
       const YaSacoElDinero = await contrato.YaSacoElDinero()
       const SIXverCuantoInvertiste = await contrato.SIXverCuantoInvertiste()
       const DyOchoverCuantoInvertiste = await contrato.DyOchoverCuantoInvertiste()
       // -------------------- SIX
+      const sixContractBalance = await contrato.sixContractBalance()
+      procesarNumero(sixContractBalance, setbalanceSIX, 6)
+
       const verCuantoTeGanarasSix = await contrato.verCuantoTeGanarasSix()
-      const stringNumberSIX = verCuantoTeGanarasSix.toString();
-      const last6Digits = stringNumberSIX.slice(-6);
-      const last6DigitsAreAllZeros = last6Digits.split('').every(digit => digit === '0');
-      if (last6DigitsAreAllZeros) {  
-        let result = stringNumberSIX.slice(0, -6);
-        setCuantoGanaraSIX(result)
-      } else {
-        let result = stringNumberSIX.slice(0, -6) + '.' + last6Digits.replace(/0+$/, '');
-        setCuantoGanaraSIX(result)
-      }
+      procesarNumero(verCuantoTeGanarasSix, setCuantoGanaraSIX, 6)
       // -------------------- SIX
 
       // -------------------- D_Y_OCHO
       const verCuantoTeGanarasDyOcho = await contrato.verCuantoTeGanarasDyOcho()
-      const stringNumberDyOcho = verCuantoTeGanarasDyOcho.toString();
-      const last18Digits = stringNumberDyOcho.slice(-18);
-      const last18DigitsAreAllZeros = last18Digits.split('').every(digit => digit === '0'); // Check if the last 18 digits are all zeros
-      if (last18DigitsAreAllZeros) {  // Remove the last 18 digits if they're all zeros
-        let result = stringNumberDyOcho.slice(0, -18);
-        setCuantoGanaraDyOcho(result)
-      } else {
-        let result = stringNumberDyOcho.slice(0, -18) + '.' + last18Digits.replace(/0+$/, '');
-        setCuantoGanaraDyOcho(result)
-      }
+      procesarNumero(verCuantoTeGanarasDyOcho, setCuantoGanaraDyOcho, 18)
+
+      const DyOchoContractBalance = await contrato.DyOchoContractBalance()
+      procesarNumero(DyOchoContractBalance, setbalanceDyOcho, 18)
       // -------------------- D_Y_OCHO
 
       if (verCuantoTeGanarasDyOcho.toString() !== '0') {
@@ -196,6 +198,18 @@ export default function InfoPrivateContract() {
       console.log(error)
     }
   }
+  function procesarNumero(numero, setFunction, num) {
+    const stringNumber = numero.toString();
+    const last6Digits = stringNumber.slice(-num);
+    const last6DigitsAreAllZeros = last6Digits.split('').every(digit => digit === '0');
+    if (last6DigitsAreAllZeros) {  
+      let result = stringNumber.slice(0, -num);
+      setFunction(Number(result));
+    } else {
+      let result = stringNumber.slice(0, -num) + '.' + last6Digits.replace(/0+$/, '');
+      setFunction(Number(result));
+    }
+  }
 
   useEffect(() => {
     if(isWeb3Enabled) {
@@ -220,10 +234,10 @@ export default function InfoPrivateContract() {
       <div className='pb-3'>
         <h1 className='text-gray-500 inline-flex'>Network:<p className='text-black ml-2'>{datos[0].network}</p></h1><br/>
         <Eterscan/>
-        <h1 className='text-gray-500 inline-flex'>Creation date:<p className='text-black ml-2'>{datos[0].creationDate}</p></h1><br/>
         <h1 className='text-gray-500 inline-flex'>Tipe of round:<p className='text-black ml-2'>{datos[0].roundTipe}</p></h1><br/>
+        <h1 className='text-gray-500 inline-flex'>Creation date:<p className='text-black ml-2'>{datos[0].creationDate}</p></h1><br/>
         <h1 className='text-gray-500 inline-flex'>Performance:<p className='text-black ml-2'>{datos[0].rendiiento}%</p></h1><br/>
-        <h1 className='text-gray-500 inline-flex'>Target cuantity:<p className='text-black ml-2'>{datos[0].targetCuantity}</p></h1><br/>
+        <h1 className='text-gray-500 inline-flex'>Target cuantity:<p className='text-black ml-2'>{(datos[0].targetCuantity).toLocaleString()}</p></h1><br/>
         <ViewDatos/>
         {datos[0].network === 'Goerli' ? <GetTokens/> : <></>}
       </div>

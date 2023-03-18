@@ -8,7 +8,6 @@ import { useLocation, Navigate } from "react-router-dom"
 function PrivatePage() {
     const location = useLocation()
     const datos = location.state
-    console.log(datos)
     if(!datos) {
         return <Navigate to={'/'}/>
     }

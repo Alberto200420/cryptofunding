@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.ece3e152.css",
-    "main.js": "/static/js/main.975d09ca.js",
+    "main.css": "/static/css/main.9f6cd8f5.css",
+    "main.js": "/static/js/main.4c234369.js",
     "static/media/HomeNoneAnonimus.png": "/static/media/HomeNoneAnonimus.394a794b0c484e4923f7.png",
     "static/media/home.png": "/static/media/home.903859c3023638e7e358.png",
     "static/media/USDC.png": "/static/media/USDC.9b54912c5bac6daf5ab4.png",
@@ -9,7 +9,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.ece3e152.css",
-    "static/js/main.975d09ca.js"
+    "static/css/main.9f6cd8f5.css",
+    "static/js/main.4c234369.js"
   ]
 }

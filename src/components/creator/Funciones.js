@@ -1,4 +1,5 @@
-import { ABI_TMIS_DESARROLLADOR_GO } from "../../abi/TMIS_GO_TEST"
+import { ABI_TMIS_DESARROLLADOR_GO } from "../../abi/TMIS_GO_TEST" // GOELRI
+import { ABI_TMIS_DESARROLLADOR_POLYGON } from "../../abi/Polygon_ABI" // POLYGON
 import { TOKEN_TEST } from "../../abi/TokensTest"
 import { TOKEN_USDC, TOKEN_USDT, TOKEN_BUSD, TOKEN_DAI } from "../../abi/Polygon_ABI"
 import { MaxUint256, PERMIT2_ADDRESS, SignatureTransfer } from '@uniswap/permit2-sdk'
@@ -23,13 +24,12 @@ export default function FuncionesDesarrollador() {
   const [cargandoData, setCargandoData] = useState(false)
   const [dataCargada, setDataCarga] = useState(false)
   const [mensaje, setMensaje] = useState()
-  const [ balance, setBlance ] = useState(0)
   const [ devolverDyOcho, setDevolverDyOcho ] = useState()
   const [ devolverSIX, setDevolverSix ] = useState()
   const [ YALIQUIDO, setYaLiquido ] = useState(false)
   const [ seRealizo, setSeRealizo ] = useState(false)
-  const [ BalanceSIX, setBalanceSIX ] = useState()
-  const [ BalanceDyOcho, setBalanceDyOcho ] = useState()
+  const [ BalanceSIX, setBalanceSIX ] = useState(0)
+  const [ BalanceDyOcho, setBalanceDyOcho ] = useState(0)
   const [ yaRetiro, setYaRetiro ] = useState()
   const [ DataContract, setDataContract ] = useState(false)
   const [ usdt, setUsdt ] = useState('')
@@ -62,12 +62,34 @@ export default function FuncionesDesarrollador() {
     const contrato = new ethers.Contract(datos[0].contractAddress, abiCreador, signer)
     try {
       const YaSacoElDinero = await contrato.YaSacoElDinero()
+      // ---------------- SIX
       const sixContractBalance = await contrato.sixContractBalance()
-      const DyOchoContractBalance = await contrato.DyOchoContractBalance()
       const SIXbalance = sixContractBalance.toString()
+      const last6Digits = SIXbalance.slice(-6);
+      const last6DigitsAreAllZeros = last6Digits.split('').every(digit => digit === '0');
+      if (last6DigitsAreAllZeros) {  
+        let result = SIXbalance.slice(0, -6);
+        setBalanceSIX(Number(result))
+      } else {
+        let result = SIXbalance.slice(0, -6) + '.' + last6Digits.replace(/0+$/, '');
+        setBalanceSIX(Number(result))
+      }
+      // ---------------- SIX
+
+      // ---------------- DyOCHO
+      const DyOchoContractBalance = await contrato.DyOchoContractBalance()
       const DyOchoBalance = DyOchoContractBalance.toString()
-      const balanceDyOcho = Number(DyOchoBalance.slice(0, -18));
-      const balanceSIX = Number(SIXbalance.slice(0, -6));
+      const last18Digits = DyOchoBalance.slice(-18);
+      const last18DigitsAreAllZeros = last18Digits.split('').every(digit => digit === '0');
+      if (last18DigitsAreAllZeros) {
+        const result = DyOchoBalance.slice(0, -18);
+        setBalanceDyOcho(Number(result))
+      } else {
+        const result = DyOchoBalance.slice(0, -18) + '.' + last18Digits.replace(/0+$/, '');
+        setBalanceDyOcho(Number(result))
+      }
+      // ---------------- DyOCHO
+
       if(YaSacoElDinero === true) {
         const devolverDyOcho = await contrato.verCuantoDevolverasDyOcho()
         const yaLiquido = await contrato.yaLiquido()
@@ -80,13 +102,11 @@ export default function FuncionesDesarrollador() {
         setDevolverDyOcho(outputDyOcho)
         setDevolverSix(outputSIX)
       }
-      setBalanceSIX(SIXbalance)
-      setBalanceDyOcho(DyOchoBalance)
-      setBlance(balanceDyOcho + balanceSIX)
       setYaRetiro(YaSacoElDinero)
       setDataContract(true)
     } catch (error) {
       console.log(error)
+      alert('You are not the creator of the contract')
     }
   }
 
@@ -103,6 +123,7 @@ export default function FuncionesDesarrollador() {
       setCargandoData(false)
       setMensaje('Amount succesfully withdrawn')
       setDataCarga(true)
+      GetSigner()
     } catch (error) {
       console.log(error)
     }
@@ -182,6 +203,7 @@ export default function FuncionesDesarrollador() {
         setMensaje('Amount with interest returned correctly')
         setDataCarga(true)
       }
+      GetSigner()
     } catch (error) {
       setCargandoData(false)
       console.log(error)
@@ -194,7 +216,6 @@ export default function FuncionesDesarrollador() {
     const signer = provider.getSigner()
     const contract = new ethers.Contract(datos[0].contractAddress, abiCreador, signer)
     closeModal()
-    // setCargandoData(true)
     try {
       if(moneda === 'USDT' || moneda === 'USDC') {
         const tx = await contract.DevolverPorContratiempoSix(TOKEN, cantidad_a_invertir, NONCE, DEADLINE, SIGNATURE)
@@ -205,11 +226,13 @@ export default function FuncionesDesarrollador() {
         setDataCarga(true)
       } else if(moneda === 'BUSD' || moneda === 'DAI') {
         const tx = await contract.DevolverPorContratiempoDyOcho(TOKEN, cantidad_a_invertir, NONCE, DEADLINE, SIGNATURE)
+        setCargandoData(true)
         await tx.wait();
         setCargandoData(false)
         setMensaje('Amount without interest returned correctly')
         setDataCarga(true)
       }
+      GetSigner()
     } catch (error) {
       setCargandoData(false)
       console.log(error)
@@ -224,6 +247,7 @@ export default function FuncionesDesarrollador() {
     if(datos[0].network === 'Goerli') {
       return (
         <div className="relative mb-2">
+          <h1 className='text-gray-500 inline-flex'>Network:<p className='text-black ml-2'>{datos[0].network}</p></h1><br/>
           <h1 className='text-gray-500'>Address of the creator:
           <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500'
           href={`https://goerli.etherscan.io/address/${datos[0].creatorAddress}`}
@@ -257,31 +281,57 @@ export default function FuncionesDesarrollador() {
           <h1 className='text-gray-500'>Amount you must return whit BUSD or DAI: <p className="text-black inline-flex">{devolverDyOcho}</p></h1> 
           : 
           <div>
-            <h1 className='text-gray-500'>Balance in USDC or USDT: <p className="text-black inline-flex">{BalanceSIX}</p></h1>
-            <h1 className='text-gray-500'>Balance in BUSD or DAI: <p className="text-black inline-flex">{BalanceDyOcho}</p></h1>
+            <h1 className='text-gray-500'>Balance in USDC or USDT: <p className="text-black inline-flex">$ {BalanceSIX.toLocaleString()}</p></h1>
+            <h1 className='text-gray-500'>Balance in BUSD or DAI: <p className="text-black inline-flex">$ {BalanceDyOcho.toLocaleString()}</p></h1>
           </div>
           }
-          <h1 className='text-gray-500'>Contract Balance: <p className="text-black inline-flex">{balance.toLocaleString()}</p></h1>
+          <h1 className='text-gray-500'>Contract Balance: <p className="text-black inline-flex">$ {(BalanceSIX + BalanceDyOcho).toLocaleString()}</p></h1>
         </div>
       )
     } else if (datos[0].network === 'Polygon') {
-      <div className="relative">
-        <h1 className='text-gray-500'>Address of the creator:
-        <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500'
-        href={`https://polygonscan.com/address/${datos[0].creatorAddress}`}
-        rel='noreferrer' target='_blank'
-        >{creador.slice(0, 6) +"..." +creador.slice(38, 42)} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
-        </h1><br/>
-        <h1 className='text-gray-500'>Contract address:
-        <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500'
-        href={`https://polygonscan.com/address/${datos[0].contractAddress}`}
-        rel='noreferrer' target='_blank'
-        >{contrato.slice(0, 6) +"..." +contrato.slice(38, 42)} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
-        </h1>
-        {yaRetiro === true ? <h1 className='text-gray-500'>Status: <p className="text-black inline-flex">Capital retirado</p></h1> : <h1 className='text-gray-500'>Status: <p className="text-black inline-flex">Ronda activa</p></h1> }
-        {yaRetiro === true ? <h1 className='text-gray-500'>Amount you must return whit USDT or USDC: <p className="text-black inline-flex">{devolverSIX}</p></h1> : <></> }
-        {yaRetiro === true ? <h1 className='text-gray-500'>Amount you must return whit BUSD or DAI: <p className="text-black inline-flex">{devolverDyOcho}</p></h1> : <></> }
-      </div>
+      return (
+        <div className="relative">
+          <h1 className='text-gray-500 inline-flex'>Network:<p className='text-black ml-2'>{datos[0].network}</p></h1><br/>
+          <h1 className='text-gray-500'>Address of the creator:
+          <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500'
+          href={`https://polygonscan.com/address/${datos[0].creatorAddress}`}
+          rel='noreferrer' target='_blank'
+          >{creador.slice(0, 6) +"..." +creador.slice(38, 42)} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
+          </h1>
+          <h1 className='text-gray-500'>Contract address:
+          <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500'
+          href={`https://polygonscan.com/address/${datos[0].contractAddress}`}
+          rel='noreferrer' target='_blank'
+          >{contrato.slice(0, 6) +"..." +contrato.slice(38, 42)} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
+          </h1>
+          <h1 className='text-gray-500'>Status: <p className="text-black inline-flex"> 
+          {yaRetiro === false ? 'Active round' 
+          :
+          yaRetiro === true && YALIQUIDO === false ? 'Retired capital' 
+          :
+          YALIQUIDO === true && seRealizo === true ? 
+          'Amount returned with the performance' 
+          :
+          YALIQUIDO === true && seRealizo === false ? 
+          'Amount returned without the yield'
+          :
+          <></>}</p></h1>
+
+          {yaRetiro === true && YALIQUIDO === false ? 
+          <h1 className='text-gray-500'>Amount you must return whit USDT or USDC: <p className="text-black inline-flex">{devolverSIX}</p></h1> 
+          : 
+          <></> }
+          {yaRetiro === true && YALIQUIDO === false ? 
+          <h1 className='text-gray-500'>Amount you must return whit BUSD or DAI: <p className="text-black inline-flex">{devolverDyOcho}</p></h1> 
+          : 
+          <div>
+            <h1 className='text-gray-500'>Balance in USDC or USDT: <p className="text-black inline-flex">$ {BalanceSIX.toLocaleString()}</p></h1>
+            <h1 className='text-gray-500'>Balance in BUSD or DAI: <p className="text-black inline-flex">$ {BalanceDyOcho.toLocaleString()}</p></h1>
+          </div>
+          }
+          <h1 className='text-gray-500'>Contract Balance: <p className="text-black inline-flex">$ {(BalanceSIX + BalanceDyOcho).toLocaleString()}</p></h1>
+        </div>
+      )
     }
   }
 
@@ -305,7 +355,6 @@ export default function FuncionesDesarrollador() {
       setAbiBUSD(TOKEN_TEST)
       setAbiDAI(TOKEN_TEST)
       setRedParaFirma(5)
-      console.log('useEffect de Funciones desarrollador envio los datos')
     } else if (datos[0].network === 'Polygon') {
       setUsdt('0xC3b67986aa9AD876AEDfadA84559B6960307AfC6')
       setUsdc('0x216aEA7BCf9cCf5D1F8F1c771d899578aF3d4423')
@@ -315,7 +364,7 @@ export default function FuncionesDesarrollador() {
       setAbiUSDC(TOKEN_USDC)
       setAbiBUSD(TOKEN_BUSD)
       setAbiDAI(TOKEN_DAI)
-      setAbiCreador('ABI_TMIS_DESARROLLADOR_GO')
+      setAbiCreador(ABI_TMIS_DESARROLLADOR_POLYGON)
       setRedParaFirma(80001) // 137 mainet
     }
   },[datos])
@@ -324,6 +373,7 @@ export default function FuncionesDesarrollador() {
     if(dataCargada === true) {
       setTimeout(function() {
         setDataCarga(false)
+        console.log('recargado')
       }, 10000);
     }
   },[dataCargada])

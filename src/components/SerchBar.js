@@ -14,7 +14,6 @@ export default function SearchBar() {
     }
 
     if (modalData.status === 'private') {
-      console.log(privateData)
       return (
         <>
           <Transition appear show={isOpen} as={Fragment}>
@@ -78,7 +77,6 @@ export default function SearchBar() {
         </>
       )
     } else if(modalData.status === 'public') {
-      console.log(publicData)
       return (
         <>
           <Transition appear show={isOpen} as={Fragment}>
@@ -206,7 +204,8 @@ export default function SearchBar() {
       }
     })
     .catch(function (error) {
-      GoerliSearch()
+      GoerliSearch(contract)
+      console.log(error)
     });
   }
   
@@ -261,6 +260,7 @@ export default function SearchBar() {
       }
     })
     .catch(function (error) {
+      console.log(error)
       alert('Error 404 not contract found')
     });
   }

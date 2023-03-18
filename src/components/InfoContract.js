@@ -24,9 +24,11 @@ export default function InfoSmartContract() {
   const [ LoCreo, setLoCreo ] = useState(false)
   const [ yaRetiro, setYaRetiro ] = useState(false)
   const [ balance, setBlance ] = useState(0)
+  const [ balanceSIX, setbalanceSIX ] = useState(0)
+  const [ balanceDyOcho, setbalanceDyOcho ] = useState(0)
   const [ DyochoInvertido, setDyochoInvertido ] = useState(0)
-  const [ CuantoGanaraSIX ,setCuantoGanaraSIX ] = useState('0')
-  const [ CuantoGanaraDyOcho ,setCuantoGanaraDyOcho ] = useState('0')
+  const [ CuantoGanaraSIX ,setCuantoGanaraSIX ] = useState(0)
+  const [ CuantoGanaraDyOcho ,setCuantoGanaraDyOcho ] = useState(0)
   const [ YaSacoDyOcho, setYaSacoDyOcho ] = useState(false)
   const [ YaSacoSIX, setYaSacoSIX ] = useState(false)
   const [ YALIQUIDO, setYaLiquido ] = useState(false)
@@ -69,20 +71,22 @@ export default function InfoSmartContract() {
         </>
       )
     } else if (datos[0].network === 'Polygon') {
-      <>
-        <h1 className='text-gray-500 inline-flex' >Address of the creator:
-        <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
-        href={`https://polygonscan.com/address/${datos[0].creatorAddress}`}
-        rel='noreferrer' target='_blank'
-        >{datos[0].creatorAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
-        </h1><br/>
-        <h1 className='text-gray-500 inline-flex'>Contract address:
-        <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
-        href={`https://polygonscan.com/address/${datos[0].contractAddress}`}
-        rel='noreferrer' target='_blank'
-        >{datos[0].contractAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
-        </h1><br/>
-      </>
+      return(
+        <>
+          <h1 className='text-gray-500 inline-flex' >Address of the creator:
+          <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
+          href={`https://polygonscan.com/address/${datos[0].creatorAddress}`}
+          rel='noreferrer' target='_blank'
+          >{datos[0].creatorAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
+          </h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Contract address:
+          <a className='text-black ml-2 no-underline hover:underline hover:text-sky-500' 
+          href={`https://polygonscan.com/address/${datos[0].contractAddress}`}
+          rel='noreferrer' target='_blank'
+          >{datos[0].contractAddress} <ArrowTopRightOnSquareIcon width={15} height={15} className='inline-flex mb-1'/></a>
+          </h1><br/>
+        </>
+      )
     }
   }
 
@@ -92,10 +96,22 @@ export default function InfoSmartContract() {
         <>
           <h1 className='text-gray-500 inline-flex'>The creator has already withdrawn the money:<p className='text-black ml-2'>{yaRetiro === true ? 'True': 'False'}</p></h1><br/>
           <h1 className='text-gray-500 inline-flex'>Contract balance:<p className='text-black ml-2'>${balance.toLocaleString()} USD</p></h1><br/>
-          <h1 className='text-gray-500 inline-flex'>Your investment with USDC or USDT:<p className='text-black ml-2'>{SIXinvertido}</p></h1><br/>
-          <h1 className='text-gray-500 inline-flex'>Your investment with BUSD or DAI:<p className='text-black ml-2'>{DyochoInvertido}</p></h1><br/>
-          { DyochoInvertido !== 0 ? <h1 className='text-gray-500 inline-flex'>Amount you will earn with BUSD or DAI:<p className='text-black ml-2'> {CuantoGanaraDyOcho}</p></h1> : <></> }
-          { SIXinvertido !== 0 ? <h1 className='text-gray-500 inline-flex'>Amount you will earn with USDC or USDT:<p className='text-black ml-2'> {CuantoGanaraSIX}</p></h1> : <></> }
+          <h1 className='text-gray-500 inline-flex'>Balance width USDC-USDT:<p className='text-black ml-2'
+          >${balanceSIX === (datos[0].targetCuantity / 2) ? 
+          <>{balanceSIX.toLocaleString()} the limit was reached to invest with USD-USDT</> 
+          : 
+          <>{balanceSIX.toLocaleString()}</>} </p>
+          </h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Balance width BUSD-DAI:<p className='text-black ml-2'
+          >${balanceDyOcho === (datos[0].targetCuantity / 2) ? 
+          <>{balanceDyOcho.toLocaleString()} the limit was reached to invest with BUSD-DAI</> 
+          : 
+          <>{balanceDyOcho.toLocaleString()}</>} </p>
+          </h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Your investment with USDC or USDT:<p className='text-black ml-2'>$ {SIXinvertido.toLocaleString()}</p></h1><br/>
+          <h1 className='text-gray-500 inline-flex'>Your investment with BUSD or DAI:<p className='text-black ml-2'>$ {DyochoInvertido.toLocaleString()}</p></h1><br/>
+          { DyochoInvertido !== 0 ? <h1 className='text-gray-500 inline-flex'>Amount you will earn with BUSD or DAI:<p className='text-black ml-2'>$ {CuantoGanaraDyOcho.toLocaleString()}</p></h1> : <></> }
+          { SIXinvertido !== 0 ? <h1 className='text-gray-500'>Amount you will earn with USDC or USDT:<p className='text-black ml-2 inline-flex'>$ {CuantoGanaraSIX.toLocaleString()}</p></h1> : <></> }
           { YaSacoDyOcho === true || YaSacoSIX === true ? 
           <h1 className='text-gray-500'>You have already withdrawn your investment:<p className='text-black ml-2 inline-flex'> True</p></h1> 
           : 
@@ -133,37 +149,23 @@ export default function InfoSmartContract() {
     IsCreator(signer)
     const contrato = new ethers.Contract(datos[0].contractAddress, abiCreador, signer)
     try {
-      const sixContractBalance = await contrato.sixContractBalance()
-      const DyOchoContractBalance = await contrato.DyOchoContractBalance()
       const YaSacoElDinero = await contrato.YaSacoElDinero()
       const SIXverCuantoInvertiste = await contrato.SIXverCuantoInvertiste()
       const DyOchoverCuantoInvertiste = await contrato.DyOchoverCuantoInvertiste()
       // -------------------- SIX
+      const sixContractBalance = await contrato.sixContractBalance()
+      procesarNumero(sixContractBalance, setbalanceSIX, 6)
+
       const verCuantoTeGanarasSix = await contrato.verCuantoTeGanarasSix()
-      const stringNumberSIX = verCuantoTeGanarasSix.toString();
-      const last6Digits = stringNumberSIX.slice(-6);
-      const last6DigitsAreAllZeros = last6Digits.split('').every(digit => digit === '0');
-      if (last6DigitsAreAllZeros) {  
-        let result = stringNumberSIX.slice(0, -6);
-        setCuantoGanaraSIX(result)
-      } else {
-        let result = stringNumberSIX.slice(0, -6) + '.' + last6Digits.replace(/0+$/, '');
-        setCuantoGanaraSIX(result)
-      }
+      procesarNumero(verCuantoTeGanarasSix, setCuantoGanaraSIX, 6)
       // -------------------- SIX
 
       // -------------------- D_Y_OCHO
       const verCuantoTeGanarasDyOcho = await contrato.verCuantoTeGanarasDyOcho()
-      const stringNumberDyOcho = verCuantoTeGanarasDyOcho.toString();
-      const last18Digits = stringNumberDyOcho.slice(-18);
-      const last18DigitsAreAllZeros = last18Digits.split('').every(digit => digit === '0'); // Check if the last 18 digits are all zeros
-      if (last18DigitsAreAllZeros) {  // Remove the last 18 digits if they're all zeros
-        let result = stringNumberDyOcho.slice(0, -18);
-        setCuantoGanaraDyOcho(result)
-      } else {
-        let result = stringNumberDyOcho.slice(0, -18) + '.' + last18Digits.replace(/0+$/, '');
-        setCuantoGanaraDyOcho(result)
-      }
+      procesarNumero(verCuantoTeGanarasDyOcho, setCuantoGanaraDyOcho, 18)
+
+      const DyOchoContractBalance = await contrato.DyOchoContractBalance()
+      procesarNumero(DyOchoContractBalance, setbalanceDyOcho, 18)
       // -------------------- D_Y_OCHO
 
       if (verCuantoTeGanarasDyOcho.toString() !== '0') {
@@ -205,6 +207,18 @@ export default function InfoSmartContract() {
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+  function procesarNumero(numero, setFunction, num) {
+    const stringNumber = numero.toString();
+    const last6Digits = stringNumber.slice(-num);
+    const last6DigitsAreAllZeros = last6Digits.split('').every(digit => digit === '0');
+    if (last6DigitsAreAllZeros) {  
+      let result = stringNumber.slice(0, -num);
+      setFunction(Number(result));
+    } else {
+      let result = stringNumber.slice(0, -num) + '.' + last6Digits.replace(/0+$/, '');
+      setFunction(Number(result));
     }
   }
 
@@ -283,10 +297,10 @@ export default function InfoSmartContract() {
       </Tab.Group>
 
       <div className='py-5 '>
-        {datos[0].linkTwitter ? <a href={datos[0].linkTwitter} rel='noreferrer' target='_blank' className='inline-flex'><BsTwitter/></a> : <div></div> }
-        {datos[0].linkInstagram ? <a href={datos[0].linkInstagram} rel='noreferrer' target='_blank' className='inline-flex px-4'><RxInstagramLogo/></a> : <div></div> }
-        {datos[0].email ? <a href={`mailto:${datos[0].email}`} rel='noreferrer' target='_blank' className='inline-flex'><HiOutlineMail/></a> : <div></div> }
-        {datos[0].linkedin ? <a href={datos[0].linkedin} rel='noreferrer' target='_blank' className='inline-flex px-4'><BsLinkedin/></a> : <div></div> }
+        {datos[0].linkTwitter ? <a href={datos[0].linkTwitter} rel='noreferrer' target='_blank' className='inline-flex'><BsTwitter/></a> : <div className='inline-flex'></div> }
+        {datos[0].linkInstagram ? <a href={datos[0].linkInstagram} rel='noreferrer' target='_blank' className='inline-flex px-4'><RxInstagramLogo/></a> : <div className='inline-flex'></div> }
+        {datos[0].email ? <a href={`mailto:${datos[0].email}`} rel='noreferrer' target='_blank' className='inline-flex'><HiOutlineMail/></a> : <div className='inline-flex'></div> }
+        {datos[0].linkedin ? <a href={datos[0].linkedin} rel='noreferrer' target='_blank' className='inline-flex px-4'><BsLinkedin/></a> : <div className='inline-flex'></div> }
         {datos[0].webPage ? <a href={datos[0].webPage} rel='noreferrer' target='_blank' className='inline-flex'><MdWeb/></a> : <div></div> }
       </div>
       

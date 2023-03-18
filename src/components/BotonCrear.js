@@ -4,6 +4,7 @@ import { Switch } from '@headlessui/react'
 import axios from 'axios'
 import { useMoralis } from "react-moralis"
 import { TMIS_ADDRESS, ABI_TMIS_GO } from 'abi/TMIS_GO_TEST'
+import { ADDRESS_TMIS_POLYGON, ABI_TMIS_POLYGON } from 'abi/Polygon_ABI'
 import { ethers } from 'ethers'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid'
 import ModalSuccess from './ModalSuccess'
@@ -42,10 +43,29 @@ export default function BotonCrearContrato() {
 
   const { terminos_Y_condiciones, cantidad_Objetivo_USD, rendimiento } = formData
   const { paginaWeb, instagram, twitter, linkedin, fotoPersonal, logo, email, trayectory, oficinas } = enabled
+  const [ previewImage1, setPreviweImage1] = useState()
+  const [ previewImage2, setPreviweImage2] = useState()
 
 
   const enCambio = e => setEnabled({ ...enabled, [e.target.name]: e.target.value })
-  const handleFileChange = (event) => setEnabled({ ...enabled, [event.target.name]: event.target.files[0], })
+  const handleFileChange = (event) => {
+    setEnabled({ ...enabled, [event.target.name]: event.target.files[0], })
+    const file = event.target.files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = (event) => {
+      setPreviweImage1(reader.result)
+    }
+  }
+  const handleFile2Change = (event) => {
+    setEnabled({ ...enabled, [event.target.name]: event.target.files[0], })
+    const file = event.target.files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = (event) => {
+      setPreviweImage2(reader.result)
+    }
+  }
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
 
   //------------------------------------------------ FUNCTIONS GOELRI
@@ -54,8 +74,7 @@ export default function BotonCrearContrato() {
     hash: '',
     address_del_creador: '',
     address_del_contrato: '',
-    network: '',
-    gasUsado: ''
+    network: ''
   });
 
   function ModalContractInfo() {
@@ -124,9 +143,6 @@ export default function BotonCrearContrato() {
                           <h1 className="text-sm text-gray-500">
                             Network deployed: <p className='text-black'>{contractData.network}</p>
                           </h1>
-                          <h1 className="text-sm text-gray-500">
-                            Gas fee: <p className='text-black'>{contractData.gasUsado}</p>
-                          </h1>
                         </div>
                         <div className="mt-4">
                           <button
@@ -168,9 +184,6 @@ export default function BotonCrearContrato() {
                           </h1>
                           <h1 className="text-sm text-gray-500">
                             Network deployed: <p className='text-black'>{contractData.network}</p>
-                          </h1>
-                          <h1 className="text-sm text-gray-500">
-                            Gas fee: <p className='text-black'>{contractData.gasUsado}</p>
                           </h1>
                         </div>
                         <div className="mt-4">
@@ -224,14 +237,6 @@ export default function BotonCrearContrato() {
                                 </div>
                               </div>
                           </h1>
-                          <h1 className="text-sm text-gray-500">
-                            Gas fee: <br/>
-                              <div className="animate-pulse flex space-x-4">
-                                <div className="flex-1 space-y-4 py-1">
-                                  <div className="h-3 bg-slate-700 rounded col-span-2"></div>
-                                </div>
-                              </div>
-                          </h1>
                         </div>
                       </div>
                     }
@@ -256,8 +261,8 @@ export default function BotonCrearContrato() {
 
   const firmar = async () => {
     // funcion para crear contrato
-    const DyOchoDinero = cantidad_Objetivo_USD + "000000000000000000"
-    const SIXdinero = cantidad_Objetivo_USD + "000000"
+    const DyOchoDinero = cantidad_Objetivo_USD / 2 + "000000000000000000"
+    const SIXdinero = cantidad_Objetivo_USD / 2 + "000000"
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const address = await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
@@ -270,34 +275,26 @@ export default function BotonCrearContrato() {
         setCargandoData(true)
         await tx.wait();
         // Get the contract function result
-        const receipt = await provider.getTransactionReceipt(tx.hash);
-        const gasUsado = receipt.gasUsed.toString()
-        // OBTENIENDO GAS USADO
         const contractAddress = await contract.buscarCONTRATO(address[0]);
         // OBTENIENDO CONTRATO
         setContractData({
-          hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'Goerli', gasUsado: gasUsado
-        });
+          hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'Goerli'});
         sendData(address[0], contractAddress)
       } catch (error) {
         console.log(error)
       }
     } else if(chainId === '0x13881') {
       try {
-        const contract = new ethers.Contract('TMIS_ADDRESS', 'ABI_TMIS_GO', signer); // ADDRESS && ABI Polygon
+        const contract = new ethers.Contract(ADDRESS_TMIS_POLYGON, ABI_TMIS_POLYGON, signer); // ADDRESS && ABI Polygon
         closeModal()
         const tx = await contract.crearContrato(terminos_Y_condiciones, DyOchoDinero, SIXdinero, rendimiento);
         setCargandoData(true)
-        await tx.wait(2);
+        await tx.wait();
         // Get the contract function result
-        const receipt = await provider.getTransactionReceipt(tx.hash);
-        const gasUsado = receipt.gasUsed.toString()
-        // OBTENIENDO GAS USADO
         const contractAddress = await contract.buscarCONTRATO(address[0]);
         // OBTENIENDO CONTRATO 
         setContractData({
-          hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'Polygon', gasUsado: gasUsado
-        });
+          hash: tx.hash, address_del_creador: address[0], address_del_contrato: contractAddress, network: 'Polygon'});
         sendData(address[0], contractAddress)
       } catch (error) {
         console.log(error)
@@ -420,18 +417,18 @@ export default function BotonCrearContrato() {
 
                   <form onSubmit={e=>onSubmit(e)}>
                       <label className='text-xl' htmlFor="fname"><h2>Write a contract containing terms and conditions:</h2></label>
-                      <textarea  type="text" className='border-2 border-black rounded-lg w-full resize-none outline-none h-72' name="terminos_Y_condiciones" onChange={e=>onChange(e)} required/><br/>
+                      <textarea  type="text" className='border border-black rounded-lg w-full resize-none outline-none h-72' name="terminos_Y_condiciones" onChange={e=>onChange(e)} required/><br/>
                       <label className='text-xl' htmlFor="lname"><h5>Target quantity:</h5></label>
-                      <input type="text" className='border-2 border-black rounded-lg outline-none text-center w-3/4 py-1.5 ' 
+                      <input type="text" className='appearance-none border border-black rounded-md py-2 px-3 text-gray-700 focus:outline-none' 
                       name="cantidad_Objetivo_USD" onChange={e=>onChange(e)} placeholder='1,000,000.00 $USD' required/><br/><br/>
                       <label className='text-xl' htmlFor="lname"><h5>Investment performance %:</h5></label>
-                      <input type="text" className='border-2 border-black rounded-md outline-none text-center w-3/4 py-1.5 ' 
+                      <input type="text" className='appearance-none border border-black rounded-md py-2 px-3 text-gray-700 focus:outline-none' 
                       name="rendimiento" onChange={e=>onChange(e)} placeholder='E.G: 25' maxLength='2' required/><br/>
 
                       <div className="inline-flex py-4">
                         <label className='text-xl px-2' htmlFor="lname"><h5>Private</h5></label>
                         <Switch checked={enabled} onChange={setEnabled}
-                            className={`${enabled ? 'bg-teal-900' : 'bg-teal-700'}
+                            className={`${enabled ? 'bg-green-500' : 'bg-black'}
                             inline-flex h-[28px] w-[64px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
                             >
                             <span aria-hidden="true" className={`${enabled ? 'translate-x-9' : 'translate-x-0'} pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
@@ -441,17 +438,19 @@ export default function BotonCrearContrato() {
                         {
                           enabled ? 
                           <div>
-                            <input type='url' placeholder='Instagram' name='instagram' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
-                            <input type='url' placeholder='Pagina web' name='paginaWeb' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
-                            <input type='url' placeholder='Twitter' name='twitter' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
-                            <input type='url' placeholder='Linkedin' name='linkedin' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
-                            <input type='email' placeholder='Email' name='email' onChange={e=>enCambio(e)} required className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
-                            <textarea type="text" placeholder='Cuentanos tu trayectoria' name="trayectory" onChange={e=>enCambio(e)} required className='border-2 border-gray-300 rounded-lg w-3/4 resize-none outline-none h-52 text-center'/><br/><br/>
-                            <input type='url'  placeholder='Oficinas' name='oficinas' onChange={e=>enCambio(e)} className='border-2 border-gray-300 rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Instagram' name='instagram' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Pagina web' name='paginaWeb' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Twitter' name='twitter' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Linkedin' name='linkedin' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='email' placeholder='Email' name='email' onChange={e=>enCambio(e)} required className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <textarea type="text" placeholder='Cuentanos tu trayectoria' name="trayectory" onChange={e=>enCambio(e)} required className='border border-black rounded-lg w-3/4 resize-none outline-none h-52 text-center'/><br/><br/>
+                            <input type='url'  placeholder='Oficinas' name='oficinas' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
                             <label className='text-xl' htmlFor="lname"><h5>Personal photo</h5></label>
-                            <input type='file' name='fotoPersonal' onChange={handleFileChange} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
+                            <input type='file' name='fotoPersonal' onChange={handleFileChange} required className='text-sm mt-1 text-black file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
+                            {previewImage1 ? <img src={previewImage1} className='rounded-md w-24'/> : <></>} 
                             <label className='text-xl' htmlFor="lname"><h5>Brand logo</h5></label>
-                            <input type='file' name='logo' onChange={handleFileChange} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
+                            <input type='file' name='logo' onChange={handleFile2Change} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
+                            {previewImage2 ? <img src={previewImage2} className='rounded-md w-24'/> : <></>}
                           </div> : <div></div>
                         }
                        

@@ -26,7 +26,7 @@ contract TMIS {
     constructor () {
         creador = msg.sender;
     }
-    bool private SePuedeCrear = true;
+    uint8 private SePuedeCrear = 0;
     address private creador;
     mapping(address => address) private BuscarContratoDelDesarrollador;
     modifier onlyOwner(address direccion) {
@@ -35,7 +35,7 @@ contract TMIS {
     }
 
     function crearContrato(string memory terminosYcondiciones, uint256 DyOchoDinero, uint256 SIXdinero, uint256 rendimiento) public {
-        assert(SePuedeCrear == true);
+        assert(SePuedeCrear == 0);
         address DireccionContratoDelDesarrollador = address(new ContratoDelDesarrollador(msg.sender, terminosYcondiciones, DyOchoDinero, SIXdinero, rendimiento, creador));
         BuscarContratoDelDesarrollador[msg.sender] = DireccionContratoDelDesarrollador;
     }
@@ -45,7 +45,7 @@ contract TMIS {
     } 
 
     function detener() public onlyOwner(msg.sender) {
-        SePuedeCrear = false;
+        SePuedeCrear = 1;
     }
 
 }
@@ -86,6 +86,7 @@ contract ContratoDelDesarrollador {
     bool private yaSacoElDinero = false; 
     bool public yaLiquido = false; 
     bool public seRealizoElProyecto = true;
+    uint8 public NoProfit = 0;
 
     modifier onlyOwner(address _direccion) {
         require(_direccion == addressDelDesarrollador, "No tienes permiso para generar esta function");
@@ -98,7 +99,7 @@ contract ContratoDelDesarrollador {
     }
     modifier requisitos(address _direccion) {
         require(_direccion != addressDelDesarrollador);
-        require(yaSacoElDinero == false, "El sesarrollador ya saco el dinero ya nadie puede fondear");
+        assert(yaSacoElDinero == false);
         _;
     }
     function sixComision(uint256 _cantidad) private pure returns(uint256 invertido) {
@@ -200,7 +201,7 @@ contract ContratoDelDesarrollador {
     }
 
     function withdrawForOwner() public onlyOwner(msg.sender) {
-        require(yaSacoElDinero == false, "Ya sacaste el dinero");
+        assert(yaSacoElDinero == false);
         T_masTres_M = block.timestamp + 7889229;
         totalRecaudado_six = sixContractBalance();
         totalRecaudado_DyOcho = DyOchoContractBalance();
@@ -251,6 +252,7 @@ contract ContratoDelDesarrollador {
         );
         seRealizoElProyecto = false;
         yaLiquido = true;
+        NoProfit = 1;
     }
 
     function DevolverPorContratiempoDyOcho(IERC20 token, uint256 amount, uint256 nonce, uint256 deadline, bytes calldata signature) public onlyOwner(msg.sender) {
@@ -266,6 +268,7 @@ contract ContratoDelDesarrollador {
         );
         seRealizoElProyecto = false;
         yaLiquido = true;
+        NoProfit = 1;
     }
 
     function withdrawForinvestors() public OnlyInvestors(msg.sender) {

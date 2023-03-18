@@ -39,7 +39,7 @@ function Navbar() {
 
     return(
         <nav className="w-full shadow-md fixed bg-gray-900">
-            <div className=" px-4 py-5 sm:px-6">
+            <div className=" px-4 py-3 sm:px-6">
             <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
                 <div className="ml-4 mt-2">
                 {

@@ -26,10 +26,25 @@ class PublicSerializer(serializers.ModelSerializer):
         ]
 
 
+class PublicPaginator(serializers.ModelSerializer):
+    class Meta: 
+        model=PolygonPublic
+        fields=[
+            'contractAddress',
+            'terminosYcondiciones',
+            'fechaDeCreacion',
+            'rendimiento',
+            'cantidadObjetivo',
+            'imagenPersonal',
+            'logo',
+            'trayectoria'
+        ]
+
+
 class PrivateSerializer(serializers.ModelSerializer):
     class Meta:
         model=PolygonPrivate
-        fileds=[
+        fields=[
             'id',
             'roundTipe',
             'addressDelCreador',
