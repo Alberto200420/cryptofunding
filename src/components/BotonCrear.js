@@ -373,7 +373,7 @@ export default function BotonCrearContrato() {
     })
     .catch(function (error) {
       console.log(error)
-      alert("ERROR contract not saved in the database. Do not panic, your contract was created in the blockchain butwe did not keep it, please contact us")
+      alert("ERROR contract not saved in the database. Do not panic, your contract was created in the blockchain but we did not keep it, please contact us")
     })
   }
   // --------------------------------------------------------   Funciones
