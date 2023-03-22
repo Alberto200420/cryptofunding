@@ -4,6 +4,7 @@ import WalletMetamask from '../../assets/img/walletMetamask.png'
 import { useLocation, Navigate, Link } from 'react-router-dom'
 import { Bars3Icon, ScaleIcon, UsersIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import FuncionesDesarrollador from 'components/creator/Funciones'
+import Explicacion from 'components/creator/explicacion'
 
 const navigation = [
   { name: 'Proyect', icon: UsersIcon, current: true }
@@ -191,6 +192,7 @@ export default function Dashboard() {
               <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
                 {/* Replace with your content */}
                 <FuncionesDesarrollador/>
+                <Explicacion/>
                 {/* /End replace */}
               </div>
             </div>

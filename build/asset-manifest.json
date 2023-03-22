@@ -1,15 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.9f6cd8f5.css",
-    "main.js": "/static/js/main.0096487e.js",
-    "static/media/HomeNoneAnonimus.png": "/static/media/HomeNoneAnonimus.394a794b0c484e4923f7.png",
-    "static/media/home.png": "/static/media/home.903859c3023638e7e358.png",
+    "main.css": "/static/css/main.70dd628c.css",
+    "main.js": "/static/js/main.f73af7e4.js",
+    "static/media/HomeNoneAnonimus.png": "/static/media/HomeNoneAnonimus.05ba0ffe79f756fd1a8c.png",
+    "static/media/home.png": "/static/media/home.b493dec382959fd29be1.png",
+    "static/media/vistaPublic.png": "/static/media/vistaPublic.dc36ae658b65826a58cc.png",
+    "static/media/vista.png": "/static/media/vista.3cd51038a6246acc5d21.png",
+    "static/media/explicacion_dashboard.png": "/static/media/explicacion_dashboard.c6a3447093abe6ceac7c.png",
+    "static/media/comoInvertir.png": "/static/media/comoInvertir.b6328fb0a365c57185d6.png",
     "static/media/USDC.png": "/static/media/USDC.9b54912c5bac6daf5ab4.png",
     "static/media/DAI.png": "/static/media/DAI.15bb1a68aa182d7f65fe.png",
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.9f6cd8f5.css",
-    "static/js/main.0096487e.js"
+    "static/css/main.70dd628c.css",
+    "static/js/main.f73af7e4.js"
   ]
 }

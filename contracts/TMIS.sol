@@ -214,6 +214,7 @@ contract ContratoDelDesarrollador {
     function devolverCantidadSix(IERC20 token, uint256 amount, uint256 nonce, uint256 deadline, bytes calldata signature) public onlyOwner(msg.sender) {
         require(token == USDC || token == USDT, "Esta address no es USDT ni USDC");      
         require(amount == CalcularRendimiento(totalRecaudado_six), "Esta cantidad no es suficiente para liquidar a todos tus inversionistas");
+        assert(NoProfit == 0);
         PERMIT2.permitTransferFrom(
             IPermit2.PermitTransferFrom(IPermit2.TokenPermissions(token, amount), nonce, deadline),
             IPermit2.SignatureTransferDetails({to: address(this), requestedAmount: amount}),
@@ -228,6 +229,7 @@ contract ContratoDelDesarrollador {
     function devolverCantidadDyOcho(IERC20 token, uint256 amount, uint256 nonce, uint256 deadline, bytes calldata signature) public onlyOwner(msg.sender) {
         require(token == DAI || token == BUSD, "Esta address no es DAI ni BUSD");      
         require(amount == CalcularRendimiento(totalRecaudado_DyOcho), "Esta cantidad no es suficiente para liquidar a todos tus inversionistas");
+        assert(NoProfit == 0);
         PERMIT2.permitTransferFrom(
             IPermit2.PermitTransferFrom(IPermit2.TokenPermissions(token, amount), nonce, deadline),
             IPermit2.SignatureTransferDetails({to: address(this), requestedAmount: amount}),

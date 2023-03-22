@@ -18,7 +18,7 @@ function PublicPage() {
                     <div className="inline-flex rounded-sm px-8">
                         <img className="rounded-md w-24" alt="personal" src={ datos[0].personalFile }/>
                     </div>
-                    <div className="inline-flex rounded-sm px-8 bg-black">
+                    <div className="inline-flex rounded-sm px-8">
                         <img className="rounded-md w-24" alt="logo" src={ datos[0].logo }/>
                     </div>
                     <BotonFirmar address={datos[0].contractAddress} network={datos[0].network}/>

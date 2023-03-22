@@ -9,109 +9,124 @@ function HowItIsFor() {
             </Link>
             
             <h1 className="text-4xl text-center font-semibold tracking-tight sm:text-6xl">
-                ¿Para quien es T-mis? 
+                Who is tmis for?
             </h1>
-            <div className="px-32 pt-3">
+            <div className="px-10 md:px-32 pt-3">
                 <li className="mt-4 text-2xl leading-8 text-black">
-                    T-mis esta pensado 100% en empresarios con marca personal que buscan levantar capital 
-                    para sus proyectos en el cual puedan usar el capital para sus negocios puesto que la plataforma 
-                    se hizo para que personas que siguen a el desarrollador inviertan capital en monedas estables 
-                    y reciban un rendimiento por parte de el desarrollador.                    
+                    tmis is 100% thought of entrepreneurs with personal brand who seek to raise capital
+                    for their projects in which they can use the capital for their businesses since the platform
+                    was made for people who follow the developer to invest capital in stablecoins
+                    and receive performance from the developer.                  
                 </li>
                 <li className="mt-4 text-2xl leading-8 text-black">
-                    Para inversionistas que buscan incrementar su capital invirtiendo en proyectos, estos inversionistas
-                    tendran una variedad de opciones en el cual puedan invertir conparando porcentajes de retorno y plazos 
-                    de tiempo en el que reciban las ganancias, unicamente invirtiendo en personas que confien 
+                For investors seeking to increase their capital by investing in projects, these investors
+                      They will have a variety of options in which they could invest comparing return percentages and terms
+                      of time in which they receive the profits, only investing in people who trust.
                 </li>
             </div>
             <h1 className="text-4xl text-center pt-8 font-semibold tracking-tight sm:text-6xl">
-                ¿Por que tengo que tener marca personal? 
+                Why do I have to have a personal brand?
             </h1>
-            <div className="px-32 pt-3">
+            <div className="px-10 md:px-32 pt-3">
                 <h5 className="mt-4 text-4x1 font-medium text-center text-black">
-                    Puedes maximizar tus oportunidades de éxito a la hora de conseguir el capital que necesitas para tu negocio.
+                    You can maximize your chances of success when it comes to getting the capital you need for your business.
                 </h5>
                 <p className="mt-4 text-2xl leading-8 text-black">
-                    Una marca personal sólida te ayuda a construir credibilidad y confianza con tu comunidad, lo que a su vez aumenta 
-                    la probabilidad de que invertan en tu negocio.<br/> La marca personal muestra quién eres, qué valores y principios 
-                    tienes, y lo que puedes ofrecer.<br/>Al tener una presencia fuerte y consistente en línea y en la vida real, puedes 
-                    demostrar a los inversores potenciales que eres una persona seria y competente que es digna de su inversión.<br/> 
-                    Además, una marca personal bien establecida también puede ayudarte a atraer más oportunidades de negocio y a 
-                    diferenciarte de la competencia y nececitas tener reputacion como empresario, tener cierto renombre y que la gente 
-                    te conozca, en este caso la gente que te conoce seran tus seguidores y no cualquiera podra levantar capital,
-                    puedes ser un buen empresario pero si no tienes una comunidad en el que promociones los proyectos
-                    que tienes del negocio en el que estas, no tendrás exito, puedes intentarlo pero debes de analizar
-                    tus posibilidades.<br/>
-                    Además, una marca personal bien establecida puede ayudarte a construir relaciones más sólidas y duraderas con 
-                    tu comunidad de inversores.<br/> Al tener una presencia fuerte y coherente en línea y en persona, puedes demostrar 
-                    que eres una persona confiable y profesional que tiene en cuenta las necesidades y preocupaciones de sus inversores.<br/> 
-                    Esto a su vez puede ayudarte a fomentar la lealtad y el compromiso de los inversores con tu negocio a largo plazo.
-                    <br/>
-                    Además, una marca personal fuerte te permite controlar tu imagen y la percepción que los demás tienen de ti, lo 
-                    que es especialmente importante si estás buscando obtener el capital de tu comunidad. Puedes utilizar tu marca 
-                    personal para demostrar claramente tus objetivos y metas, así como para compartir historias y experiencias que 
-                    refuercen tu credibilidad y confianza.<br/><br/>
-                    Imaginemos que una persona que es buena para los negocios, ah realizado desarrollos inmobiliarios muchas veces 
-                    a lo largo de su carrera y la gente que lo rodea sabe el exito que ha tenido.<br/><br/>
-                    La gente que una persona conoce no es mas de 1,000 personas puesto que los seres humanos no estamos diseñados
-                    para conocer a tanta gente y no podemos dimencionar fisicamente a esas 1,000 personas, pero este empresario
-                    decide probar suerte creando su contrato para conseguir capital.<br/><br/>
-                    Este le dice a todas las personas que lo conocen que hará otro proyecto inmobiliario y que dara un retorno de la 
-                    inversión del 25% a sus inversionistas en el lapzo de 2 años, una oportunidad muy buena para invertir, 
-                    ¿no es así?.<br/>
-                    Puesto que las personas que el conoce solo son 1,000, suponiedo que 100 de esas personas invierten la cantidad de  
-                    $ 5,000 USD, este empresario obtendría de financiamiento $500,000 USD en el caso mas extraño que puedo 
-                    imaginar.<br/><br/>
+                  A strong personal brand helps you build credibility and trust with your community, which in turn increases the 
+                  likelihood of them investing in your business.<br/>Your personal brand showcases who you are, your values and principles, 
+                  and what you can offer.<br/> By having a strong and consistent online and offline presence, you can demonstrate to 
+                  potential investors that you are a serious and competent person worthy of their investment.<br/> Additionally, a 
+                  well-established personal brand can also help you attract more business opportunities and differentiate yourself 
+                  from the competition.<br/>
 
-                    Esto obviamete no siempre es así por más bueno que seas, una persona no muy activa en el ámbito de el conocer a otras 
-                    personas mediante conferencias es imposible que conozca a 100 personas y mucho menos que todas estas 100 personas 
-                    tengan la cantidad de $ 5,000 USD para invertir, es por esto que las redes sociales y el impacto que este empresario 
-                    tiene sobre sus seguidores son un a gran herramienta impulsar el negocio que este tiene y el emrpesario tiene que 
-                    tener marca personal puesto que es más rápido en las redes sociales exponerse a más personas y que estas personas
-                    tengan la confianza de invertir en un proyecto en particular. 
+                  Having a reputation as an entrepreneur and being well-known by people, particularly those who could become your 
+                  followers, is important in raising capital.<br/> You can be a good entrepreneur, but if you do not have a community 
+                  where you promote the projects you have for your business, you will not succeed.<br/><br/> A well-established personal 
+                  brand can also help you build stronger and long-lasting relationships with your investor community.<br/> By having 
+                  a strong and consistent online and offline presence, you can demonstrate that you are a reliable and professional 
+                  person who takes into account the needs and concerns of your investors.<br/> This can help you foster loyalty and 
+                  long-term commitment from your investors to your business.<br/>
+
+                  Additionally, a strong personal brand allows you to control your image and the perception that others have of you, 
+                  which is particularly important if you are looking to obtain capital from your community.<br/> You can use your personal 
+                  brand to clearly demonstrate your goals and objectives, as well as to share stories and experiences that reinforce your 
+                  credibility and trust.<br/><br/>
+
+                  Let's imagine a person who is good at business and has developed many real estate projects throughout their career, 
+                  and those around them know the success they have had.<br/> However, since humans are not designed to know so many people 
+                  physically, this entrepreneur decides to create a contract to obtain capital.<br/> He tells all the people he knows that 
+                  he will do another real estate project and will give a return on investment of 25% to his investors in 2 years - 
+                  a very good opportunity to invest, right?<br/>
+
+                  Since the people he knows are only 1,000, assuming that 100 of those people invest the amount of $5,000 USD, 
+                  this entrepreneur would obtain $500,000 USD in financing, in the most extraordinary case I can imagine.<br/><br/> However, 
+                  this is not always the case, no matter how good you are.<br/> It is impossible for a person who is not very active in the 
+                  conference circuit to know 100 people, let alone for all of these 100 people to have the amount of $5,000 USD to invest.<br/> 
+                  This is why social networks and the impact that this entrepreneur has on his followers are a great tool to promote his 
+                  business, and he needs a personal brand since it is faster to expose himself to more people on social media, 
+                  and these people can trust to invest in a particular project.<br/>
+
+                  Control: By managing your own investments, you have total control over how your money is invested and in which 
+                  assets it is invested.<br/><br/> Instead of delegating that decision to a bank, you can make your own investment decisions 
+                  and adjust your portfolio as needed.<br/>
+
+                  Costs: Banks and other investment managers charge fees for managing your investments, which can significantly 
+                  reduce your long-term gains.<br/> By managing your investments on your own, you can save on management costs.<br/>
+
+                  Flexibility: By managing your own investments, you are free to change investment strategies at any time, 
+                  giving you greater flexibility to adjust to changing market conditions and financial goals.<br/>
+
+                  Knowledge: By investing on your own, you have the opportunity to learn more about different types of investment 
+                  assets and how markets work.<br/><br/> This gives you a better understanding of how to effectively manage your investments 
+                  in the long term.<br/>
+
+                  Experience: By managing your own investments, you can gain practical experience in investment decision-making 
+                  and market analysis.<br/> Over time, you can develop valuable skills and experience that will allow you to make more 
+                  informed and effective decisions in the future.<br/>
+                  If the banks already lend money without your permission, why don't we lend it to our choice?
                 </p>
             </div>
             <h1 className="text-4xl text-center pt-8 px-32 font-semibold tracking-tight sm:text-6xl">
-                ¿Por que tengo que invertir solo en personas que conozco? 
+                Why do I have to invest only in people I know?
             </h1>
-            <div className="px-32 pt-3">
+            <div className="px-10 md:px-32 pt-3">
                 <h5 className="mt-4 text-4x1 font-medium text-center text-black">
-                Al elegir invertir en gente en la que confíes, puedes maximizar tus oportunidades de éxito y minimizar tus riesgos.
+                By choosing to invest in people you trust, you can maximize your chances of success and minimize your risks.
                 </h5>
                 <p className="mt-4 text-2xl leading-8 text-black">
-                    Invertir en personas en las que confíes es una de las decisiones más importantes que puedes tomar como 
-                    inversionista.<br/> Hay varias razones por las cuales invertir en gente con marca personal puede ser una buena idea:<br/><br/>
-                    <li>Credibilidad: Las personas con marca personal han trabajado duro para construir una reputación sólida y confiable. 
-                        Al invertir en ellas, puedes estar seguro de que estás invirtiendo en alguien que ha demostrado su compromiso y 
-                        competencia en su campo.
+                    Investing in people you trust is one of the most important decisions you can make as an investor.<br/> 
+                    There are several reasons why investing in people with a personal brand can be a good idea:<br/><br/>
+                    <li>
+                        Credibility: People with a personal brand have worked hard to build a solid and reliable reputation. 
+                        By investing in them, you can be sure that you are investing in someone who has demonstrated commitment 
+                        and competence in their field.
                     </li>
                     <br/>
-                    <li>Conocimiento y experiencia: Las personas con marca personal suelen ser expertos en su campo y tienen una amplia 
-                        experiencia en su área de especialización. Al invertir en ellas, puedes aprovechar su conocimiento y experiencia
-                        para asegurarte de que tu inversión tenga un buen rendimiento.
+                    <li>Knowledge and experience: People with a personal brand are often experts in their field and have extensive 
+                        experience in their area of specialization. By investing in them, you can leverage their knowledge and experience 
+                        to ensure that your investment performs well.
                     </li>
                     <br/>
-                    <li>Comunicación clara y transparente: Las personas con marca personal suelen ser excelentes comunicadoras y suelen 
-                        ser muy claras y transparentes en su enfoque y estrategias. Esto te permite tener una comprensión clara de cómo 
-                        está gestionando tu inversión y qué esperar en términos de rendimiento.
+                    <li>Clear and transparent communication: People with a personal brand are often excellent communicators and tend 
+                        to be very clear and transparent in their approach and strategies. This allows you to have a clear understanding 
+                        of how your investment is being managed and what to expect in terms of performance.
                     </li>
                     <br/>
-                    <li>Networking: Las personas con marca personal suelen tener una amplia red de contactos en su industria, lo que les 
-                        permite acceder a oportunidades y recursos valiosos. Al invertir en ellas, puedes aprovechar su red y aumentar 
-                        tus oportunidades de éxito.
+                    <li>Networking: People with a personal brand often have a wide network of contacts in their industry, 
+                        which allows them to access valuable opportunities and resources. By investing in them, you can leverage 
+                        their network and increase your opportunities for success.
                     </li>
                     <br/>
-                    <li>Confianza y lealtad: Las personas con marca personal suelen inspirar confianza y lealtad en su comunidad de 
-                        seguidores y clientes. Al invertir en ellas, puedes estar seguro de que estás invirtiendo en alguien que tiene 
-                        una base sólida de apoyo y que está comprometido con su negocio y con sus inversionistas.
+                    <li>Trust and loyalty: People with a personal brand often inspire trust and loyalty in their community of 
+                        followers and clients. By investing in them, you can be sure that you are investing in someone who has a 
+                        solid base of support and is committed to their business and investors.
                     </li>
                     <br/>
-                    Nada te detiene en invertir en gente que no conozcas, pero tiene un riesgo el cual pueda ser el resultado de 
-                    perder tu inversión.<br/>
-                    Imaginemos que te encuentras una gran oportuidad de inversión, tú no conoces a esa persona, por en de no sabes
-                    lo que ah logrado, no tendrás esa familiaridad.<br/>
-                    Si lo piensas bien las inversiones aquí son igual que en la vida real, por lógica no pondrás tu dinero en el 
-                    proyecto de alguien que no conoces, de nuevo, nada te detiene, pero hay que tener cuidado<br/><br/>
+                    Nothing stops you from investing in people you don't know, but there is a risk that you may lose your investment.<br/>
+                    Imagine that you come across a great investment opportunity, but you don't know the person behind it, so you don't 
+                    have that familiarity.<br/>
+                    If you think about it, investments here are just like in real life - logically, you wouldn't put your money into the 
+                    project of someone you don't know. Again, nothing stops you, but you have to be careful.<br/><br/>
                 </p>
             </div>
             <div className="my-2">

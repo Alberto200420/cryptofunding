@@ -11,21 +11,21 @@ function Header() {
 
         <div className="">
           <h2 className="px-16 text-4xl font-semibold tracking-tight sm:text-6xl">
-          Levanta capital <br/>sin la necesidad <br/>de los bancos
+          Raise capital <br/>without the need <br/>for banks
           </h2>
           <h5 className="px-16 mt-4 text-2xl leading-8 text-gray-600">
-          Apalancate de tu marca personal apoya <br/>a la comunidad a que te apoye <br/>financiando con monedas estables
+          Leverage your personal brand support <br/>the community to support you <br/>funding with stablecoins
           </h5>
           <InforacionRapida/>
         </div>
             
         <div className="">
           <h2 className="px-16 text-4xl font-semibold tracking-tight sm:text-5xl">
-          Busca un proyecto <br/>y gana rendimientos <br/>invirtiendo solo en <br/>personas que confies
+          Find a project and <br/>earn returns investing <br/>only in people that<br/> you trust
           </h2>
           <SearchBar/>
           <h5 className="pl-16 text-4xl font-semibold tracking-tight sm:text-5xl mt-7">
-          Consigue capital facil<br/> con 1 click
+          Get easy capital with 1 <br/>click
           </h5>
           <BotonCrearContrato/>
         </div>

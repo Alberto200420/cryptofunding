@@ -356,16 +356,16 @@ export default function FuncionesDesarrollador() {
       setAbiDAI(TOKEN_TEST)
       setRedParaFirma(5)
     } else if (datos[0].network === 'Polygon') {
-      setUsdt('0xC3b67986aa9AD876AEDfadA84559B6960307AfC6')
-      setUsdc('0x216aEA7BCf9cCf5D1F8F1c771d899578aF3d4423')
-      setBusd('0x57828c6598ea6E450cAeba80E5bd21edAe8af41a')
-      setDai('0x0aD71C1bD614479e97B99D757753b3cc060A8D7b')
+      setUsdt('0xc2132D05D31c914a87C6611C10748AEb04B58e8F')
+      setUsdc('0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174')
+      setBusd('0xdAb529f40E671A1D4bF91361c21bf9f0C9712ab7')
+      setDai('0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063')
       setAbiUSDT(TOKEN_USDT)
       setAbiUSDC(TOKEN_USDC)
       setAbiBUSD(TOKEN_BUSD)
       setAbiDAI(TOKEN_DAI)
       setAbiCreador(ABI_TMIS_DESARROLLADOR_POLYGON)
-      setRedParaFirma(80001) // 137 mainet
+      setRedParaFirma(137) // 137 mainet
     }
   },[datos])
 
@@ -373,7 +373,6 @@ export default function FuncionesDesarrollador() {
     if(dataCargada === true) {
       setTimeout(function() {
         setDataCarga(false)
-        console.log('recargado')
       }, 10000);
     }
   },[dataCargada])

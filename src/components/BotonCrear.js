@@ -283,7 +283,7 @@ export default function BotonCrearContrato() {
       } catch (error) {
         console.log(error)
       }
-    } else if(chainId === '0x13881') {
+    } else if(chainId === '0x89') {
       try {
         const contract = new ethers.Contract(ADDRESS_TMIS_POLYGON, ABI_TMIS_POLYGON, signer); // ADDRESS && ABI Polygon
         closeModal()
@@ -341,7 +341,7 @@ export default function BotonCrearContrato() {
         console.log('desplegaste el contrato en Goerli publico')
         const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/public`
         enviarData(data, goerliUrl)
-      } else if(chainId === '0x13881') {
+      } else if(chainId === '0x89') {
         console.log('desplegaste el contrato en Polygon publico')
         const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/public`
         enviarData(data, poligonUrl)
@@ -353,7 +353,7 @@ export default function BotonCrearContrato() {
         console.log('desplegaste el contrato en Goerli pirvado')
         const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/private`
         enviarData(data, goerliUrl)
-      } else if(chainId === '0x13881') {
+      } else if(chainId === '0x89') {
         console.log('desplegaste el contrato en Polygon pirvado')
         const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/private`
         enviarData(data, poligonUrl)
@@ -381,7 +381,7 @@ export default function BotonCrearContrato() {
 
   return (
     <div className='pt-6'>
-      <div className='text-center pl-3'>
+      <div className='text-center pr-1'>
         <button type="button" onClick={openModal} className="boton-crear">
           Create project
         </button>
@@ -420,7 +420,7 @@ export default function BotonCrearContrato() {
                       <textarea  type="text" className='border border-black rounded-lg w-full resize-none outline-none h-72' name="terminos_Y_condiciones" onChange={e=>onChange(e)} required/><br/>
                       <label className='text-xl' htmlFor="lname"><h5>Target quantity:</h5></label>
                       <input type="text" className='appearance-none border border-black rounded-md py-2 px-3 text-gray-700 focus:outline-none' 
-                      name="cantidad_Objetivo_USD" onChange={e=>onChange(e)} placeholder='1,000,000.00 $USD' required/><br/><br/>
+                      name="cantidad_Objetivo_USD" onChange={e=>onChange(e)} placeholder='E.G: 1000000 = 1,000,000.00 $USD' required/><br/><br/>
                       <label className='text-xl' htmlFor="lname"><h5>Investment performance %:</h5></label>
                       <input type="text" className='appearance-none border border-black rounded-md py-2 px-3 text-gray-700 focus:outline-none' 
                       name="rendimiento" onChange={e=>onChange(e)} placeholder='E.G: 25' maxLength='2' required/><br/>
@@ -439,18 +439,18 @@ export default function BotonCrearContrato() {
                           enabled ? 
                           <div>
                             <input type='url' placeholder='Instagram' name='instagram' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
-                            <input type='url' placeholder='Pagina web' name='paginaWeb' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <input type='url' placeholder='Web page' name='paginaWeb' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
                             <input type='url' placeholder='Twitter' name='twitter' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
                             <input type='url' placeholder='Linkedin' name='linkedin' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
                             <input type='email' placeholder='Email' name='email' onChange={e=>enCambio(e)} required className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
-                            <textarea type="text" placeholder='Cuentanos tu trayectoria' name="trayectory" onChange={e=>enCambio(e)} required className='border border-black rounded-lg w-3/4 resize-none outline-none h-52 text-center'/><br/><br/>
-                            <input type='url'  placeholder='Oficinas' name='oficinas' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
+                            <textarea type="text" placeholder='Tell us your trajectory' name="trayectory" onChange={e=>enCambio(e)} required className='border border-black rounded-lg w-3/4 resize-none outline-none h-52 text-center'/><br/><br/>
+                            <input type='url'  placeholder='Ofice (link google maps)' name='oficinas' onChange={e=>enCambio(e)} className='border border-black rounded-lg w-3/4 py-1.5 outline-none text-center'/><br/><br/>
                             <label className='text-xl' htmlFor="lname"><h5>Personal photo</h5></label>
                             <input type='file' name='fotoPersonal' onChange={handleFileChange} required className='text-sm mt-1 text-black file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
-                            {previewImage1 ? <img src={previewImage1} className='rounded-md w-24'/> : <></>} 
+                            {previewImage1 ? <img alt="personal" src={previewImage1} className='rounded-md w-24'/> : <></>} 
                             <label className='text-xl' htmlFor="lname"><h5>Brand logo</h5></label>
                             <input type='file' name='logo' onChange={handleFile2Change} required className='text-sm mt-1 text-slate-500 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-black hover:file:bg-violet-100'/><br/><br/>
-                            {previewImage2 ? <img src={previewImage2} className='rounded-md w-24'/> : <></>}
+                            {previewImage2 ? <img alt="logo" src={previewImage2} className='rounded-md w-24'/> : <></>}
                           </div> : <div></div>
                         }
                        

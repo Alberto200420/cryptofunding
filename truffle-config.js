@@ -10,7 +10,13 @@ module.exports = {
       network_id: '137',
       timeout: 60000,
       gasMultiplier: 1
-    }
+    },
+    goerli: {
+      url: 'http://localhost:24012/rpc',
+      network_id: '5',
+      timeout: 60000,
+      gasMultiplier: 1
+    },
   },
 
   // Set default mocha options here, use special reporters, etc.
