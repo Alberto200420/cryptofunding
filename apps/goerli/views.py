@@ -101,12 +101,13 @@ def save_data_public(request):
             "type": "function"
         }
     ]
-    CONTRACT_TMIS = '0x0c689BB706F46f572B2334c3db35Cc55Be4a39D6'
+    CONTRACT_TMIS = '0x9Ee1eF8922272Ac84969350D266D5228D224993e'
     # CANVIAR ESTO
     addressDelCreador = request.POST.get('creatorAddress')
+    direccion = Web3.to_checksum_address(addressDelCreador)
     contractAddress = request.POST.get('contractAddress')
     contrato = web3.eth.contract(address=CONTRACT_TMIS, abi=ABI)
-    outPut = contrato.functions.buscarCONTRATO(_address=addressDelCreador).call()
+    outPut = contrato.functions.buscarCONTRATO(_address=direccion).call()
 
     if request.method == 'POST':
         if contractAddress == outPut:
@@ -144,72 +145,73 @@ def save_data_private(request):
     web3 = Web3(Web3.HTTPProvider(provider))
     # CANVIAR ESTO
     ABI = [
-        {
-            "inputs": [],
-            "stateMutability": "nonpayable",
-            "type": "constructor"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "_address",
-                    "type": "address"
-                }
-            ],
-            "name": "buscarCONTRATO",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "terminosYcondiciones",
-                    "type": "string"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "DyOchoDinero",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "SIXdinero",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "rendimiento",
-                    "type": "uint256"
-                }
-            ],
-            "name": "crearContrato",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "detener",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        }
-    ]
-    CONTRACT_TMIS = '0x0c689BB706F46f572B2334c3db35Cc55Be4a39D6'
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "buscarCONTRATO",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "terminosYcondiciones",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "DyOchoDinero",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "SIXdinero",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rendimiento",
+						"type": "uint256"
+					}
+				],
+				"name": "crearContrato",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "detener",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		]
+    CONTRACT_TMIS = '0x9Ee1eF8922272Ac84969350D266D5228D224993e'
     # CANVIAR ESTO
     addressDelCreador = request.POST.get('creatorAddress')
+    direccion = Web3.to_checksum_address(addressDelCreador)
     contractAddress = request.POST.get('contractAddress')
     contrato = web3.eth.contract(address=CONTRACT_TMIS, abi=ABI)
-    outPut = contrato.functions.buscarCONTRATO(_address=addressDelCreador).call()
+    outPut = contrato.functions.buscarCONTRATO(_address=direccion).call()
 
     if request.method == 'POST':
         if contractAddress == outPut:

@@ -24,7 +24,7 @@ const solutions = [
   {
     name: 'Github',
     description: 'tmis smart contract',
-    href: '#',
+    href: 'https://github.com/Alberto200420/TMIS-Contract',
     icon: IconFore,
   },
 ]

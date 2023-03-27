@@ -1,7 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.70dd628c.css",
-    "main.js": "/static/js/main.f73af7e4.js",
+    "main.js": "/static/js/main.668a9cfd.js",
+    "static/media/tmis.ico": "/static/media/tmis.b5527b6aca9253c0498e.ico",
     "static/media/HomeNoneAnonimus.png": "/static/media/HomeNoneAnonimus.05ba0ffe79f756fd1a8c.png",
     "static/media/home.png": "/static/media/home.b493dec382959fd29be1.png",
     "static/media/vistaPublic.png": "/static/media/vistaPublic.dc36ae658b65826a58cc.png",
@@ -14,6 +15,6 @@
   },
   "entrypoints": [
     "static/css/main.70dd628c.css",
-    "static/js/main.f73af7e4.js"
+    "static/js/main.668a9cfd.js"
   ]
 }

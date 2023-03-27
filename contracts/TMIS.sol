@@ -16,7 +16,7 @@
          /////////                \\\\\\\\\            /////////   ||||||||||||||||  `////////////////////////////.
          /////////                \\\\\\\\\            /////////   ||||||||||||||||  `//////////////////////////. 
 
-// Contact creator: albertog1meza@gmail.com                            POLIGON
+// Contact creator: albertog1meza@gmail.com                            POLYGON
 // SPDX-License-Identifier: BSL-1.0
 pragma solidity ^0.8.0;
 
@@ -83,10 +83,10 @@ contract ContratoDelDesarrollador {
     uint256 private totalRecaudado_DyOcho;
     uint256 private T_masTres_M;
     uint8 private returnWhith = 0;
+    uint8 private NoProfit = 0;
     bool private yaSacoElDinero = false; 
     bool public yaLiquido = false; 
     bool public seRealizoElProyecto = true;
-    uint8 public NoProfit = 0;
 
     modifier onlyOwner(address _direccion) {
         require(_direccion == addressDelDesarrollador, "No tienes permiso para generar esta function");

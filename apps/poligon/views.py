@@ -57,9 +57,6 @@ class ContratosAgrupados(APIView):
                 result = {
                     'contracts': serializer.data,
                     'page': page,
-                    # 'page_size': page_size,
-                    # 'has_next': f'http://127.0.0.1:8000/polygon/public-contracts/?page={page+1}',
-                    # 'has_previous': f'http://127.0.0.1:8000/polygon/public-contracts/?page={page - 1}'
                 }
                 # Devolver la respuesta con el diccionario creado.
                 return Response(result, status=status.HTTP_200_OK)
@@ -135,12 +132,13 @@ def save_data_public(request):
         "type": "function"
     }
 ]
-    CONTRACT_TMIS = '0x0c689BB706F46f572B2334c3db35Cc55Be4a39D6'
+    CONTRACT_TMIS = '0x7988B7E7DA1c7F745a9dF60AC0CF7A0f51738265'
     # CANVIAR ESTO
     addressDelCreador = request.POST.get('creatorAddress')
+    direccion = Web3.to_checksum_address(addressDelCreador)
     contractAddress = request.POST.get('contractAddress')
     contrato = web3.eth.contract(address=CONTRACT_TMIS, abi=ABI)
-    outPut = contrato.functions.buscarCONTRATO(_address=addressDelCreador).call()
+    outPut = contrato.functions.buscarCONTRATO(_address=direccion).call()
 
     if request.method == 'POST':
         if contractAddress == outPut:
@@ -239,12 +237,13 @@ def save_data_private(request):
         "type": "function"
     }
 ]
-    CONTRACT_TMIS = '0x0c689BB706F46f572B2334c3db35Cc55Be4a39D6'
+    CONTRACT_TMIS = '0x7988B7E7DA1c7F745a9dF60AC0CF7A0f51738265'
     # CANVIAR ESTO
     addressDelCreador = request.POST.get('creatorAddress')
+    direccion = Web3.to_checksum_address(addressDelCreador)
     contractAddress = request.POST.get('contractAddress')
     contrato = web3.eth.contract(address=CONTRACT_TMIS, abi=ABI)
-    outPut = contrato.functions.buscarCONTRATO(_address=addressDelCreador).call()
+    outPut = contrato.functions.buscarCONTRATO(_address=direccion).call()
 
     if request.method == 'POST':
         if contractAddress == outPut:

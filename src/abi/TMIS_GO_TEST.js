@@ -237,6 +237,19 @@ export const ABI_TMIS_DESARROLLADOR_GO = [
     },
     {
         "inputs": [],
+        "name": "NoProfit",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "SIXverCuantoInvertiste",
         "outputs": [
             {
@@ -532,7 +545,7 @@ export const ABI_TMIS_DESARROLLADOR_GO = [
     }
 ]
 
-export const TMIS_ADDRESS = '0x0c689BB706F46f572B2334c3db35Cc55Be4a39D6'
+export const TMIS_ADDRESS = '0x9Ee1eF8922272Ac84969350D266D5228D224993e'
 
 export const ABI_TMIS_GO =[
     {

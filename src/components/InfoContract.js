@@ -297,11 +297,11 @@ export default function InfoSmartContract() {
       </Tab.Group>
 
       <div className='py-5 '>
-        {datos[0].linkTwitter ? <a href={datos[0].linkTwitter} rel='noreferrer' target='_blank' className='inline-flex'><BsTwitter/></a> : <div className='inline-flex'></div> }
-        {datos[0].linkInstagram ? <a href={datos[0].linkInstagram} rel='noreferrer' target='_blank' className='inline-flex px-4'><RxInstagramLogo/></a> : <div className='inline-flex'></div> }
-        {datos[0].email ? <a href={`mailto:${datos[0].email}`} rel='noreferrer' target='_blank' className='inline-flex'><HiOutlineMail/></a> : <div className='inline-flex'></div> }
-        {datos[0].linkedin ? <a href={datos[0].linkedin} rel='noreferrer' target='_blank' className='inline-flex px-4'><BsLinkedin/></a> : <div className='inline-flex'></div> }
-        {datos[0].webPage ? <a href={datos[0].webPage} rel='noreferrer' target='_blank' className='inline-flex'><MdWeb/></a> : <div></div> }
+        {datos[0].linkTwitter !== 'undefined' ? <a href={datos[0].linkTwitter} rel='noreferrer' target='_blank' className='inline-flex'><BsTwitter/></a> : <div className='inline-flex'></div> }
+        {datos[0].linkInstagram !== 'undefined' ? <a href={datos[0].linkInstagram} rel='noreferrer' target='_blank' className='inline-flex px-4'><RxInstagramLogo/></a> : <div className='inline-flex'></div> }
+        {datos[0].email !== 'undefined' ? <a href={`mailto:${datos[0].email}`} rel='noreferrer' target='_blank' className='inline-flex'><HiOutlineMail/></a> : <div className='inline-flex'></div> }
+        {datos[0].linkedin !== 'undefined' ? <a href={datos[0].linkedin} rel='noreferrer' target='_blank' className='inline-flex px-4'><BsLinkedin/></a> : <div className='inline-flex'></div> }
+        {datos[0].webPage !== 'undefined' ? <a href={datos[0].webPage} rel='noreferrer' target='_blank' className='inline-flex'><MdWeb/></a> : <div></div> }
       </div>
       
     </div>
