@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOST_DEV')
 
@@ -64,6 +64,7 @@ CKEDITOR_UPLOAD_PATH = "/media/"
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -96,12 +97,17 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": env.db("DATABASE_URL"),
 }
+DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
 # Password validation
@@ -168,9 +174,30 @@ EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
 if not DEBUG:
     ALLOWED_HOSTS=env.list('ALLOWED_HOST_DEPLOY')
-    # CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEPLOY')
+    CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEPLOY')
+    CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
     DATABASES = {
         "default": env.db("DATABASE_URL"),
     }
     DATABASES['default']["ATOMIC_REQUESTS"] = True
+
+    AWS_QUERYSTRING_AUTH = False
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_DEFAULT_ACL = 'public-read'
+
+    STATIC_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    STATAICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'core.storage_backends.MediaStore'
+
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'build/static'),)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
