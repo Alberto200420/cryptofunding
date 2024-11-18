@@ -1,6 +1,5 @@
 import InfoPrivateContract from "components/infoPrivateContract"
 import Navbar from "components/Navbar"
-import Layout from "hocs/layouts/Layout"
 import { UserGroupIcon } from "@heroicons/react/24/solid"
 import BotonFirmar from "components/BotonFirmar"
 import { useLocation, Navigate } from "react-router-dom"
@@ -12,9 +11,9 @@ function PrivatePage() {
         return <Navigate to={'/'}/>
     }
     return(
-        <Layout>
+        <div>
             <Navbar/>
-            <div className="pt-28">
+            <main>
                 <div className="text-center">
                     <div className="inline-flex rounded-sm px-8">
                         <UserGroupIcon width={150} height={130} className='inline-flex text-black'/>
@@ -25,8 +24,8 @@ function PrivatePage() {
                     <BotonFirmar address={datos[0].contractAddress} network={datos[0].network}/>
                 </div>
                 <InfoPrivateContract/>
-            </div>
-        </Layout>
+            </main>
+        </div>
     )
 }
 

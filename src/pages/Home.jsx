@@ -1,15 +1,14 @@
 import Header from "components/HomeHeader"
 import Navbar from "components/Navbar"
-import Layout from "hocs/layouts/Layout"
 
 function Home() {
     return(
-        <Layout>
+        <div className="pt-28">
             <Navbar/>
-            <div className="pt-28">
+            <main>
                 <Header/>
-            </div>
-        </Layout>
+            </main>
+        </div>
     )
 }
 

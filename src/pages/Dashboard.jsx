@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import WalletMetamask from '../../assets/img/walletMetamask.png'
+import WalletMetamask from 'assets/img/walletMetamask.png'
 import { useLocation, Navigate, Link } from 'react-router-dom'
 import { Bars3Icon, ScaleIcon, UsersIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import FuncionesDesarrollador from 'components/creator/Funciones'

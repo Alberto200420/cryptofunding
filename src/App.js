@@ -1,13 +1,13 @@
-import Error404 from "containers/errors/Error404";
-import PublicPage from "containers/pages/PublicRound";
-import Home from "containers/pages/Home";
-import HowItIsFor from "containers/pages/HowItIsFor";
-import ComoFunciona from "containers/pages/HowItWorks";
-import TipsForInvesting from "containers/pages/TipsForInvesting";
+import Error404 from "pages/Error404";
+import PublicPage from "pages/PublicRound";
+import Home from "pages/Home";
+import HowItIsFor from "pages/HowItIsFor";
+import ComoFunciona from "pages/HowItWorks";
+import TipsForInvesting from "pages/TipsForInvesting";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Matnejar la rutas 
 import { MoralisProvider } from "react-moralis";
-import PrivatePage from "containers/pages/PrivateRound";
-import Dashboard from "containers/pages/Dashboard";
+import PrivatePage from "pages/PrivateRound";
+import Dashboard from "pages/Dashboard";
 
 function App() {
   return (

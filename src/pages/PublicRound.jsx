@@ -1,6 +1,5 @@
 import InfoSmartContract from "components/InfoContract"
 import Navbar from "components/Navbar"
-import Layout from "hocs/layouts/Layout"
 import BotonFirmar from "components/BotonFirmar"
 import { useLocation, Navigate } from "react-router-dom"
 
@@ -11,9 +10,9 @@ function PublicPage() {
         return <Navigate to={'/'}/>
     }
     return(
-        <Layout>
+        <div>
             <Navbar/>
-            <div className="pt-28">
+            <main>
                 <div className="text-center">
                     <div className="inline-flex rounded-sm px-8">
                         <img className="rounded-md w-24" alt="personal" src={ datos[0].personalFile }/>
@@ -24,8 +23,8 @@ function PublicPage() {
                     <BotonFirmar address={datos[0].contractAddress} network={datos[0].network}/>
                 </div>
                 <InfoSmartContract/>
-            </div>
-        </Layout>
+            </main>
+        </div>
     )
 }
 
