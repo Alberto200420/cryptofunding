@@ -1,4 +1,4 @@
-// import Header from "components/HomeHeader"
+import Header from "components/HomeHeader"
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import {
@@ -59,7 +59,7 @@ function Home() {
     return(
         <div>
             {/* <Navbar/> */}
-            <nav className="m-2 bg-white border-b fixed top-0 w-full z-10">
+            <nav className="bg-white border-b fixed top-0 w-full z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                     {/* Left Side - Brand Logo */}
@@ -134,9 +134,9 @@ function Home() {
                     </div>
                 </div>
             </nav>
-            {/* <main>
-                <Header/>
-            </main> */}
+
+
+            <Header/>
         </div>
     )
 }

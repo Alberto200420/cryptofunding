@@ -1,22 +1,24 @@
 import BotonCrearContrato from "./BotonCrear"
-import InforacionRapida from "./Casilla"
 import SearchBar from "./SerchBar"
 import ContractList from "./ContractList"
+import Coins from "./Coins"
 
 function Header() {
 
   return(
-    <div>
-      <main className="flex flex-wrap justify-between sm:flex-nowrap">
+    <div className="mt-28">
+      <main className="lg:px-16 px-6">
 
-        <div className="">
-          <h2 className="px-16 text-4xl font-semibold tracking-tight sm:text-6xl">
-          Raise capital <br/>without the need <br/>for banks
+        <div className="space-y-8 place-items-center">
+          <h2 className="text-4xl font-semibold sm:text-6xl text-center">
+          Raise capital without the need of banks in stablecoins
           </h2>
-          <h5 className="px-16 mt-4 text-2xl leading-8 text-gray-600">
-          Leverage your personal brand support <br/>the community to support you <br/>funding with stablecoins
-          </h5>
-          <InforacionRapida/>
+
+          <Coins />
+
+          <p className="lg:text-2xl text-base text-gray-600 text-center max-w-lg">
+          Get funding from your community, you set the returns you want to give, you ask for the capital you want to raise
+          </p>
         </div>
             
         <div className="">
