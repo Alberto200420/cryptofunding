@@ -380,9 +380,19 @@ export default function BotonCrearContrato() {
 
 
   return (
-    <div className='pt-6'>
-      <div className='text-center pr-1'>
-        <button type="button" onClick={openModal} className="boton-crear">
+    <>
+      <div>
+        <button
+          type="button"
+          onClick={openModal}
+          className="rounded-lg p-2 px-5 text-2xl"
+          style={{
+            background: "linear-gradient(-45deg, #ddd013, #e61414, #261ad3, #13bb13)",
+            backgroundSize: "400% 400%",
+            animation: "gradient 15s ease infinite",
+            color: "#fff",
+          }}
+        >
           Create project
         </button>
       </div>
@@ -473,6 +483,6 @@ export default function BotonCrearContrato() {
       </Transition>
       {cargandoData === true ? <ModalContractInfo/> : <div></div> }
       {dataCargada === true ? <ModalSuccess mensaje={'Contract successfully saved in the database'}/> : <div></div> }
-    </div>
+    </>
   )
 }

@@ -267,10 +267,23 @@ export default function SearchBar() {
 
   return (
     <div>
-      <div className="mt-8 flex px-14">
-        <form className="flex flex-grow border-2 rounded-xl border-black" onSubmit={e=>buscar(e)}>
-          <input type= 'text' name='contractToSearch' className="w-full text-center rounded-xl py-2 sm:text-sm" placeholder="Address" />
-          <button type='submit' className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-r-md"><MagnifyingGlassIcon className="h-5 w-5 text-black" aria-hidden="true" /></button>
+      <div className="mt-8">
+        <form
+          className="flex flex-col w-full border-2 rounded-xl border-black lg:flex-row"
+          onSubmit={e=>buscar(e)}
+        >
+          <input
+            type="text"
+            name="contractToSearch"
+            className="w-full py-2 text-center lg:text-left rounded-t-xl lg:rounded-t-none lg:rounded-l-xl sm:text-sm"
+            placeholder="Wallet Address"
+          />
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-b-xl lg:rounded-b-none lg:rounded-r-xl bg-gray-200 hover:bg-gray-300"
+          >
+            <MagnifyingGlassIcon className="h-5 w-5 text-black" aria-hidden="true" />
+          </button>
         </form>
       </div>
       <div className="mt-1 flex px-14">

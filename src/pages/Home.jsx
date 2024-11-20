@@ -135,7 +135,6 @@ function Home() {
                 </div>
             </nav>
 
-
             <Header/>
         </div>
     )
