@@ -381,11 +381,11 @@ export default function BotonCrearContrato() {
 
   return (
     <>
-      <div>
+      <div className='w-full'>
         <button
           type="button"
           onClick={openModal}
-          className="rounded-lg p-2 px-5 text-2xl"
+          className="w-full rounded-lg p-3 px-8 text-2xl"
           style={{
             background: "linear-gradient(-45deg, #ddd013, #e61414, #261ad3, #13bb13)",
             backgroundSize: "400% 400%",

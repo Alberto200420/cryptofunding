@@ -11,22 +11,42 @@ function Header() {
         {/* Parent Flexbox */}
         <div className="lg:flex lg:space-x-16 lg:items-start">
           {/* Left Section */}
-          <div className="space-y-8 lg:w-1/2 lg:text-left place-items-center">
+          <div className="space-y-8 lg:w-1/2 flex flex-col items-center ">
             <h1 className="text-4xl font-semibold sm:text-6xl text-center">
               Raise capital without the need of banks in stablecoins
             </h1>
             <Coins />
-            <p className="lg:text-2xl text-base text-gray-600 max-w-lg mx-auto lg:mx-0 text-center">
-              Get funding from your community, you set the returns you want to give, you ask for the capital you want to raise.
-            </p>
+            <ol className="lg:text-2xl text-base text-gray-900 max-w-lg mx-auto lg:mx-0 list-none list-outside space-y-2">
+              <li>
+                1- Request the capital you want to raise
+              </li>
+              <li>
+                2 - Set the returns you want to give
+              </li>
+              <li>
+               3 - Get funding from your community
+              </li>
+            </ol>
+            
             <BotonCrearContrato/>            
           </div>
 
           {/* Right Section */}
-          <div className="space-y-8 lg:w-1/2 text-center lg:text-left">
+          <div className="space-y-8 lg:w-1/2 flex flex-col items-center">
             <h2 className="text-4xl font-semibold sm:text-6xl text-center">
               Find a project and make a profit by investing only in people you trust
             </h2>
+            <ol className="lg:text-2xl text-base text-gray-900 w-full list-none list-outside space-y-2 text-center">
+              <li>
+                1- Find the contract of the businessman you want to invest in
+              </li>
+              <li>
+                2 - Analyze the terms and conditions of the business you are entering
+              </li>
+              <li>
+                3 - Make a profit on your capital
+              </li>
+            </ol>
             
             <SearchBar />
           </div>
@@ -36,6 +56,7 @@ function Header() {
 
       {/* <ContractList/> */}
 
+      {/* infoPageTailwind */}
       <div className="bg-gray-50 py-24 sm:py-32">
         <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
           <h2 className="text-center text-base/7 font-semibold text-indigo-600">Deploy faster</h2>
@@ -134,6 +155,7 @@ function Header() {
           </div>
         </div>
       </div>
+
     </div>
   )
 }

@@ -266,24 +266,31 @@ export default function SearchBar() {
   }
 
   return (
-    <div>
-      <div className="mt-8">
-        <form
-          className="flex flex-col w-full border-2 rounded-xl border-black lg:flex-row"
-          onSubmit={e=>buscar(e)}
-        >
-          <input
-            type="text"
-            name="contractToSearch"
-            className="w-full py-2 text-center lg:text-left rounded-t-xl lg:rounded-t-none lg:rounded-l-xl sm:text-sm"
-            placeholder="Wallet Address"
-          />
-          <button
-            type="submit"
-            className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-b-xl lg:rounded-b-none lg:rounded-r-xl bg-gray-200 hover:bg-gray-300"
-          >
-            <MagnifyingGlassIcon className="h-5 w-5 text-black" aria-hidden="true" />
-          </button>
+    <div className="w-full">
+      <div className="">
+        <form onSubmit={e => buscar(e)} className="w-full">
+          <div className="relative">
+            <MagnifyingGlassIcon 
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5" 
+              aria-hidden="true" 
+            />
+            <input
+              type="text"
+              name="contractToSearch"
+              className="w-full py-4 pl-12 pr-16 text-base rounded-lg border border-gray-600 
+                       focus:outline-none focus:border-black focus:ring-4 focus:ring-gray-100
+                       shadow-sm hover:shadow-md transition-shadow duration-200"
+              placeholder="Search wallet address"
+            />
+            <button
+              type="submit"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 
+                       px-4 py-2 bg-blue-500 text-white rounded-full text-sm font-medium
+                       hover:bg-blue-600 transition-colors duration-200"
+            >
+              Search
+            </button>
+          </div>
         </form>
       </div>
       <div className="mt-1 flex px-14">
