@@ -2,15 +2,9 @@ import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   ChevronDownIcon,
   PhoneIcon,
-  PlayCircleIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/20/solid";
-import {
-  ArrowPathIcon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-} from "@heroicons/react/24/outline";
+import { FaGithub } from "react-icons/fa";
 import { LiaWalletSolid } from "react-icons/lia";
 import { ScaleIcon } from "@heroicons/react/20/solid";
 import { useEffect } from "react";
@@ -23,39 +17,23 @@ import ContractList from "components/ContractList";
 
 const solutions = [
   {
-    name: "Analytics",
-    description: "Get a better understanding of your traffic",
-    href: "#",
-    icon: ChartPieIcon,
-  },
-  {
-    name: "Engagement",
-    description: "Speak directly to your customers",
-    href: "#",
-    icon: CursorArrowRaysIcon,
-  },
-  {
-    name: "Security",
-    description: "Your customers' data will be safe and secure",
-    href: "#",
-    icon: FingerPrintIcon,
-  },
-  {
-    name: "Integrations",
-    description: "Connect with third-party tools",
-    href: "#",
-    icon: SquaresPlusIcon,
-  },
-  {
-    name: "Automations",
-    description: "Build strategic funnels that will convert",
-    href: "#",
-    icon: ArrowPathIcon,
+    name: "Source code",
+    description: "View source code on Github",
+    href: "https://github.com/Alberto200420/cryptofunding",
+    icon: FaGithub,
   },
 ];
 const callsToAction = [
-  { name: "Watch demo", href: "#", icon: PlayCircleIcon },
-  { name: "Contact sales", href: "#", icon: PhoneIcon },
+  {
+    name: "Mail contact",
+    href: "mailto:albertog1meza@gmail.com?subject=Awesome%20Project&body=Hey%20man%2C%20I%20just%20saw%20your%20project%2C%20I%20think%20it%20is%20awesome!",
+    icon: EnvelopeIcon,
+  },
+  {
+    name: "Phone contact",
+    href: "https://wa.me/524428968441?text=Hey%20man%2C%20I%20just%20saw%20your%20project%2C%20I%20think%20it%20is%20awesome!",
+    icon: PhoneIcon,
+  },
 ];
 
 function Home() {
@@ -135,6 +113,8 @@ function Home() {
                         <div>
                           <a
                             href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="font-semibold text-gray-900"
                           >
                             {item.name}
