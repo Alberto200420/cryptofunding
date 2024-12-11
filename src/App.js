@@ -4,9 +4,8 @@ import Home from "pages/Home";
 import HowItIsFor from "pages/HowItIsFor";
 import ComoFunciona from "pages/HowItWorks";
 import TipsForInvesting from "pages/TipsForInvesting";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Matnejar la rutas 
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Matnejar la rutas
 import { MoralisProvider } from "react-moralis";
-import PrivatePage from "pages/PrivateRound";
 import Dashboard from "pages/Dashboard";
 
 function App() {
@@ -19,15 +18,13 @@ function App() {
           {/* ¿Como funciona? */}
           <Route path="/how-it-works" element={<ComoFunciona />} />
           {/* ¿Para quien es T-mis? */}
-          <Route path="/how-is-tmis-for" element={<HowItIsFor/>} />
+          <Route path="/how-is-tmis-for" element={<HowItIsFor />} />
           {/* Consejos para invertir */}
-          <Route path="/tips-for-investing" element={<TipsForInvesting/>} />
+          <Route path="/tips-for-investing" element={<TipsForInvesting />} />
           {/* Pagina Publica */}
-          <Route path="/public" element={<PublicPage/>} />
-          { /* Pagina Privada */}
-          <Route path="/private" element={<PrivatePage/>} />
+          <Route path="/project" element={<PublicPage />} />
           {/* Dashboard */}
-          <Route path="/creator" element={<Dashboard/>} />
+          <Route path="/creator" element={<Dashboard />} />
           {/* Error Display */}
           <Route path="*" element={<Error404 />} />
         </Routes>

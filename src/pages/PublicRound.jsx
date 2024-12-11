@@ -16,6 +16,7 @@ import {
 import { MdWeb, MdDateRange } from "react-icons/md";
 import { GoGoal } from "react-icons/go";
 import { TbChartInfographic } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 function PublicPage() {
   const location = useLocation();
@@ -35,16 +36,18 @@ function PublicPage() {
             {/* <!-- Main Image --> */}
             <div className="w-32 h-32 bg-gray-400 rounded-full border-4 border-white"></div>
             {/* <!-- Name --> */}
-            <h2 className="text-xl font-semibold mt-4">Ricardo Garcia Meza</h2>
+            <h2 className="text-xl font-semibold mt-4">
+              {datos.fullNameFounder}
+            </h2>
 
             {/* <!-- Social Icons --> */}
             <div className="flex space-x-4 mt-2">
               <FaLinkedin className="text-[#0800FA] text-2xl cursor-pointer" />
-              <FaInstagram className="text-[#e614d5] text-2xl cursor-pointer" />
-              <FaTelegramPlane className="text-[#261ad3] text-2xl cursor-pointer" />
+              <FaInstagram className="text-[#F205E2] text-2xl cursor-pointer" />
+              <FaTelegramPlane className="text-[#00AEED] text-2xl cursor-pointer" />
               <FaXTwitter className="text-2xl cursor-pointer" />
               <MdWeb className="text-2xl cursor-pointer" />
-              <FaLocationDot className="text-gray-500 text-2xl cursor-pointer" />
+              <FaLocationDot className="text-[#F23535] text-2xl cursor-pointer" />
             </div>
           </div>
 
@@ -53,13 +56,15 @@ function PublicPage() {
             <div className="mt-4">
               {/* <!-- Project Details --> */}
               <div className="flex items-center space-x-2 text-sm">
-                <FaHouse />
+                <Link to={"/"}>
+                  <FaHouse />
+                </Link>
                 <span>/ project /</span>
                 <a
                   href="#"
                   className="text-[#6805F2] flex items-center space-x-1"
                 >
-                  <span>0x182988d</span>
+                  <span>{datos.contractAddress}</span>
                   <FaExternalLinkAlt />
                 </a>
               </div>
@@ -70,20 +75,22 @@ function PublicPage() {
               {/* <!-- Financial Details --> */}
               <div className="mb-4 flex justify-between items-center text-lg">
                 <div className="flex items-center space-x-2">
-                  <FaMoneyBillTrendUp className="text-[#00F034]" />
-                  <span>1,587,912.00</span>
-                </div>
-                <div className="flex items-center space-x-2">
                   <GoGoal className="text-[#F00801]" />
-                  <span>3,000,000.00</span>
+                  <span className="text-lg font-medium">$ 3,000,000.00</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <TbChartInfographic />
-                  <span>25%</span>
+                  <FaMoneyBillTrendUp className="text-[#00F034]" />
+                  <span className="text-lg font-medium">$ 1,587,912.00</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <TbChartInfographic className="text-[#00F034]" />
+                  <span className="text-lg font-medium">25%</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <MdDateRange />
-                  <span>06/12/2024</span>
+                  <span className="text-lg font-medium">
+                    {datos.creationDate}
+                  </span>
                 </div>
               </div>
 
@@ -106,8 +113,8 @@ function PublicPage() {
               </div>
             </div>
             <BotonFirmar
-              address={datos[0].contractAddress}
-              network={datos[0].network}
+              address={datos.contractAddress}
+              network={datos.network}
             />
           </div>
         </div>
