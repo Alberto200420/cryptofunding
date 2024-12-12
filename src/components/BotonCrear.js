@@ -1,7 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { Switch } from "@headlessui/react";
-import axios from "axios";
 import { useMoralis } from "react-moralis";
 import { TMIS_ADDRESS, ABI_TMIS_GO } from "abi/TMIS_GO_TEST";
 import { ADDRESS_TMIS_POLYGON, ABI_TMIS_POLYGON } from "abi/Polygon_ABI";
@@ -27,40 +25,24 @@ export default function BotonCrearContrato() {
     terminos_Y_condiciones: "",
     cantidad_Objetivo_USD: 0,
     rendimiento: 0,
-  });
-
-  const [enabled, setEnabled] = useState({
     paginaWeb: "",
     instagram: "",
-    twitter: "",
     linkedin: "",
+    x: "",
     fotoPersonal: null,
     logo: null,
-    email: "",
     trayectory: "",
-    oficinas: "",
+    office: "",
   });
 
-  const { terminos_Y_condiciones, cantidad_Objetivo_USD, rendimiento } =
-    formData;
-  const {
-    paginaWeb,
-    instagram,
-    twitter,
-    linkedin,
-    fotoPersonal,
-    logo,
-    email,
-    trayectory,
-    oficinas,
-  } = enabled;
   const [previewImage1, setPreviweImage1] = useState();
   const [previewImage2, setPreviweImage2] = useState();
 
-  const enCambio = (e) =>
-    setEnabled({ ...enabled, [e.target.name]: e.target.value });
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const handleFileChange = (event) => {
-    setEnabled({ ...enabled, [event.target.name]: event.target.files[0] });
+    setFormData({ ...formData, [event.target.name]: event.target.files[0] });
     const file = event.target.files[0];
     let reader = new FileReader();
     reader.readAsDataURL(file);
@@ -68,8 +50,9 @@ export default function BotonCrearContrato() {
       setPreviweImage1(reader.result);
     };
   };
+
   const handleFile2Change = (event) => {
-    setEnabled({ ...enabled, [event.target.name]: event.target.files[0] });
+    setFormData({ ...formData, [event.target.name]: event.target.files[0] });
     const file = event.target.files[0];
     let reader = new FileReader();
     reader.readAsDataURL(file);
@@ -77,11 +60,10 @@ export default function BotonCrearContrato() {
       setPreviweImage2(reader.result);
     };
   };
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   //------------------------------------------------ FUNCTIONS GOELRI
   const [cargandoData, setCargandoData] = useState(false);
+  const [dataCargada, setDataCarga] = useState(false);
   const [contractData, setContractData] = useState({
     hash: "",
     address_del_creador: "",
@@ -305,153 +287,57 @@ export default function BotonCrearContrato() {
 
   //------------------------------------------------ FUNCTIONS GOELRI
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    firmar();
-    // e.target.reset()
-  };
-
-  const firmar = async () => {
-    // funcion para crear contrato
-    const DyOchoDinero = cantidad_Objetivo_USD / 2 + "000000000000000000";
-    const SIXdinero = cantidad_Objetivo_USD / 2 + "000000";
+    const DyOchoDinero =
+      formData.cantidad_Objetivo_USD / 2 + "000000000000000000";
+    const SIXdinero = formData.cantidad_Objetivo_USD / 2 + "000000";
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const address = await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
-    if (chainId === "0x5") {
-      try {
-        const contract = new ethers.Contract(TMIS_ADDRESS, ABI_TMIS_GO, signer);
-        // Call the contract function and get the transaction hash
-        closeModal();
-        const tx = await contract.crearContrato(
-          terminos_Y_condiciones,
-          DyOchoDinero,
-          SIXdinero,
-          rendimiento
-        );
-        setCargandoData(true);
-        await tx.wait();
-        // Get the contract function result
-        const contractAddress = await contract.buscarCONTRATO(address[0]);
-        // OBTENIENDO CONTRATO
-        setContractData({
-          hash: tx.hash,
-          address_del_creador: address[0],
-          address_del_contrato: contractAddress,
-          network: "Goerli",
-        });
-        sendData(address[0], contractAddress);
-      } catch (error) {
-        console.log(error);
-      }
-    } else if (chainId === "0x89") {
-      try {
-        const contract = new ethers.Contract(
-          ADDRESS_TMIS_POLYGON,
-          ABI_TMIS_POLYGON,
-          signer
-        ); // ADDRESS && ABI Polygon
-        closeModal();
-        const tx = await contract.crearContrato(
-          terminos_Y_condiciones,
-          DyOchoDinero,
-          SIXdinero,
-          rendimiento
-        );
-        setCargandoData(true);
-        await tx.wait();
-        // Get the contract function result
-        const contractAddress = await contract.buscarCONTRATO(address[0]);
-        // OBTENIENDO CONTRATO
-        setContractData({
-          hash: tx.hash,
-          address_del_creador: address[0],
-          address_del_contrato: contractAddress,
-          network: "Polygon",
-        });
-        sendData(address[0], contractAddress);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const contract = new ethers.Contract(TMIS_ADDRESS, ABI_TMIS_GO, signer);
+      closeModal();
+      // Call the contract function and get the transaction hash
+      const tx = await contract.crearContrato(
+        formData.terminos_Y_condiciones,
+        DyOchoDinero,
+        SIXdinero,
+        formData.rendimiento
+      );
+      setCargandoData(true);
+      await tx.wait();
+      // Get the contract function result
+      const contractAddress = await contract.buscarCONTRATO(address[0]);
+      // OBTENIENDO CONTRATO
+      setContractData({
+        hash: tx.hash,
+        address_del_creador: address[0],
+        address_del_contrato: contractAddress,
+        network: "Goerli",
+      });
+      sendData();
+    } catch (error) {
+      console.log(error);
     }
+    e.target.reset();
   };
 
   const sendData = (creatorAddress, contractAddress) => {
-    if (enabled) {
-      const formularioDATA = new FormData();
-
-      formularioDATA.append("creatorAddress", creatorAddress);
-      formularioDATA.append("contractAddress", contractAddress);
-      formularioDATA.append("slug", contractAddress);
-      formularioDATA.append("rendimiento", rendimiento);
-      formularioDATA.append("termsAconditions", terminos_Y_condiciones);
-      formularioDATA.append("targetCuantity", cantidad_Objetivo_USD);
-      formularioDATA.append("email", email);
-      formularioDATA.append("linkInstagram", instagram);
-      formularioDATA.append("webPage", paginaWeb);
-      formularioDATA.append("linkTwitter", twitter);
-      formularioDATA.append("linkedin", linkedin);
-      formularioDATA.append("ofice", oficinas);
-      formularioDATA.append("personalFile", fotoPersonal);
-      formularioDATA.append("logo", logo);
-      formularioDATA.append("trayectory", trayectory);
-      sendPublic(formularioDATA);
-    } else {
-      const formularioDATA = new FormData();
-
-      formularioDATA.append("creatorAddress", creatorAddress);
-      formularioDATA.append("contractAddress", contractAddress);
-      formularioDATA.append("slug", contractAddress);
-      formularioDATA.append("rendimiento", rendimiento);
-      formularioDATA.append("termsAconditions", terminos_Y_condiciones);
-      formularioDATA.append("targetCuantity", cantidad_Objetivo_USD);
-
-      sendPrivate(formularioDATA);
-    }
-  };
-
-  const sendPublic = (data) => {
-    if (chainId === "0x5") {
-      console.log("desplegaste el contrato en Goerli publico");
-      const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/public`;
-      enviarData(data, goerliUrl);
-    } else if (chainId === "0x89") {
-      console.log("desplegaste el contrato en Polygon publico");
-      const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/public`;
-      enviarData(data, poligonUrl);
-    }
-  };
-
-  const sendPrivate = (data) => {
-    if (chainId === "0x5") {
-      console.log("desplegaste el contrato en Goerli pirvado");
-      const goerliUrl = `${process.env.REACT_APP_API_URL}/goerli/send/private`;
-      enviarData(data, goerliUrl);
-    } else if (chainId === "0x89") {
-      console.log("desplegaste el contrato en Polygon pirvado");
-      const poligonUrl = `${process.env.REACT_APP_API_URL}/polygon/send/private`;
-      enviarData(data, poligonUrl);
-    }
-  };
-
-  const [dataCargada, setDataCarga] = useState(false);
-
-  const enviarData = (datos, url) => {
-    axios
-      .post(url, datos, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        setDataCarga(true);
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert(
-          "ERROR contract not saved in the database. Do not panic, your contract was created in the blockchain but we did not keep it, please contact us"
-        );
-      });
+    const formularioDATA = new FormData();
+    formularioDATA.append("creatorAddress", creatorAddress);
+    formularioDATA.append("contract_address", contractAddress);
+    formularioDATA.append("rendimiento", formData.rendimiento);
+    formularioDATA.append("linkInstagram", formData.instagram);
+    formularioDATA.append("webPage", formData.paginaWeb);
+    formularioDATA.append("linkTwitter", formData.x);
+    formularioDATA.append("linkedin", formData.linkedin);
+    formularioDATA.append("ofice", formData.office);
+    formularioDATA.append("main_image", formData.fotoPersonal);
+    formularioDATA.append("background_image", formData.logo);
+    formularioDATA.append("about_the_founder", formData.trayectory);
+    // sendPublic(formularioDATA);
+    setDataCarga(true);
   };
   // --------------------------------------------------------   Funciones
 
@@ -506,15 +392,12 @@ export default function BotonCrearContrato() {
                   <form onSubmit={onSubmit} className="mt-6 space-y-6">
                     {/* Terms and Conditions */}
                     <div>
-                      <label
-                        htmlFor="terminos_Y_condiciones"
-                        className="block text-lg font-medium text-gray-700"
-                      >
+                      <label className="block text-lg font-[450]">
                         Contract Terms & Conditions
                       </label>
                       <textarea
                         name="terminos_Y_condiciones"
-                        className="w-full mt-2 p-3 border border-[#0800FA] rounded-lg shadow-sm focus:ring-2 focus:ring-[#0800FA] focus:outline-none resize-none h-40"
+                        className="w-full mt-2 p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none resize-none h-40"
                         placeholder="Write your contract terms and conditions..."
                         onChange={onChange}
                         required
@@ -523,16 +406,13 @@ export default function BotonCrearContrato() {
 
                     {/* Target Quantity */}
                     <div>
-                      <label
-                        htmlFor="cantidad_Objetivo_USD"
-                        className="block text-lg font-medium text-gray-700"
-                      >
+                      <label className="block text-lg font-[450]">
                         Target Quantity (USD)
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         name="cantidad_Objetivo_USD"
-                        className="w-full mt-2 p-3 border border-[#0800FA] rounded-lg shadow-sm focus:ring-2 focus:ring-[#0800FA] focus:outline-none"
+                        className="w-full mt-2 p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
                         placeholder="e.g., 1000000 = $1,000,000.00"
                         onChange={onChange}
                         required
@@ -541,16 +421,13 @@ export default function BotonCrearContrato() {
 
                     {/* Investment Performance */}
                     <div>
-                      <label
-                        htmlFor="rendimiento"
-                        className="block text-lg font-medium text-gray-700"
-                      >
+                      <label className="block text-lg font-[450]">
                         Investment Performance (%)
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         name="rendimiento"
-                        className="w-full mt-2 p-3 border border-[#0800FA] rounded-lg shadow-sm focus:ring-2 focus:ring-[#0800FA] focus:outline-none"
+                        className="w-full mt-2 p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
                         placeholder="e.g., 25"
                         maxLength="2"
                         onChange={onChange}
@@ -558,78 +435,143 @@ export default function BotonCrearContrato() {
                       />
                     </div>
 
-                    {/* Privacy Switch */}
-                    <div className="flex items-center space-x-4">
-                      <label className="text-lg font-medium text-gray-700">
-                        Private
-                      </label>
-                      <Switch
-                        checked={enabled}
-                        onChange={setEnabled}
-                        className={`${enabled ? "bg-green-500" : "bg-black"}
-                            inline-flex h-[28px] w-[64px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-                      >
-                        <span
-                          aria-hidden="true"
-                          className={`${
-                            enabled ? "translate-x-9" : "translate-x-0"
-                          } pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                        />
-                      </Switch>
-                    </div>
-
-                    {/* Additional Fields for Private */}
-                    {enabled && (
-                      <div className="space-y-4">
-                        <input
-                          type="url"
-                          name="instagram"
-                          placeholder="Instagram URL"
-                          className="w-full p-3 border border-[#0800FA] rounded-lg shadow-sm focus:ring-2 focus:ring-[#0800FA] focus:outline-none"
-                          onChange={enCambio}
-                        />
-                        <input
-                          type="url"
-                          name="paginaWeb"
-                          placeholder="Website URL"
-                          className="w-full p-3 border border-[#0800FA] rounded-lg shadow-sm focus:ring-2 focus:ring-[#0800FA] focus:outline-none"
-                          onChange={enCambio}
-                        />
+                    <div className="space-y-4">
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Your LinkedIn (URL)
+                        </label>
                         <input
                           type="url"
                           name="linkedin"
-                          placeholder="LinkedIn URL"
-                          className="w-full p-3 border border-[#0800FA] rounded-lg shadow-sm focus:ring-2 focus:ring-[#0800FA] focus:outline-none"
-                          onChange={enCambio}
+                          placeholder="Optional"
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
+                          onChange={onChange}
                         />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Your Instagram (URL)
+                        </label>
+                        <input
+                          type="url"
+                          name="instagram"
+                          placeholder="Optional"
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
+                          onChange={onChange}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Your Telegram channel (URL)
+                        </label>
+                        <input
+                          type="url"
+                          name="telegram"
+                          placeholder="Optional"
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
+                          onChange={onChange}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Your X social (URL)
+                        </label>
+                        <input
+                          type="url"
+                          name="x"
+                          placeholder="Optional"
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
+                          onChange={onChange}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Your website (URL)
+                        </label>
+                        <input
+                          type="url"
+                          name="paginaWeb"
+                          placeholder="Optional"
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
+                          onChange={onChange}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Your office address (URL)
+                        </label>
+                        <input
+                          type="url"
+                          name="office"
+                          placeholder="Optional"
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none"
+                          onChange={onChange}
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Tell us about your trajectory
+                        </label>
                         <textarea
                           name="trayectory"
-                          placeholder="Tell us about your trajectory..."
-                          className="w-full p-3 border border-[#0800FA] rounded-lg shadow-sm focus:ring-2 focus:ring-[#0800FA] focus:outline-none resize-none h-32"
-                          onChange={enCambio}
+                          placeholder="Be clear and engaging for investors, this content will be displayed in your publication."
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none resize-none h-32"
+                          onChange={onChange}
                           required
                         />
-                        <div>
-                          <label className="block text-lg font-medium text-gray-700">
-                            Personal Photo
-                          </label>
-                          <input
-                            type="file"
-                            name="fotoPersonal"
-                            onChange={handleFileChange}
-                            required
-                            className="block w-full mt-2 file:border-none file:rounded-lg file:bg-[#0800FA] file:text-white file:px-4 file:py-2 file:cursor-pointer"
-                          />
-                          {previewImage1 && (
-                            <img
-                              src={previewImage1}
-                              alt="Preview"
-                              className="mt-2 rounded-lg w-24"
-                            />
-                          )}
-                        </div>
                       </div>
-                    )}
+                      <div className="space-y-1">
+                        <label className="text-lg font-[450]">
+                          Tell us about your project
+                        </label>
+                        <textarea
+                          name="about_the_project"
+                          placeholder="Be clear and engaging for investors, this content will be displayed in your publication."
+                          className="w-full p-3 border border-gray-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:ring-2 focus:ring-gray-100 focus:border-black focus:outline-none resize-none h-32"
+                          onChange={onChange}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-lg font-[450]">
+                          Personal Photo
+                        </label>
+                        <input
+                          type="file"
+                          name="fotoPersonal"
+                          onChange={handleFileChange}
+                          required
+                          className="block w-full mt-2 file:border-none file:rounded-lg file:bg-[#0800FA] file:text-white file:px-4 file:py-2 file:cursor-pointer"
+                        />
+                        {previewImage1 && (
+                          <img
+                            src={previewImage1}
+                            alt="Raise capital without the need of banks in stablecoins"
+                            className="mt-2 rounded-lg w-24"
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <label className="block text-lg font-[450]">
+                          Personal Photo
+                        </label>
+                        <input
+                          type="file"
+                          name="logo"
+                          onChange={handleFile2Change}
+                          required
+                          className="block w-full mt-2 file:border-none file:rounded-lg file:bg-[#0800FA] file:text-white file:px-4 file:py-2 file:cursor-pointer"
+                        />
+                        {previewImage2 && (
+                          <img
+                            src={previewImage2}
+                            alt="Raise capital without the need of banks in stablecoins"
+                            className="mt-2 rounded-lg w-24"
+                          />
+                        )}
+                      </div>
+                    </div>
 
                     {/* How It Works Link */}
                     <p className="text-sm text-gray-500">
