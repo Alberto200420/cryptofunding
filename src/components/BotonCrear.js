@@ -5,7 +5,7 @@ import { TMIS_ADDRESS, ABI_TMIS_GO } from "abi/TMIS_GO_TEST";
 import { ADDRESS_TMIS_POLYGON, ABI_TMIS_POLYGON } from "abi/Polygon_ABI";
 import { ethers } from "ethers";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
-import ModalSuccess from "./ModalSuccess";
+// import ModalSuccess from "./ModalSuccess";
 
 export default function BotonCrearContrato() {
   let [isOpen, setIsOpen] = useState(false);
@@ -601,11 +601,11 @@ export default function BotonCrearContrato() {
       </Transition>
 
       {cargandoData === true ? <ModalContractInfo /> : <div></div>}
-      {dataCargada === true ? (
+      {/* {dataCargada === true ? (
         <ModalSuccess mensaje={"Contract successfully saved in the database"} />
       ) : (
         <div></div>
-      )}
+      )} */}
     </>
   );
 }

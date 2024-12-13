@@ -15,8 +15,8 @@ import { TOKEN_TEST } from "../abi/TokensTest";
 import { TOKEN_USDC, TOKEN_USDT, TOKEN_BUSD, TOKEN_DAI } from "abi/Polygon_ABI";
 import { ABI_TMIS_DESARROLLADOR_GO } from "../abi/TMIS_GO_TEST";
 import { ABI_TMIS_DESARROLLADOR_POLYGON } from "abi/Polygon_ABI";
-import ModalLoading from "./ModalMinando";
-import ModalSuccess from "./ModalSuccess";
+// import ModalLoading from "./ModalMinando";
+// import ModalSuccess from "./ModalSuccess";
 import { useMoralis } from "react-moralis";
 
 export default function BotonFirmar({ address, network }) {
@@ -400,14 +400,14 @@ export default function BotonFirmar({ address, network }) {
         </Dialog>
       </Transition>
 
-      {cargandoData && <ModalLoading />}
+      {/* {cargandoData && <ModalLoading />}
       {dataCargada && (
         <ModalSuccess
           mensaje={`you have invested successfully ${(
             cantidad_a_invertir - 2
           ).toLocaleString()} ${moneda} to ${address} Network commission: 2 ${moneda}`}
         />
-      )}
+      )} */}
     </div>
   );
 }
