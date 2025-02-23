@@ -1,4 +1,3 @@
-// import InfoSmartContract from "components/InfoContract";
 import BotonFirmar from "components/BotonFirmar";
 import { useLocation, Navigate } from "react-router-dom";
 import {
@@ -17,8 +16,11 @@ import { MdWeb, MdDateRange } from "react-icons/md";
 import { GoGoal } from "react-icons/go";
 import { TbChartInfographic } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function PublicPage() {
+  const [activeTab, setActiveTab] = useState("Contract");
+
   const location = useLocation();
   const datos = location.state;
   if (!datos) {
@@ -29,12 +31,28 @@ function PublicPage() {
       <main>
         <div>
           {/* <!-- Cover Image --> */}
-          <div className="bg-gray-300 h-36 w-full"></div>
+          <div
+            className="bg-gray-300 h-36 w-full"
+            style={{
+              backgroundImage: datos.backgroundImage
+                ? `url(${datos.backgroundImage})`
+                : undefined,
+              backgroundSize: "cover",
+            }}
+          ></div>
 
           {/* <!-- Profile Section --> */}
           <div className="relative -mt-16 flex flex-col items-center">
             {/* <!-- Main Image --> */}
-            <div className="w-32 h-32 bg-gray-400 rounded-full border-4 border-white"></div>
+            <div className="w-32 h-32 bg-gray-400 rounded-full border-4 border-white overflow-hidden">
+              {datos.mainImage ? (
+                <img
+                  src={datos.mainImage}
+                  alt="Founder"
+                  className="w-full h-full object-cover"
+                />
+              ) : null}
+            </div>
             {/* <!-- Name --> */}
             <h2 className="text-xl font-semibold mt-4">
               {datos.fullNameFounder}
@@ -42,26 +60,42 @@ function PublicPage() {
 
             {/* <!-- Social Icons --> */}
             <div className="flex space-x-4 mt-2">
-              <FaLinkedin className="text-[#0800FA] text-2xl cursor-pointer" />
-              <FaInstagram className="text-[#F205E2] text-2xl cursor-pointer" />
-              <FaTelegramPlane className="text-[#00AEED] text-2xl cursor-pointer" />
-              <FaXTwitter className="text-2xl cursor-pointer" />
-              <MdWeb className="text-2xl cursor-pointer" />
-              <FaLocationDot className="text-[#F23535] text-2xl cursor-pointer" />
+              {datos.socialNetworks.map((link, index) => (
+                <a
+                  key={index}
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {link.includes("linkedin") && (
+                    <FaLinkedin className="text-[#0800FA] text-2xl cursor-pointer" />
+                  )}
+                  {link.includes("instagram") && (
+                    <FaInstagram className="text-[#F205E2] text-2xl cursor-pointer" />
+                  )}
+                  {link.includes("telegram") && (
+                    <FaTelegramPlane className="text-[#00AEED] text-2xl cursor-pointer" />
+                  )}
+                  {link.includes("x.com") && (
+                    <FaXTwitter className="text-2xl cursor-pointer" />
+                  )}
+                </a>
+              ))}
             </div>
           </div>
 
           <div className="lg:px-12 px-4">
             {/* <!-- Project Information --> */}
             <div className="mt-4">
-              {/* <!-- Project Details --> */}
               <div className="flex items-center space-x-2 text-sm">
-                <Link to={"/"}>
+                <Link to="/">
                   <FaHouse />
                 </Link>
                 <span>/ project /</span>
                 <a
-                  href="#"
+                  href={`https://etherscan.io/address/${datos.contractAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-[#6805F2] flex items-center space-x-1"
                 >
                   <span>{datos.contractAddress}</span>
@@ -95,21 +129,30 @@ function PublicPage() {
               </div>
 
               <div className="flex border-b">
-                <button className="flex-1 py-2 text-center border-b-2 border-[#6805F2]">
-                  Contract
-                </button>
-                <button className="flex-1 py-2 text-center">
-                  About the Project
-                </button>
-                <button className="flex-1 py-2 text-center">
-                  About the Founder
-                </button>
+                {[
+                  { label: "Contract", value: "Contract" },
+                  { label: "About the Project", value: "AboutProject" },
+                  { label: "About the Founder", value: "AboutFounder" },
+                ].map((tab) => (
+                  <button
+                    key={tab.value}
+                    onClick={() => setActiveTab(tab.value)}
+                    className={`flex-1 py-2 text-center ${
+                      activeTab === tab.value
+                        ? "border-b-2 border-[#6805F2] text-[#6805F2]"
+                        : ""
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
               </div>
 
               {/* <!-- Tab Content --> */}
               <div className="mt-4 text-sm text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
-                dapibus sapien. Vestibulum pellentesque...
+                {activeTab === "Contract" && <p>Contract details go here...</p>}
+                {activeTab === "AboutProject" && <p>{datos.aboutProject}</p>}
+                {activeTab === "AboutFounder" && <p>{datos.aboutFounder}</p>}
               </div>
             </div>
             <BotonFirmar
@@ -118,7 +161,6 @@ function PublicPage() {
             />
           </div>
         </div>
-        {/* <InfoSmartContract /> */}
       </main>
     </div>
   );
