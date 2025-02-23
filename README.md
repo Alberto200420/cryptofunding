@@ -67,7 +67,7 @@ Amazon DynamoDB is a **fully managed serverless NoSQL database** designed for hi
 
 - **Fits the Architecture**: The project uses **API Gateway** and **Lambda**, which integrate seamlessly with DynamoDB. The serverless, event-driven nature of DynamoDB complements Lambda perfectly.
 - **Low Cost**: For MVPs with low requests, the **on-demand mode** ensures minimal expenses without pre-allocating resources.
-- **Scalability**: DynamoDB can effortlessly scale if your MVP attracts significant traffic, providing future-proofing without upfront investment.
+- **Scalability**: DynamoDB can effortlessly scale if MVP attracts significant traffic, providing future-proofing without upfront investment.
 
 ---
 
@@ -77,4 +77,4 @@ Amazon DynamoDB is a **fully managed serverless NoSQL database** designed for hi
 2. **Want a serverless database that automatically scales**
 3. **Prefer the ease of paying for only what you use**
 
-## This setup ensures a highly **cost-efficient**, **scalable**, and **serverless** solution for your MVP web application.
+## This setup ensures a highly **cost-efficient**, **scalable**, and **serverless** solution for MVP web application.
